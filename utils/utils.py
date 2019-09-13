@@ -2,7 +2,7 @@
 #!/usr/bin/env python3
 
 """
-module svg inspiré de http://www.codedrome.com/svg-library-in-python/
+module svg de http://www.codedrome.com/svg-library-in-python/
 """
 
 
@@ -15,7 +15,7 @@ class Svg:
     et sauvegarder le fichier final.
 
     Attributes:
-        svg_list (list): largeur de l'image créée
+        svg_list (list): liste des figures svg de l'image
         width (int): largeur de l'image créée
         height (str): hauteur de l'image créée
         templates (dict): figures possibles

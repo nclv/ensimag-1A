@@ -8,13 +8,6 @@ Module de test de la librairie utils
 from utils import Svg
 
 
-def main():
-    """main function
-
-    """
-    draw_all_shapes()
-
-
 def draw_all_shapes():
     """Test du module SVG et sauvegarde du fichier final.
 
@@ -38,5 +31,11 @@ def draw_all_shapes():
         print(ioe)
 
     print(image)
+
+def main():
+    """main function
+
+    """
+    draw_all_shapes()
 
 main()
