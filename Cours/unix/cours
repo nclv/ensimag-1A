@@ -1,0 +1,20 @@
+
+#atom
+Ctrl-F
+Ctrl-D
+Shift-Up/Down
+
+#find greater file
+find . -type f -printf "%s\t%p\n" | sort -n | tail -1
+#find file recursively
+find . -name "name"
+#decoder then decoder_bis
+./decoder.py < etape-E5.txt | ./decoder_bis.py
+#find in files
+grep -lR "string"
+
+#get header
+curl -I website.com
+
+for entry in $(seq 2000); do cat /matieres/3MMUNIX/jeu-de-piste/etape-H4/"$entry".txt; done 2> /dev/null
+

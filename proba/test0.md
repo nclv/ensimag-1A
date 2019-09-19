@@ -128,6 +128,14 @@ E(W^2) &= \int_{0}^{1}t^2P(W=t)dt \\
 
 \end{align}
 $$
+$$
+\begin{align}
+E(W^2) &= \int_{0}^{1}t^2P(W=t)dt \\
+&= \frac{1}{4}\int_{0}^{1}t^2dt + \frac{3}{4}\int_{0}^{1}t^2*t^{0.5}dt \\
+&= \frac{1}{12} + \frac{3}{14} 
+
+\end{align}
+$$
 
 
 ** **

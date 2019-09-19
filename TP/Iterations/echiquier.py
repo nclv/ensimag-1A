@@ -28,14 +28,11 @@ def main():
     """
     print(f"<svg width='{WIDTH}' height='{HEIGHT}'>")
 
-    i = 1
-    for ordonnee in Y_LIST:
-        i += 1
-        for abscisse in X_LIST:
-            fill = (BLACK if i%2 == 0 else WHITE)
+    for indicey, ordonnee in enumerate(Y_LIST):
+        for indicex, abscisse in enumerate(X_LIST):
+            fill = (BLACK if (indicey + indicex) % 2 == 0 else WHITE)
             print(f"<rect fill='{fill}' width='{RECT_WIDTH}' height='{RECT_HEIGHT}' \
              y='{ordonnee}' x='{abscisse}' />")
-            i += 1
 
     print("</svg>")
 
