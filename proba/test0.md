@@ -116,27 +116,40 @@ $$
 
 ###### Réponse :
 
-Nous allons utiliser le théorème de transfert et la linéarité de l'intégrale.
+On sait que :
 
 $$
 \begin{align}
-E(W^2) &= \int_{0}^{1}t^2P(W=t)dt \\
-&= \frac{1}{4}\int_{0}^{1}t^2P(V=t)dt + \frac{3}{4}\int_{0}^{1}t^2P(V=t^2)dt \\
-&= \frac{1}{4}\int_{0}^{1}t^3dt + \frac{3}{4}\int_{0}^{1}t^4dt \\
-&= \frac{1}{16} + \frac{3}{20} \\
-&= \frac{17}{80}
-
+E(W^2) &= \int_{\mathrm{R}} x^2f_W(x)dx \\
 \end{align}
+$$
+
+On cherche donc $f_W(x)$
+
+Or
+$$
+\begin{align}
+\forall x \in \mathrm{R}, \quad P(W\leq x) = F_W(x) = \int_{-\infty}^{x} f_W(t)dt
+\end{align}
+$$
+Pour $x$ dans $[0, 1]$, $P( V \leq x) = \int_{0}^{x}1.dt = x$
+$$
+\begin{align}
+P(W \leq x) &= \frac{1}{4}P(V \leq x) + \frac{3}{4}P(V \leq x^2) \\
+&= \frac{1}{4}x + \frac{3}{4}x^2 \\
+\end{align}
+$$
+
+Donc
+$$
+f_W(x) = \frac{3}{2}x + \frac{1}{4}
 $$
 $$
 \begin{align}
-E(W^2) &= \int_{0}^{1}t^2P(W=t)dt \\
-&= \frac{1}{4}\int_{0}^{1}t^2dt + \frac{3}{4}\int_{0}^{1}t^2*t^{0.5}dt \\
-&= \frac{1}{12} + \frac{3}{14} 
-
+E(W^2) &= \int_{0}^{1}x^2\bigg(\frac{3}{2}x + \frac{1}{4}\bigg)dx \\
+&= \frac{11}{24}
 \end{align}
 $$
-
 
 ** **
 
