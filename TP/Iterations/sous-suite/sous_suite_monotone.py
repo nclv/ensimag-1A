@@ -66,7 +66,6 @@ def main():
     """main function
 
     """
-
     biggest_suite = get_max_suite()
     print(biggest_suite)
 

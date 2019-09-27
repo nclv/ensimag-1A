@@ -21,15 +21,71 @@ import functools
 import numpy as np
 
 
+AVANCER = "z"
+RECULER = "s"
+GAUCHE = "q"
+DROITE = "d"
+
+EMPTY = 0
+WALKABLE = 1
+PLAYER = 2
+
+
 # TODO: réorganiser les classes avec SOLID
 
 
-class Room:
+class Structure:
+
+    """Classe représentant une structure sur la carte
+
+    """
+
+    def intersect(self, other_struct: 'Structure'):
+        """Renvoie si deux structurent s'intersectent
+
+        Parameters:
+            other_struct (Structure): deuxième structure
+
+        Returns:
+            (bool): True si les pièces se chevauchent
+
+        """
+        raise NotImplementedError
+
+
+
+
+class Corridor(Structure):
+
+    """Classe représentant un couloir entre deux pièces
+
+    Attributes:
+         entree/sortie (Room): entrée/sortie du couloir
+
+    """
+
+    def __init__(self, room1: 'Room', room2: 'Room'):
+        """oneline description.
+
+        Parameters:
+             room1/rooms2 (Room): pièces d'entrée/sortie du couloir
+
+        """
+        self.entree = room1
+        self.sortie = room2
+
+
+class Room(Structure):
 
     """Classe représentant une pièce
 
+    Une pièce est représentée par deux points de la diagonale de la pièce.
+
     Attributes:
-         (type): description
+         absc_top_right (int): //
+         ord_top_right (int): //
+         absc_bottom_left (int): //
+         ord_bottom_left (int): //
 
     """
 
@@ -73,7 +129,6 @@ class Room:
 
         Parameters:
              point (tuple): point
-             room (Room): pièce
 
         Returns:
             (boolean): True if the point is in the room
@@ -81,6 +136,7 @@ class Room:
         """
         return self.absc_top_right <= point[0] <= self.absc_bottom_left and \
         self.ord_top_right <= point[1] <= self.ord_bottom_left
+
 
 class Map:
 
@@ -115,6 +171,8 @@ class Map:
         self.min_room_size = 3
         self.max_room_size = 8
 
+    # TODO: set_corridors_parameters
+
     def set_game_parameters(self):
         """Paramètres par défauts du jeu
 
@@ -124,7 +182,12 @@ class Map:
 
         self.localisation_player = (0, 0)
 
-def place_room(carte: Map) -> list:
+
+class OutOfWalkError(Exception):
+    """Raised when you try to move in a wall"""
+
+
+def place_rooms(carte: Map) -> list:
     """Génère les pièces sur la carte.
 
 
@@ -151,10 +214,25 @@ def place_room(carte: Map) -> list:
 
     return rooms
 
+def place_corridors(carte: Map) -> list:
+    """Génère les corridors sur la carte.
+
+    Choix d'une entrée/sortie aléatoire dans chacune des deux pièces
+
+    Returns:
+        corridors (list): liste contenant les pièces générée
+
+    """
+    corridors = []
+
+    # TODO:
+
+    return corridors
+
 def gen_board(carte: Map) -> np.ndarray:
     """Génère le plateau de jeu 2D.
 
-    On représente une pièce par 1.
+    On représente une pièce par 1, un joueur par 2, rien par 0
 
     Parameters:
         carte (Map): carte pour laquelle est généré le plateau de jeu
@@ -164,10 +242,16 @@ def gen_board(carte: Map) -> np.ndarray:
 
     """
     board = np.zeros(shape=(carte.width, carte.height))
-    rooms = place_room(carte)
+    rooms = place_rooms(carte)
+    #corridors = place_corridors(carte)
 
+    #placement des pièces/corridors
     for (absc, ordo), _ in np.ndenumerate(board):
         board[absc][ordo] = any(room.in_and_side((absc, ordo)) for room in rooms)
+
+    #placement du joueur
+    absc, ordo = carte.localisation_player
+    board[absc][ordo] = PLAYER
 
     return board
 
@@ -180,9 +264,12 @@ def draw_board(board: np.ndarray):
     """
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
-            if board[absc][ordo]:
+            tile = board[absc][ordo]
+            if tile == WALKABLE:
                 print('#', end=" ")
-            else:
+            elif tile == PLAYER:
+                print('@', end=" ")
+            elif tile == EMPTY:
                 print('.', end=" ")
         print()
 
@@ -206,20 +293,59 @@ def while_true(func):
                     continue
                 break
             except ValueError:
-                print("Rentrer une direction valide")
+                print("Entrer une direction valide")
+            except OutOfWalkError:
+                print("Un mur vous empêche d'avancer")
         return res
     return wrapper
 
 @while_true
-def get_direction():
+def get_input_direction(carte, board):
     """Get direction input.
 
     """
     direction = input("Donner la direction (z, s, q, d): ")
+    movements = get_movements(carte.localisation_player)
     if direction not in ['z', 's', 'q', 'd']:
         raise ValueError()
+    if bad_movement(direction, movements, board):
+        raise OutOfWalkError()
 
-    return direction
+    return direction, movements
+
+def get_movements(current_localisation):
+    """Renvoie un dictionnaire des mouvements possibles
+
+    """
+    absc, ordo = current_localisation
+    return {AVANCER: (absc, ordo + 1), RECULER: (absc, ordo - 1), \
+    GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
+
+def bad_movement(direction, movements, board):
+    """Vérification de la possibilité du mouvement sur le plateau
+
+    Returns:
+        (bool): True si la pièce du plateau est à 1 (pièce/couloir)
+
+    """
+    absc, ordo = movements[direction]
+    return not board[absc][ordo]
+
+def set_new_localisation(new_localisation, board):
+    """Déplace le joueur dans la direction donnée
+
+    Parameters:
+        direction (str): //
+        movements (dict): coordonnées des mouvements possibles
+
+    Returns:
+        (tuple): nouvelles coordonnées du joueur
+
+    """
+    absc, ordo = new_localisation
+    board[absc][ordo] = PLAYER
+    return board
+
 
 def main():
     """main function
@@ -229,8 +355,8 @@ def main():
     board = gen_board(carte)
     while carte.localisation_player != carte.goal:
         draw_board(board)
-        direction = get_direction()
-        board.move_player(direction)
+        direction, movements = get_input_direction(carte, board)
+        board = set_new_localisation(movements[direction], board)
         clear()
     print("You made it!")
 
