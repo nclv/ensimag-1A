@@ -23,11 +23,12 @@ def gen_board():
 
     """
     board = np.zeros(shape=(5, 5))
+    cases = set(itertools.product(range(0, 5), range(0, 5)))
     for absc, line in enumerate(get_numbers()):
         for ordo, value in enumerate(line):
             if value == ".":
                 board[absc][ordo] = 1
-    return board
+    return board, cases
 
 def get_voisins(case):
     """Retourne les voisins
@@ -36,25 +37,18 @@ def get_voisins(case):
     absc, ordo = case
     return [(absc + 1, ordo), (absc - 1, ordo), (absc, ordo - 1), (absc, ordo + 1)]
 
-def filter_voisins(voisins):
-    """Filtre les voisins
-
-    """
-    indice_lst = []
-    for indice, coord in enumerate(voisins):
-        for value in coord:
-            if value < 0:
-                indice_lst.append(indice)
-    #filter by index
-
-def play(board, case):
+def play(board, cases_auth, case):
     """Routine de jeu
 
     """
-    print(case)
-    voisins = get_voisins(case)
-    print(voisins)
+    voisins = set(get_voisins(case)).intersection(cases_auth)
+    board[case] = 0
+    for voisin in voisins:
+        board[voisin] = 0
+    return board
 
+def end_game(board):
+    return all(not tile for _, tile in np.ndenumerate(board))
 
 def draw(board):
     """Dessine la plateau
@@ -100,7 +94,7 @@ def get_input():
     """Get direction input.
 
     """
-    case = input("Choisisser une case à jouer: \n")
+    case = input("Choisisser une case à jouer: [A-E][1-5]\n")
     possibilities = list(map("".join, itertools.product("ABCDE", "12345")))
     if case not in possibilities:
         raise ValueError()
@@ -111,9 +105,10 @@ def main():
     """main function
 
     """
-    case = get_input()
-    board = gen_board()
-    play(board, case)
-    draw(board)
+    board, cases_auth = gen_board()
+    while not end_game(board):
+        draw(board)
+        case = get_input()
+        board = play(board, cases_auth, case)
 
 main()

@@ -35,6 +35,9 @@ WALKABLE = 1
 PLAYER = 2
 ROOM = 3
 CORRIDOR = 4
+GOAL = 5
+
+DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
 
 # TODO: réorganiser les classes avec SOLID
@@ -134,7 +137,7 @@ class Room(Structure):
         self.ordo_bottom_left - 1 <= room2.ordo_top_left and \
         self.ordo_top_left + 1 >= room2.ordo_bottom_left
 
-    def in_and_side(self, point: tuple) -> bool:
+    def contain(self, point: tuple) -> bool:
         """Vérifie que le point est dans la pièce (intérieur et côté)
 
         Parameters:
@@ -170,11 +173,19 @@ class Map:
         self.width = width
         self.height = height
 
-        #set des possibilités
-        self.cases = set(product(range(self.width), range(self.height)))
+        #tableau
+        self.board = np.zeros(shape=(self.width, self.height))
+        #ensemble des possibilités de génération (on exclut la limite du plateau)
+        self.cases = set(product(range(1, self.width - 1), range(1, self.height - 1)))
 
         self.set_rooms_parameters()
-        self.set_game_parameters()
+
+        self.start = None
+        self.goal = None
+
+        #variables modifiables
+        self.localisation_player = self.start
+        self.discovered = set()
 
     def set_rooms_parameters(self):
         """Paramètres par défauts des pièces de la carte
@@ -184,18 +195,198 @@ class Map:
         self.min_room_size = 3
         self.max_room_size = 7
 
+        self.room_positions = []
+
     # TODO: set_corridors_parameters
 
     def set_game_parameters(self):
         """Paramètres par défauts du jeu
 
         """
-        self.start = (0, 0)
-        self.goal = ()
+        self.start = choice(self.room_positions)
+        self.goal = choice(self.room_positions)
 
-        #variables modifiables
-        self.localisation_player = (0, 0)
-        self.discovered = set()
+        self.localisation_player = self.start
+
+    def gen_board(self) -> np.ndarray:
+        """Génère le plateau de jeu 2D.
+
+        On représente une pièce par 1, un joueur par 2, rien par 0
+
+        Parameters:
+            carte (Map): carte pour laquelle est généré le plateau de jeu
+
+        Returns:
+            self.board (np.ndarray): tableau 2D représentant le plateau
+
+        """
+        #set rooms
+        self.place_rooms()
+        #create maze corridors
+        self.fill_maze()
+
+        self.set_game_parameters()
+        #set initial player position in a room
+        self.set_tile(self.start, PLAYER)
+        self.set_tile(self.goal, GOAL)
+
+    def place_rooms(self) -> np.ndarray:
+        """Place les pièces générées sur la carte
+
+        Parameters:
+            carte (Map): carte pour laquelle est généré le plateau de jeu
+            self.board (np.ndarray): tableau 2D représentant le plateau
+
+        Returns:
+            self.board (np.ndarray): tableau 2D contenant les pièces générées
+
+        """
+        rooms = self.get_rooms()
+        #placement des pièces
+        for position, _ in np.ndenumerate(self.board):
+            for room in rooms:
+                if room.contain(position):
+                    self.board[position] = ROOM
+                    self.room_positions.append(position)
+                    break
+
+    def get_rooms(self) -> list:
+        """Génère les pièces sur la carte.
+
+        # TODO: implémenter BSP pour une meilleur répartition
+
+        Returns:
+            rooms (list): liste contenant les pièces générées
+
+        """
+        rooms = []
+
+        for _ in range(self.max_rooms):
+            width = randrange(self.min_room_size, self.max_room_size)
+            height = randrange(self.min_room_size, self.max_room_size)
+            #on veut une délimitation autour des pièces
+            abscisse = randrange(1, self.width - width - 1)
+            ordonnee = randrange(1, self.height - height - 1)
+
+            new_room = Room(abscisse, ordonnee, width, height)
+
+            #on ajoute la pièce si elle n'en chevauche aucune autre
+            failed = any(new_room.intersect(other_room) for other_room in rooms)
+
+            if not failed:
+                rooms.append(new_room)
+
+        return rooms
+
+    def fill_maze(self):
+        """Rempli la carte avec un labyrinthe serpentant entre les pièces
+
+        Parameters:
+            carte (Map): carte pour laquelle est généré le plateau de jeu
+            self.board (np.ndarray): tableau 2D représentant le plateau
+
+        Returns:
+            self.board (np.ndarray): tableau 2D contenant le labyrinthe des couloirs
+
+        """
+        for ordo in range(1, self.width - 1):
+            for absc in range(1, self.height - 1):
+                position = absc, ordo
+                voisins = self.check_on_board(positions_voisines(position))
+                allowed = all(not self.board[voisin] for voisin in voisins)
+                if allowed:
+                    self.gen_maze(position)
+
+    def couloir_possible(self, position, direction):
+        """Renvoie si l'on peut aller dans cette direction
+
+         - on ne doit pas toucher de pièce ou d'autre couloir
+
+        Parameters:
+            ()
+
+        Returns:
+            (boolean):
+
+        """
+        next_case = add_tuple(position, direction)
+        voisins = positions_voisines(next_case)
+        voisins.remove(position)
+        voisins.add(next_case)
+
+        correct_voisins = self.check_on_board(voisins)
+        if not correct_voisins:
+            return False
+        return all(not self.board[case] for case in correct_voisins)
+
+    def check_on_board(self, cases):
+        """Renvoie les valeurs de table qui sont sur la carte.
+
+        Parameters:
+            carte (Map): carte pour laquelle est généré le plateau de jeu
+            cases (set): cases du plateau sur lesquelles on peut construire/se déplacer
+
+        """
+        return cases.intersection(self.cases)
+
+    def gen_maze(self, position):
+        """Génère un labyrinthe à partir de la position fournie
+
+        """
+        maze_cases = [position]
+        last_direction = None
+
+        self.board[position] = CORRIDOR
+
+        while maze_cases:
+            case = maze_cases[-1]
+
+            possible_direction = [direction for direction in DIRECTIONS \
+            if self.couloir_possible(case, direction)]
+
+            if possible_direction:
+                direction = get_direction(possible_direction, last_direction)
+                new_case = add_tuple(case, direction)
+                self.board[new_case] = CORRIDOR
+                maze_cases.append(new_case)
+                last_direction = direction
+            else:
+                #aucune case adjacente libre
+                del maze_cases[-1]
+                last_direction = None
+
+    def set_tile(self, position, tile_type):
+        """Assigne tile_type sur la position du plateau.
+
+        Parameters:
+            position (tuple): position du plateau
+            self.board (np.ndarray): tableau 2D représentant le plateau
+            tile_type (int): type de case
+
+        Returns:
+            self.board (np.ndarray): tableau 2D avec tile_type sur position
+
+        """
+        absc, ordo = position
+        self.board[absc][ordo] = tile_type
+
+    def move_player(self, position, previous_position):
+        """Déplace le joueur sur la position
+
+        """
+        self.set_tile(position, PLAYER)
+        self.set_tile(previous_position, WALKABLE)
+
+    def bad_movement(self, direction, movements):
+        """Vérification de la possibilité du mouvement sur le plateau.
+
+        Returns:
+            (bool): True si le mouvement n'emmène pas sur une pièce ou un couloir
+
+        """
+        absc, ordo = movements[direction]
+        return not self.board[absc][ordo] in [ROOM, CORRIDOR, WALKABLE]
+
 
 
 class OutOfWalkError(Exception):
@@ -204,180 +395,72 @@ class OutOfWalkError(Exception):
 ###
 
 def positions_voisines(position):
-    """Retourne les positions voisines de position (haut/bas/gauche/droite)
-    avec position
+    """Retourne position et les positions voisines de position (haut/bas/gauche/droite)
+
+    Parameters:
+        position (tuple): case dont on veut connaitre les voisins
+
+    Returns:
+        voisins (set): position et ses voisins
 
     """
-
-    directions = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
-    voisins = {add_tuple(position, direction) for direction in directions}
+    voisins = {add_tuple(position, direction) for direction in DIRECTIONS}
     voisins.add(position)
     return voisins
 
-def check_on_board(carte, cases):
-    """Renvoie les valeurs de table qui sont sur la carte.
+def get_direction(possible_direction, last_direction):
+    """Renvoie la direction suivante du labyrinthe.
 
     Parameters:
-        cases (set): set des cases
-
-    """
-    return cases.intersection(carte.cases)
-
-def fill_maze(carte, board):
-    """Rempli la carte avec un labyrinthe serpentant entre les pièces
-
-    """
-    for ordo in range(1, carte.width - 1):
-        for absc in range(1, carte.height - 1):
-            position = absc, ordo
-            voisins = check_on_board(carte, positions_voisines(position))
-            allowed = all(not board[voisin] for voisin in voisins)
-            if allowed:
-                board = gen_maze(carte, board, position)
-
-    return board
-
-def couloir_possible(carte, board, position, direction):
-    """Renvoie si l'on peut aller dans cette direction
-
-     - on ne doit pas toucher de pièce ou d'autre couloir
-
-    Parameters:
-        ()
+        possible_direction (list): //
+        last_direction (tuple): //
 
     Returns:
-        (boolean):
+        direction (tuple): prochaine direction
 
     """
-    next_case = add_tuple(position, direction)
-    voisins = positions_voisines(next_case)
-    voisins.remove(position)
-    voisins.add(next_case)
+    #on privilégie les couloirs droits avec une certaine probabilité
+    choose_last_direction = last_direction in possible_direction and (randrange(0, 100) > 70)
+    return last_direction if choose_last_direction else choice(possible_direction)
 
-    correct_voisins = check_on_board(carte, voisins)
-    if not correct_voisins:
-        return False
-    return all(not board[case] for case in correct_voisins)
-
-
-def gen_maze(carte, board, position):
-    """Génère un labyrinthe à partir de la position fournie
-
-    """
-    maze_cases = [position]
-    last_direction = None
-
-    board[position] = CORRIDOR
-
-    while maze_cases:
-        case = maze_cases[-1]
-
-        #print(case)
-        #draw_board(board)
-        #time.sleep(0.4)
-
-        possible_direction = []
-        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-        for direction in directions:
-            if couloir_possible(carte, board, case, direction):
-                possible_direction.append(direction)
-
-        if possible_direction:
-            direction = None
-            #on privilégie les couloirs droits avec une certaine probabilité
-            if last_direction in possible_direction and (randrange(0, 100) > 70):
-                direction = last_direction
-            else:
-                direction = choice(possible_direction)
-
-            new_case = add_tuple(case, direction)
-            board[new_case] = CORRIDOR
-            maze_cases.append(new_case)
-            last_direction = direction
-        else:
-            #aucune case adjacente libre
-            del maze_cases[-1]
-            last_direction = None
-
-    return board
 
 ###
+
+def connect_rooms():
+    """Trouve toutes les cases pouvant servir de connecteurs
+
+    Parameters:
+
+    """
 
 
 
 ###
 
-def place_rooms(carte: Map) -> list:
-    """Génère les pièces sur la carte.
 
-    # TODO: implémenter BSP pour une meilleur répartition
-
-    Returns:
-        rooms (list): liste contenant les pièces générée
-
-    """
-    rooms = []
-
-    for _ in range(carte.max_rooms):
-        width = randrange(carte.min_room_size, carte.max_room_size)
-        height = randrange(carte.min_room_size, carte.max_room_size)
-        abscisse = randrange(0, carte.width - width)
-        ordonnee = randrange(0, carte.height - height)
-
-        new_room = Room(abscisse, ordonnee, width, height)
-
-        #on ajoute la pièce si elle n'en chevauche aucune autre
-        failed = any(new_room.intersect(other_room) for other_room in rooms)
-
-        if not failed:
-            rooms.append(new_room)
-
-    return rooms
-
-def gen_board(carte: Map) -> np.ndarray:
-    """Génère le plateau de jeu 2D.
-
-    On représente une pièce par 1, un joueur par 2, rien par 0
-
-    Parameters:
-        carte (Map): carte pour laquelle est généré le plateau de jeu
-
-    Returns:
-        board (np.ndarray): tableau 2D représentant le plateau
-
-    """
-    board = np.zeros(shape=(carte.width, carte.height))
-    rooms = place_rooms(carte)
-    #corridors = place_corridors(carte)
-
-    #placement des pièces/corridors (mise à 1)
-    for (absc, ordo), _ in np.ndenumerate(board):
-        board[absc][ordo] = any(room.in_and_side((absc, ordo)) for room in rooms)
-
-    #set initial player position
-    board = set_player_localisation(carte.start, board)
-    board = fill_maze(carte, board)
-
-    return board
 
 def draw_board(board: np.ndarray):
     """Affiche le dongeon
 
     Parameters:
-        board (np.ndarray): tableau 2D représentant le plateau
+        self.board (np.ndarray): tableau 2D représentant le plateau
 
     """
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
-            if tile == WALKABLE:
+            if tile == EMPTY:
+                print('#', end=" ")
+            elif tile == WALKABLE:
                 print('.', end=" ")
             elif tile == PLAYER:
                 print('@', end=" ")
-            elif tile == EMPTY:
-                print('#', end=" ")
+            elif tile == ROOM:
+                print('.', end=" ")
             elif tile == CORRIDOR:
                 print('c', end=" ")
+            elif tile == GOAL:
+                print('!', end=" ")
         print()
 
 def clear():
@@ -389,6 +472,8 @@ def clear():
 
 def while_true(func):
     """ Décore la fonction d'une boucle while True pour les inputs.
+
+    Erreurs personnalisées OutOfWalkError
 
     """
     @functools.wraps(func)
@@ -407,15 +492,23 @@ def while_true(func):
     return wrapper
 
 @while_true
-def get_input_direction(carte, board):
-    """Get direction input.
+def get_input_direction(carte):
+    """Prend en entrée la direction.
+
+    Parameters:
+        carte (Map): carte pour laquelle est généré le plateau de jeu
+        self.board (np.ndarray): tableau 2D représentant le plateau
+
+    Returns:
+        direction (str): //
+        movements (dict): coordonnées des mouvements possibles
 
     """
     direction = input("Donner la direction (z, s, q, d): ")
     movements = get_movements(carte.localisation_player)
     if direction not in ['z', 's', 'q', 'd']:
         raise ValueError()
-    if bad_movement(direction, movements, board):
+    if carte.bad_movement(direction, movements):
         raise OutOfWalkError()
 
     return direction, movements
@@ -425,33 +518,8 @@ def get_movements(current_localisation):
 
     """
     absc, ordo = current_localisation
-    return {AVANCER: (absc, ordo + 1), RECULER: (absc, ordo - 1), \
+    return {AVANCER: (absc, ordo - 1), RECULER: (absc, ordo + 1), \
     GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
-
-def bad_movement(direction, movements, board):
-    """Vérification de la possibilité du mouvement sur le plateau
-
-    Returns:
-        (bool): True si la pièce du plateau est à 1 (pièce/couloir)
-
-    """
-    absc, ordo = movements[direction]
-    return not board[absc][ordo]
-
-def set_player_localisation(new_localisation, board):
-    """Déplace le joueur dans la direction donnée
-
-    Parameters:
-        direction (str): //
-        movements (dict): coordonnées des mouvements possibles
-
-    Returns:
-        (tuple): nouvelles coordonnées du joueur
-
-    """
-    absc, ordo = new_localisation
-    board[absc][ordo] = PLAYER
-    return board
 
 
 def main():
@@ -459,11 +527,12 @@ def main():
 
     """
     carte = Map(60, 60)
-    board = gen_board(carte)
+    carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(board)
-        direction, movements = get_input_direction(carte, board)
-        board = set_player_localisation(movements[direction], board)
+        draw_board(carte.board)
+        direction, movements = get_input_direction(carte)
+        carte.move_player(movements[direction], carte.localisation_player)
+        carte.localisation_player = movements[direction]
         clear()
     print("You made it!")
 
