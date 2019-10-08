@@ -446,6 +446,8 @@ def draw_board(board: np.ndarray):
         self.board (np.ndarray): tableau 2D représentant le plateau
 
     """
+    # TODO: timeit
+    #for position, _ in np.ndenumerate(self.board):
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
