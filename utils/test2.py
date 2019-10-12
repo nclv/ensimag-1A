@@ -12,7 +12,7 @@ def main():
     ch = logging.StreamHandler()
     ch.setLevel(logging.ERROR)
     # create formatter and add it to the handlers
-    logformat = '%(asctime)s - %(name)-12s %(levelname)-8s %(message)s'
+    logformat = '%(asctime)s - %(name)-40s %(levelname)-8s %(message)s'
     formatter = logging.Formatter(fmt=logformat, datefmt='%d-%b-%y %H:%M:%S')
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
