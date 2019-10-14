@@ -32,6 +32,7 @@ def pivote1(tableau, indice_pivot):
 
 def pivote2(tableau, indice_pivot):
     """Renvoie deux listes d'éléments du tableau au dessus et en dessous du pivot
+    (inplace sans le zip et stable)
 
     Parameters:
         tableau (list): //
@@ -43,36 +44,24 @@ def pivote2(tableau, indice_pivot):
     """
     indice_sauv = 0
     pivot = tableau[indice_pivot]
-    indices = range(len(tableau)) #stable
+    indices = range(len(tableau)) #pour la stabilité
 
-    zipped = zip(indices, tableau)
+    zipped = [list(couple) for couple in zip(indices, tableau)]
 
-    #tableau[-1], tableau[indice_pivot] = tableau[indice_pivot], tableau[-1]
-    #indices[-1], indices[indice_pivot] = indices[indice_pivot], indices[-1] #stable
     zipped[-1], zipped[indice_pivot] = zipped[indice_pivot], zipped[-1]
     for courant, _ in enumerate(tableau):
-        #print(tableau, indices, indices[courant])
-        #stable
-        if tableau[courant] == pivot and indices[courant] > indices[-1]:
-            #tableau[-1], tableau[courant] = tableau[courant], tableau[-1]
-            #indices[-1], indices[courant] = indices[courant], indices[-1]
+        if zipped[courant][1] == pivot and zipped[courant][0] > zipped[-1][0]:
             zipped[-1], zipped[courant] = zipped[courant], zipped[-1]
-            #tableau[indice_sauv], tableau[courant] = tableau[courant], tableau[indice_sauv]
-            #indices[indice_sauv], indices[courant] = indices[courant], indices[indice_sauv] #stable
             zipped[indice_sauv], zipped[courant] = zipped[courant], zipped[indice_sauv]
             indice_sauv += 1
-        elif tableau[courant] <= pivot:
-            #tableau[indice_sauv], tableau[courant] = tableau[courant], tableau[indice_sauv]
-            #indices[indice_sauv], indices[courant] = indices[courant], indices[indice_sauv] #stable
+        elif zipped[courant][1] <= pivot:
             zipped[indice_sauv], zipped[courant] = zipped[courant], zipped[indice_sauv]
             indice_sauv += 1
 
-    #tableau[-1], tableau[indice_sauv] = tableau[indice_sauv], tableau[-1]
-    #indices[-1], indices[indice_sauv] = indices[indice_sauv], indices[-1]
     zipped[-1], zipped[indice_sauv] = zipped[indice_sauv], zipped[-1]
-    #stable
-    print(tableau, indices)
-    return zipped[1]
+    indices, tableau = list(zip(*zipped))
+    #print(tableau, indices)
+    return list(tableau)
 
 def main():
     """main function
