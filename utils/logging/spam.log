@@ -1,0 +1,10 @@
+18-Oct-19 12:30:31 - __main__                                 INFO     creating an instance of auxiliary_module.Auxiliary
+18-Oct-19 12:30:31 - __main__.auxiliary_module.Auxiliary      INFO     creating an instance of Auxiliary
+18-Oct-19 12:30:31 - __main__                                 INFO     created an instance of auxiliary_module.Auxiliary
+18-Oct-19 12:30:31 - __main__                                 INFO     calling auxiliary_module.Auxiliary.do_something
+18-Oct-19 12:30:31 - __main__.auxiliary_module.Auxiliary      INFO     doing something
+18-Oct-19 12:30:31 - __main__.auxiliary_module.Auxiliary      INFO     done doing something
+18-Oct-19 12:30:31 - __main__                                 INFO     finished auxiliary_module.Auxiliary.do_something
+18-Oct-19 12:30:31 - __main__                                 INFO     calling auxiliary_module.some_function()
+18-Oct-19 12:30:31 - __main__.auxiliary_module                INFO     received a call to "some_function"
+18-Oct-19 12:30:31 - __main__                                 INFO     done with auxiliary_module.some_function()

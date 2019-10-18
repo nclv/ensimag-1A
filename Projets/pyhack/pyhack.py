@@ -9,7 +9,7 @@ On stocke l'état d'une case dans un array numpy 2D
 
 Room représente une pièce sur la carte
 
-On place les pièces. On crè ensuite un labyrinthe entre les pièces.
+On place les pièces. On crée ensuite un labyrinthe entre les pièces.
 Finalement, on relie le tout et on supprime les couloirs inutiles
 
 """
@@ -21,6 +21,7 @@ from itertools import product
 import subprocess
 import platform
 import time
+import logging
 import functools
 import numpy as np
 
@@ -170,6 +171,9 @@ class Map:
              height (int): hauteur de la Carte
 
         """
+        self.logger = logging.getLogger(__name__ + '.' + Map.__name__)
+        self.logger.info("Création d'une instance de Map.")
+
         self.width = width
         self.height = height
 
@@ -191,6 +195,7 @@ class Map:
         """Paramètres par défauts des pièces de la carte
 
         """
+        self.logger.info("Attribution des paramètres des pièces.")
         self.max_rooms = 100
         self.min_room_size = 3
         self.max_room_size = 7
@@ -203,6 +208,7 @@ class Map:
         """Paramètres par défauts du jeu
 
         """
+        self.logger.info("Attribution des paramètres du jeu.")
         self.start = choice(self.room_positions)
         self.goal = choice(self.room_positions)
 
@@ -220,8 +226,11 @@ class Map:
             self.board (np.ndarray): tableau 2D représentant le plateau
 
         """
+        self.logger.info("Génération du plateau de jeu.")
+        #get rooms
+        rooms = self.get_rooms()
         #set rooms
-        self.place_rooms()
+        self.place_rooms(rooms)
         #create maze corridors
         self.fill_maze()
 
@@ -230,7 +239,7 @@ class Map:
         self.set_tile(self.start, PLAYER)
         self.set_tile(self.goal, GOAL)
 
-    def place_rooms(self) -> np.ndarray:
+    def place_rooms(self, rooms) -> np.ndarray:
         """Place les pièces générées sur la carte
 
         Parameters:
@@ -241,7 +250,7 @@ class Map:
             self.board (np.ndarray): tableau 2D contenant les pièces générées
 
         """
-        rooms = self.get_rooms()
+        self.logger.info("Positionnement des pièces sur la carte.")
         #placement des pièces
         for position, _ in np.ndenumerate(self.board):
             for room in rooms:
@@ -259,6 +268,7 @@ class Map:
             rooms (list): liste contenant les pièces générées
 
         """
+        self.logger.info("Génération des pièces.")
         rooms = []
 
         for _ in range(self.max_rooms):
@@ -289,10 +299,12 @@ class Map:
             self.board (np.ndarray): tableau 2D contenant le labyrinthe des couloirs
 
         """
+        self.logger.info("Remplissage de la carte par un labyrinthe.")
         for ordo in range(1, self.width - 1):
             for absc in range(1, self.height - 1):
                 position = absc, ordo
                 voisins = self.check_on_board(positions_voisines(position))
+                #autorisé si on peut construire un labyrinthe à partir de position
                 allowed = all(not self.board[voisin] for voisin in voisins)
                 if allowed:
                     self.gen_maze(position)
@@ -333,6 +345,7 @@ class Map:
         """Génère un labyrinthe à partir de la position fournie
 
         """
+        self.logger.info("Génération d'un labyrinthe.")
         maze_cases = [position]
         last_direction = None
 
@@ -524,11 +537,38 @@ def get_movements(current_localisation):
     GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
 
 
+def create_logger():
+    """Création du logger.
+
+    On veut logger dans le terminal (ERROR) et dans un fichier de log (DEBUG).
+
+    """
+    # create logger with 'spam_application'
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    filehandler = logging.FileHandler(filename='spam.log', mode='w')
+    filehandler .setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    consolehandler = logging.StreamHandler()
+    consolehandler.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    logformat = '%(asctime)s - %(name)-40s %(levelname)-8s %(message)s'
+    formatter = logging.Formatter(fmt=logformat, datefmt='%d-%b-%y %H:%M:%S')
+    filehandler .setFormatter(formatter)
+    consolehandler.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(filehandler)
+    logger.addHandler(consolehandler)
+
+
 def main():
     """main function
 
     """
+    create_logger()
     carte = Map(60, 60)
+
     carte.gen_board()
     while carte.localisation_player != carte.goal:
         draw_board(carte.board)
