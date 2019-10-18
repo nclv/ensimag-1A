@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 
 """
 Nicolas VINCENT / Alan Dione
@@ -21,9 +21,23 @@ from itertools import product
 import subprocess
 import platform
 import time
+import sys
 import logging
 import functools
-import numpy as np
+
+
+# Vérification de la version de l'installation
+try:
+    assert sys.version_info >= (3, 6)
+except AssertionError:
+    raise SystemExit("Ce jeu ne supporte pas Python {}. Installer une version \
+    supérieure à 3.6 pour le faire tourner.".format(platform.python_version()))
+
+try:
+    import numpy as np  # Array
+except ImportError:
+    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    raise SystemExit()
 
 
 AVANCER = "z"
@@ -49,6 +63,7 @@ def add_tuple(tuple1, tuple2):
     """
     return tuple(map(add, tuple1, tuple2))
 
+
 class Structure:
 
     """Classe représentant une structure sur la carte
@@ -66,8 +81,6 @@ class Structure:
 
         """
         raise NotImplementedError
-
-
 
 
 class Corridor(Structure):
@@ -116,13 +129,13 @@ class Room(Structure):
         self.absc_bottom_right = abscisse + width
         self.ordo_top_left = ordonnee + height
 
-    def intersect(self, room2: 'Room') -> bool:
+    def intersect(self, room2):
         """Renvoie si deux pièces se chevauchent ou sont à côté
 
-        If the rectangles do not intersect, then at least one of the right sides will be
-        to the left of the left side of the other rectangle (i.e. it will be a separating axis),
-        or vice versa, or one of the top sides will be below the bottom side of the other
-        rectange, or vice versa.
+        If the rectangles do not intersect, then at least one of the right sides
+        will be to the left of the left side of the other rectangle (i.e. it will
+        be a separating axis), or vice versa, or one of the top sides will be
+        below the bottom side of the other rectange, or vice versa.
 
         On agrandit le premier rectangle pour empêcher les pièces d'être côte-à-côte
 
@@ -134,11 +147,11 @@ class Room(Structure):
 
         """
         return self.absc_bottom_left - 1 <= room2.absc_bottom_right and \
-        self.absc_bottom_right + 1 >= room2.absc_bottom_left and \
-        self.ordo_bottom_left - 1 <= room2.ordo_top_left and \
-        self.ordo_top_left + 1 >= room2.ordo_bottom_left
+            self.absc_bottom_right + 1 >= room2.absc_bottom_left and \
+            self.ordo_bottom_left - 1 <= room2.ordo_top_left and \
+            self.ordo_top_left + 1 >= room2.ordo_bottom_left
 
-    def contain(self, point: tuple) -> bool:
+    def contain(self, point):
         """Vérifie que le point est dans la pièce (intérieur et côté)
 
         Parameters:
@@ -149,7 +162,7 @@ class Room(Structure):
 
         """
         return self.absc_bottom_left <= point[0] <= self.absc_bottom_right and \
-        self.ordo_bottom_left <= point[1] <= self.ordo_top_left
+            self.ordo_bottom_left <= point[1] <= self.ordo_top_left
 
 
 class Map:
@@ -163,7 +176,7 @@ class Map:
 
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, width, height):
         """Initialisation de la carte.
 
         Parameters:
@@ -177,9 +190,9 @@ class Map:
         self.width = width
         self.height = height
 
-        #tableau
+        # tableau
         self.board = np.zeros(shape=(self.width, self.height))
-        #ensemble des possibilités de génération (on exclut la limite du plateau)
+        # ensemble des possibilités de génération (on exclut la limite du plateau)
         self.cases = set(product(range(1, self.width - 1), range(1, self.height - 1)))
 
         self.set_rooms_parameters()
@@ -187,7 +200,7 @@ class Map:
         self.start = None
         self.goal = None
 
-        #variables modifiables
+        # variables modifiables
         self.localisation_player = self.start
         self.discovered = set()
 
@@ -214,7 +227,7 @@ class Map:
 
         self.localisation_player = self.start
 
-    def gen_board(self) -> np.ndarray:
+    def gen_board(self):
         """Génère le plateau de jeu 2D.
 
         On représente une pièce par 1, un joueur par 2, rien par 0
@@ -227,19 +240,19 @@ class Map:
 
         """
         self.logger.info("Génération du plateau de jeu.")
-        #get rooms
+        # get rooms
         rooms = self.get_rooms()
-        #set rooms
+        # set rooms
         self.place_rooms(rooms)
-        #create maze corridors
+        # create maze corridors
         self.fill_maze()
 
         self.set_game_parameters()
-        #set initial player position in a room
+        # set initial player position in a room
         self.set_tile(self.start, PLAYER)
         self.set_tile(self.goal, GOAL)
 
-    def place_rooms(self, rooms) -> np.ndarray:
+    def place_rooms(self, rooms):
         """Place les pièces générées sur la carte
 
         Parameters:
@@ -251,7 +264,7 @@ class Map:
 
         """
         self.logger.info("Positionnement des pièces sur la carte.")
-        #placement des pièces
+        # placement des pièces
         for position, _ in np.ndenumerate(self.board):
             for room in rooms:
                 if room.contain(position):
@@ -259,7 +272,7 @@ class Map:
                     self.room_positions.append(position)
                     break
 
-    def get_rooms(self) -> list:
+    def get_rooms(self):
         """Génère les pièces sur la carte.
 
         # TODO: implémenter BSP pour une meilleur répartition
@@ -274,13 +287,13 @@ class Map:
         for _ in range(self.max_rooms):
             width = randrange(self.min_room_size, self.max_room_size)
             height = randrange(self.min_room_size, self.max_room_size)
-            #on veut une délimitation autour des pièces
+            # on veut une délimitation autour des pièces
             abscisse = randrange(1, self.width - width - 1)
             ordonnee = randrange(1, self.height - height - 1)
 
             new_room = Room(abscisse, ordonnee, width, height)
 
-            #on ajoute la pièce si elle n'en chevauche aucune autre
+            # on ajoute la pièce si elle n'en chevauche aucune autre
             failed = any(new_room.intersect(other_room) for other_room in rooms)
 
             if not failed:
@@ -304,7 +317,7 @@ class Map:
             for absc in range(1, self.height - 1):
                 position = absc, ordo
                 voisins = self.check_on_board(positions_voisines(position))
-                #autorisé si on peut construire un labyrinthe à partir de position
+                # autorisé si on peut construire un labyrinthe à partir de position
                 allowed = all(not self.board[voisin] for voisin in voisins)
                 if allowed:
                     self.gen_maze(position)
@@ -315,10 +328,11 @@ class Map:
          - on ne doit pas toucher de pièce ou d'autre couloir
 
         Parameters:
-            ()
+            position (tuple): //
+            direction (tuple): //
 
         Returns:
-            (boolean):
+            (boolean)
 
         """
         next_case = add_tuple(position, direction)
@@ -335,14 +349,21 @@ class Map:
         """Renvoie les valeurs de table qui sont sur la carte.
 
         Parameters:
-            carte (Map): carte pour laquelle est généré le plateau de jeu
-            cases (set): cases du plateau sur lesquelles on peut construire/se déplacer
+            cases (set): cases du plateau sur lesquelles on peut construire/
+                        se déplacer
 
         """
         return cases.intersection(self.cases)
 
     def gen_maze(self, position):
         """Génère un labyrinthe à partir de la position fournie
+
+        On crè une liste des cases du labyrinthe ne contenant que position initialement.
+        On construit le labyrinthe à partir de la dernière case de ce tableau.
+        Lorsque l'on ne peut plus continuer, supprime le dernier élément et on itère.
+
+        Parameters:
+            position (tuple): //
 
         """
         self.logger.info("Génération d'un labyrinthe.")
@@ -354,8 +375,8 @@ class Map:
         while maze_cases:
             case = maze_cases[-1]
 
-            possible_direction = [direction for direction in DIRECTIONS \
-            if self.couloir_possible(case, direction)]
+            possible_direction = [direction for direction in DIRECTIONS
+                                  if self.couloir_possible(case, direction)]
 
             if possible_direction:
                 direction = get_direction(possible_direction, last_direction)
@@ -364,7 +385,7 @@ class Map:
                 maze_cases.append(new_case)
                 last_direction = direction
             else:
-                #aucune case adjacente libre
+                # aucune case adjacente libre
                 del maze_cases[-1]
                 last_direction = None
 
@@ -386,12 +407,20 @@ class Map:
     def move_player(self, position, previous_position):
         """Déplace le joueur sur la position
 
+        Parameters:
+            position (tuple): //
+            previous_position (tuple): //
+
         """
         self.set_tile(position, PLAYER)
         self.set_tile(previous_position, WALKABLE)
 
     def bad_movement(self, direction, movements):
         """Vérification de la possibilité du mouvement sur le plateau.
+
+        Parameters:
+            direction (str): //
+            movements (dict): movements possibles
 
         Returns:
             (bool): True si le mouvement n'emmène pas sur une pièce ou un couloir
@@ -401,11 +430,11 @@ class Map:
         return not self.board[absc][ordo] in [ROOM, CORRIDOR, WALKABLE]
 
 
-
 class OutOfWalkError(Exception):
     """Raised when you try to move in a wall"""
 
 ###
+
 
 def positions_voisines(position):
     """Retourne position et les positions voisines de position (haut/bas/gauche/droite)
@@ -421,6 +450,7 @@ def positions_voisines(position):
     voisins.add(position)
     return voisins
 
+
 def get_direction(possible_direction, last_direction):
     """Renvoie la direction suivante du labyrinthe.
 
@@ -432,7 +462,7 @@ def get_direction(possible_direction, last_direction):
         direction (tuple): prochaine direction
 
     """
-    #on privilégie les couloirs droits avec une certaine probabilité
+    # on privilégie les couloirs droits avec une certaine probabilité
     choose_last_direction = last_direction in possible_direction and (randrange(0, 100) > 70)
     return last_direction if choose_last_direction else choice(possible_direction)
 
@@ -447,9 +477,7 @@ def connect_rooms():
     """
 
 
-
 ###
-
 
 
 def draw_board(board: np.ndarray):
@@ -460,7 +488,7 @@ def draw_board(board: np.ndarray):
 
     """
     # TODO: timeit
-    #for position, _ in np.ndenumerate(self.board):
+    # for position, _ in np.ndenumerate(self.board):
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
@@ -478,12 +506,14 @@ def draw_board(board: np.ndarray):
                 print('!', end=" ")
         print()
 
+
 def clear():
     """Modifie l'affichage
 
     """
     subprocess.Popen("cls" if platform.system() == "Windows" else "clear", shell=True)
     time.sleep(.01)
+
 
 def while_true(func):
     """ Décore la fonction d'une boucle while True pour les inputs.
@@ -506,6 +536,7 @@ def while_true(func):
         return res
     return wrapper
 
+
 @while_true
 def get_input_direction(carte):
     """Prend en entrée la direction.
@@ -519,22 +550,23 @@ def get_input_direction(carte):
         movements (dict): coordonnées des mouvements possibles
 
     """
-    direction = input("Donner la direction (z, s, q, d): ")
+    direction = input(f"Donner la direction ({AVANCER}, {RECULER}, {GAUCHE}, {DROITE}): ")
     movements = get_movements(carte.localisation_player)
-    if direction not in ['z', 's', 'q', 'd']:
+    if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
         raise ValueError()
     if carte.bad_movement(direction, movements):
         raise OutOfWalkError()
 
     return direction, movements
 
+
 def get_movements(current_localisation):
     """Renvoie un dictionnaire des mouvements possibles
 
     """
     absc, ordo = current_localisation
-    return {AVANCER: (absc, ordo - 1), RECULER: (absc, ordo + 1), \
-    GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
+    return {AVANCER: (absc, ordo - 1), RECULER: (absc, ordo + 1),
+            GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
 
 
 def create_logger():
@@ -547,7 +579,7 @@ def create_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
     # create file handler which logs even debug messages
-    filehandler = logging.FileHandler(filename='spam.log', mode='w')
+    filehandler = logging.FileHandler(filename='game.log', mode='w')
     filehandler .setLevel(logging.DEBUG)
     # create console handler with a higher log level
     consolehandler = logging.StreamHandler()
