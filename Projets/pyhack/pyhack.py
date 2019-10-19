@@ -30,15 +30,24 @@ import functools
 try:
     assert sys.version_info >= (3, 6)
 except AssertionError:
-    raise SystemExit("Ce jeu ne supporte pas Python {}. Installer une version \
-    supérieure à 3.6 pour le faire tourner.".format(platform.python_version()))
+    raise SystemExit("Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
+                     "Installer une version supérieure à 3.6 pour le faire tourner.")
 
 try:
     import numpy as np  # Array
 except ImportError:
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
     raise SystemExit()
 
+
+import log
+
+
+MAIN_LOGGER = "main"
+LOGGER = log.setup_custom_logger(MAIN_LOGGER)  # pylint: disable=no-member
+LOGGER.info("Setting up main logger.")
+
+# TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
 AVANCER = "z"
 RECULER = "s"
@@ -51,6 +60,7 @@ PLAYER = 2
 ROOM = 3
 CORRIDOR = 4
 GOAL = 5
+CONNECTOR = 6
 
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
@@ -60,50 +70,14 @@ DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 def add_tuple(tuple1, tuple2):
     """Ajoute les éléments de deux tuples
 
+    Parameters:
+        tuple1/tuple2 (tuple): //
+
     """
     return tuple(map(add, tuple1, tuple2))
 
 
-class Structure:
-
-    """Classe représentant une structure sur la carte
-
-    """
-
-    def intersect(self, other_struct: 'Structure'):
-        """Renvoie si deux structurent s'intersectent
-
-        Parameters:
-            other_struct (Structure): deuxième structure
-
-        Returns:
-            (bool): True si les pièces se chevauchent
-
-        """
-        raise NotImplementedError
-
-
-class Corridor(Structure):
-
-    """Classe représentant un couloir entre deux pièces
-
-    Attributes:
-         entree/sortie (Room): entrée/sortie du couloir
-
-    """
-
-    def __init__(self, room1: 'Room', room2: 'Room'):
-        """Constructeur d'un couloir entre deux pièces.
-
-        Parameters:
-             room1/rooms2 (Room): pièces d'entrée/sortie du couloir
-
-        """
-        self.entree = room1
-        self.sortie = room2
-
-
-class Room(Structure):
+class Room:
 
     """Classe représentant une pièce
 
@@ -124,10 +98,16 @@ class Room(Structure):
             abscisse, ordonnee, width, height (int): description
 
         """
+        self.logger = logging.getLogger(MAIN_LOGGER + "." + Room.__name__)
+        self.logger.debug("Création d'une instance de Room.")
+
         self.absc_bottom_left = abscisse
         self.ordo_bottom_left = ordonnee
         self.absc_bottom_right = abscisse + width
         self.ordo_top_left = ordonnee + height
+
+        self.nombre_de_cases = self.get_cases_number()
+        self.logger.debug(f"La pièce comporte {self.nombre_de_cases} cases.")
 
     def intersect(self, room2):
         """Renvoie si deux pièces se chevauchent ou sont à côté
@@ -164,6 +144,12 @@ class Room(Structure):
         return self.absc_bottom_left <= point[0] <= self.absc_bottom_right and \
             self.ordo_bottom_left <= point[1] <= self.ordo_top_left
 
+    def get_cases_number(self):
+        """Retourne le nombre de cases dans une pièces.
+
+        """
+        return (self.absc_bottom_right - self.absc_bottom_left + 1) * (self.ordo_top_left - self.ordo_bottom_left + 1)
+
 
 class Map:
 
@@ -184,7 +170,7 @@ class Map:
              height (int): hauteur de la Carte
 
         """
-        self.logger = logging.getLogger(__name__ + '.' + Map.__name__)
+        self.logger = logging.getLogger(MAIN_LOGGER + "." + Map.__name__)
         self.logger.info("Création d'une instance de Map.")
 
         self.width = width
@@ -195,7 +181,7 @@ class Map:
         # ensemble des possibilités de génération (on exclut la limite du plateau)
         self.cases = set(product(range(1, self.width - 1), range(1, self.height - 1)))
 
-        self.set_rooms_parameters()
+        self.set_regions_parameters()
 
         self.start = None
         self.goal = None
@@ -204,7 +190,7 @@ class Map:
         self.localisation_player = self.start
         self.discovered = set()
 
-    def set_rooms_parameters(self):
+    def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte
 
         """
@@ -213,17 +199,22 @@ class Map:
         self.min_room_size = 3
         self.max_room_size = 7
 
-        self.room_positions = []
+        # [room1, room2, ...] où room1 est la liste des cases (tuple) de room1
+        self.rooms_positions = []
+        self.mazes_positions = []
 
-    # TODO: set_corridors_parameters
+        self.connecteurs = []
 
     def set_game_parameters(self):
         """Paramètres par défauts du jeu
 
         """
         self.logger.info("Attribution des paramètres du jeu.")
-        self.start = choice(self.room_positions)
-        self.goal = choice(self.room_positions)
+        flat_rooms_positions = [position for room_positions in \
+                                self.rooms_positions for position in room_positions]
+        self.start = choice(flat_rooms_positions)
+        self.goal = choice(flat_rooms_positions)
+        self.logger.info(f"Start: {self.start}, Goal: {self.goal}")
 
         self.localisation_player = self.start
 
@@ -252,6 +243,9 @@ class Map:
         self.set_tile(self.start, PLAYER)
         self.set_tile(self.goal, GOAL)
 
+        #get_connecteurs
+        self.set_connecteurs()
+
     def place_rooms(self, rooms):
         """Place les pièces générées sur la carte
 
@@ -263,14 +257,18 @@ class Map:
             self.board (np.ndarray): tableau 2D contenant les pièces générées
 
         """
-        self.logger.info("Positionnement des pièces sur la carte.")
+        self.logger.info(f"Positionnement des pièces sur la carte")
         # placement des pièces
-        for position, _ in np.ndenumerate(self.board):
-            for room in rooms:
+        for room in rooms:
+            room_positions = set()
+            for position in self.cases:
                 if room.contain(position):
                     self.board[position] = ROOM
-                    self.room_positions.append(position)
+                    room_positions.add(position)
+                #  si on a parcouru toutes les cases de la pièce on change de pièce
+                if len(room_positions) > room.nombre_de_cases:
                     break
+            self.rooms_positions.append(room_positions)
 
     def get_rooms(self):
         """Génère les pièces sur la carte.
@@ -312,15 +310,26 @@ class Map:
             self.board (np.ndarray): tableau 2D contenant le labyrinthe des couloirs
 
         """
-        self.logger.info("Remplissage de la carte par un labyrinthe.")
-        for ordo in range(1, self.width - 1):
-            for absc in range(1, self.height - 1):
-                position = absc, ordo
-                voisins = self.check_on_board(positions_voisines(position))
-                # autorisé si on peut construire un labyrinthe à partir de position
-                allowed = all(not self.board[voisin] for voisin in voisins)
-                if allowed:
-                    self.gen_maze(position)
+        self.logger.info("Remplissage de la carte par des labyrinthes.")
+        for position in self.cases:
+            voisins = self.check_on_board(positions_voisines(position))
+            # autorisé si on peut construire un labyrinthe à partir de position
+            check_empty_voisins = all(not self.board[voisin] for voisin in voisins)
+            allowed = check_empty_voisins and self.check_more_than_one_case(position)
+            if allowed:
+                self.gen_maze(position)
+
+    def check_more_than_one_case(self, position):
+        """Vérifie que le labyrinthe construit à partir de position contient
+        plus d'une case.
+
+        Parameters:
+            position (tuple): //
+
+        """
+        possible_direction = [direction for direction in DIRECTIONS
+                              if self.couloir_possible(position, direction)]
+        return True if possible_direction else False
 
     def couloir_possible(self, position, direction):
         """Renvoie si l'on peut aller dans cette direction
@@ -366,8 +375,9 @@ class Map:
             position (tuple): //
 
         """
-        self.logger.info("Génération d'un labyrinthe.")
         maze_cases = [position]
+        maze_positions = set()
+        maze_positions.add(position)
         last_direction = None
 
         self.board[position] = CORRIDOR
@@ -383,11 +393,44 @@ class Map:
                 new_case = add_tuple(case, direction)
                 self.board[new_case] = CORRIDOR
                 maze_cases.append(new_case)
+                maze_positions.add(new_case)
                 last_direction = direction
             else:
-                # aucune case adjacente libre
                 del maze_cases[-1]
                 last_direction = None
+
+        self.mazes_positions.append(maze_positions)
+        self.logger.debug(f"Génération d'un labyrinthe de taille {len(maze_positions)}.")
+
+    def set_connecteurs(self):
+        """Trouve toutes les cases pouvant servir de connecteurs
+
+        Parameters:
+
+        """
+        for position in self.cases:
+            if self.connecteur_possible(position):
+                self.connecteurs.append(position)
+                self.board[position] = CONNECTOR
+        self.logger.debug(f"Getting possible connectors: {self.connecteurs}")
+
+    def connecteur_possible(self, position):
+        """Renvoie si la case position peut servir de connecteur
+
+        """
+        if position is EMPTY:
+            return False
+        regions = self.rooms_positions + self.mazes_positions
+        voisins = self.check_on_board(positions_voisines(position))
+        regions_differentes_voisines = 0
+        for voisin in voisins:
+            for region in regions:
+                if voisin in region:
+                    regions.remove(region)
+                    regions_differentes_voisines += 1
+                    break
+        return True if regions_differentes_voisines > 1 else False
+
 
     def set_tile(self, position, tile_type):
         """Assigne tile_type sur la position du plateau.
@@ -412,6 +455,7 @@ class Map:
             previous_position (tuple): //
 
         """
+        self.logger.debug(f"Déplacement du joueur sur la case {position}")
         self.set_tile(position, PLAYER)
         self.set_tile(previous_position, WALKABLE)
 
@@ -467,33 +511,18 @@ def get_direction(possible_direction, last_direction):
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
-###
-
-def connect_rooms():
-    """Trouve toutes les cases pouvant servir de connecteurs
-
-    Parameters:
-
-    """
-
-
-###
-
-
-def draw_board(board: np.ndarray):
-    """Affiche le dongeon
+def draw_board(board):
+    """Affiche le dongeon sur le terminal
 
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
 
     """
-    # TODO: timeit
-    # for position, _ in np.ndenumerate(self.board):
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
             if tile == EMPTY:
-                print('#', end=" ")
+                print(' ', end=" ")
             elif tile == WALKABLE:
                 print('.', end=" ")
             elif tile == PLAYER:
@@ -504,6 +533,8 @@ def draw_board(board: np.ndarray):
                 print('c', end=" ")
             elif tile == GOAL:
                 print('!', end=" ")
+            elif tile == CONNECTOR:
+                print('f', end=" ")
         print()
 
 
@@ -511,6 +542,7 @@ def clear():
     """Modifie l'affichage
 
     """
+    LOGGER.debug("Clear terminal")
     subprocess.Popen("cls" if platform.system() == "Windows" else "clear", shell=True)
     time.sleep(.01)
 
@@ -530,9 +562,9 @@ def while_true(func):
                     continue
                 break
             except ValueError:
-                print("Entrer une direction valide.")
+                LOGGER.warn("Entrer une direction valide.")
             except OutOfWalkError:
-                print("Un mur vous empêche d'avancer.")
+                LOGGER.warn("Un mur vous empêche d'avancer.")
         return res
     return wrapper
 
@@ -550,10 +582,13 @@ def get_input_direction(carte):
         movements (dict): coordonnées des mouvements possibles
 
     """
+    LOGGER.debug("Getting direction.")
     direction = input(f"Donner la direction ({AVANCER}, {RECULER}, {GAUCHE}, {DROITE}): ")
     movements = get_movements(carte.localisation_player)
+    LOGGER.debug("Checking direction.")
     if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
         raise ValueError()
+    LOGGER.debug("Checking if movement is allowed.")
     if carte.bad_movement(direction, movements):
         raise OutOfWalkError()
 
@@ -563,44 +598,20 @@ def get_input_direction(carte):
 def get_movements(current_localisation):
     """Renvoie un dictionnaire des mouvements possibles
 
+    Parameters:
+        current_localisation (tuple): //
+
     """
     absc, ordo = current_localisation
     return {AVANCER: (absc, ordo - 1), RECULER: (absc, ordo + 1),
             GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
 
 
-def create_logger():
-    """Création du logger.
-
-    On veut logger dans le terminal (ERROR) et dans un fichier de log (DEBUG).
-
-    """
-    # create logger with 'spam_application'
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-    # create file handler which logs even debug messages
-    filehandler = logging.FileHandler(filename='game.log', mode='w')
-    filehandler .setLevel(logging.DEBUG)
-    # create console handler with a higher log level
-    consolehandler = logging.StreamHandler()
-    consolehandler.setLevel(logging.ERROR)
-    # create formatter and add it to the handlers
-    logformat = '%(asctime)s - %(name)-40s %(levelname)-8s %(message)s'
-    formatter = logging.Formatter(fmt=logformat, datefmt='%d-%b-%y %H:%M:%S')
-    filehandler .setFormatter(formatter)
-    consolehandler.setFormatter(formatter)
-    # add the handlers to the logger
-    logger.addHandler(filehandler)
-    logger.addHandler(consolehandler)
-
-
 def main():
     """main function
 
     """
-    create_logger()
     carte = Map(60, 60)
-
     carte.gen_board()
     while carte.localisation_player != carte.goal:
         draw_board(carte.board)
@@ -609,6 +620,7 @@ def main():
         carte.localisation_player = movements[direction]
         clear()
     print("You made it!")
+
 
 if __name__ == '__main__':
     main()
