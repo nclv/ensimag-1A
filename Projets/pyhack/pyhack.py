@@ -25,6 +25,8 @@ import sys
 import logging
 import functools
 
+import log
+
 
 # Vérification de la version de l'installation
 try:
@@ -38,9 +40,6 @@ try:
 except ImportError:
     subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
     raise SystemExit()
-
-
-import log
 
 
 MAIN_LOGGER = "main"
@@ -329,7 +328,7 @@ class Map:
         """
         possible_direction = [direction for direction in DIRECTIONS
                               if self.couloir_possible(position, direction)]
-        return True if possible_direction else False
+        return bool(possible_direction)
 
     def couloir_possible(self, position, direction):
         """Renvoie si l'on peut aller dans cette direction
@@ -412,7 +411,7 @@ class Map:
             if self.connecteur_possible(position):
                 self.connecteurs.append(position)
                 self.board[position] = CONNECTOR
-        self.logger.debug(f"Getting possible connectors: {self.connecteurs}")
+        self.logger.debug(f"Getting possible connectors.")
 
     def connecteur_possible(self, position):
         """Renvoie si la case position peut servir de connecteur
@@ -429,7 +428,7 @@ class Map:
                     regions.remove(region)
                     regions_differentes_voisines += 1
                     break
-        return True if regions_differentes_voisines > 1 else False
+        return bool(regions_differentes_voisines > 1)
 
 
     def set_tile(self, position, tile_type):
