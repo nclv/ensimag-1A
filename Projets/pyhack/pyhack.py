@@ -416,6 +416,9 @@ class Map:
     def connecteur_possible(self, position):
         """Renvoie si la case position peut servir de connecteur
 
+        La case doit être EMPTY et adjacente d'au moins deux cases
+        appartenant à deux régions différentes.
+
         """
         if position is EMPTY:
             return False
@@ -480,7 +483,8 @@ class OutOfWalkError(Exception):
 
 
 def positions_voisines(position):
-    """Retourne position et les positions voisines de position (haut/bas/gauche/droite)
+    """Retourne position et les positions voisines de position
+    (haut/bas/gauche/droite)
 
     Parameters:
         position (tuple): case dont on veut connaitre les voisins

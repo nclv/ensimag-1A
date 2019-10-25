@@ -89,7 +89,7 @@ class LinkedList:
         else:
             previouscellule.nextcellule = currentcellule.nextcellule
 
-    # O(N)
+    # O(1)
     def insertEnd(self, valeur):
         """Insertion d'une cellule en queue.
 
