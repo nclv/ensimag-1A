@@ -18,6 +18,7 @@ Finalement, on relie le tout et on supprime les couloirs inutiles
 from random import randrange, choice
 from operator import add
 from itertools import product
+from collections import namedtuple
 import subprocess
 import platform
 import time
@@ -32,8 +33,10 @@ import log
 try:
     assert sys.version_info >= (3, 6)
 except AssertionError:
-    raise SystemExit("Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
-                     "Installer une version supérieure à 3.6 pour le faire tourner.")
+    raise SystemExit(
+        "Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
+        "Installer une version supérieure à 3.6 pour le faire tourner.",
+    )
 
 try:
     import numpy as np  # Array
@@ -41,7 +44,7 @@ except ImportError:
     subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
     raise SystemExit()
 
-
+# pylint: disable=logging-format-interpolation
 MAIN_LOGGER = "main"
 LOGGER = log.setup_custom_logger(MAIN_LOGGER)  # pylint: disable=no-member
 LOGGER.info("Setting up main logger.")
@@ -60,11 +63,13 @@ ROOM = 3
 CORRIDOR = 4
 GOAL = 5
 CONNECTOR = 6
+ENTRANCE = 7
 
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
 
 # TODO: réorganiser les classes avec SOLID
+
 
 def add_tuple(tuple1, tuple2):
     """Ajoute les éléments de deux tuples
@@ -125,10 +130,12 @@ class Room:
             (bool): True si les pièces se chevauchent
 
         """
-        return self.absc_bottom_left - 1 <= room2.absc_bottom_right and \
-            self.absc_bottom_right + 1 >= room2.absc_bottom_left and \
-            self.ordo_bottom_left - 1 <= room2.ordo_top_left and \
-            self.ordo_top_left + 1 >= room2.ordo_bottom_left
+        return (
+            self.absc_bottom_left - 1 <= room2.absc_bottom_right
+            and self.absc_bottom_right + 1 >= room2.absc_bottom_left
+            and self.ordo_bottom_left - 1 <= room2.ordo_top_left
+            and self.ordo_top_left + 1 >= room2.ordo_bottom_left
+        )
 
     def contain(self, point):
         """Vérifie que le point est dans la pièce (intérieur et côté)
@@ -140,14 +147,18 @@ class Room:
             (boolean): True if the point is in the room
 
         """
-        return self.absc_bottom_left <= point[0] <= self.absc_bottom_right and \
-            self.ordo_bottom_left <= point[1] <= self.ordo_top_left
+        return (
+            self.absc_bottom_left <= point[0] <= self.absc_bottom_right
+            and self.ordo_bottom_left <= point[1] <= self.ordo_top_left
+        )
 
     def get_cases_number(self):
         """Retourne le nombre de cases dans une pièces.
 
         """
-        return (self.absc_bottom_right - self.absc_bottom_left + 1) * (self.ordo_top_left - self.ordo_bottom_left + 1)
+        return (self.absc_bottom_right - self.absc_bottom_left + 1) * (
+            self.ordo_top_left - self.ordo_bottom_left + 1
+        )
 
 
 class Map:
@@ -198,19 +209,25 @@ class Map:
         self.min_room_size = 3
         self.max_room_size = 7
 
-        # [room1, room2, ...] où room1 est la liste des cases (tuple) de room1
+        # [room1, room2, ...] où room1 est le set des cases (tuple) de room1
         self.rooms_positions = []
         self.mazes_positions = []
 
+        # va contenir des namedtuple(position, liste des régions voisines) non
+        # hashable donc pas de set
         self.connecteurs = []
+        self.connected = set()
 
     def set_game_parameters(self):
         """Paramètres par défauts du jeu
 
         """
         self.logger.info("Attribution des paramètres du jeu.")
-        flat_rooms_positions = [position for room_positions in \
-                                self.rooms_positions for position in room_positions]
+        flat_rooms_positions = [
+            position
+            for room_positions in self.rooms_positions
+            for position in room_positions
+        ]
         self.start = choice(flat_rooms_positions)
         self.goal = choice(flat_rooms_positions)
         self.logger.info(f"Start: {self.start}, Goal: {self.goal}")
@@ -242,8 +259,10 @@ class Map:
         self.set_tile(self.start, PLAYER)
         self.set_tile(self.goal, GOAL)
 
-        #get_connecteurs
+        # get_connecteurs
         self.set_connecteurs()
+        self.connect_regions()
+        self.remove_dead_ends()
 
     def place_rooms(self, rooms):
         """Place les pièces générées sur la carte
@@ -318,6 +337,22 @@ class Map:
             if allowed:
                 self.gen_maze(position)
 
+    def get_possibles_directions(self, position):
+        """Renvoie une liste des directions possibles
+
+        Parameters:
+            position (tuple): //
+
+        Returns:
+            (list): possibles directions
+
+        """
+        return [
+            direction
+            for direction in DIRECTIONS
+            if self.couloir_possible(position, direction)
+        ]
+
     def check_more_than_one_case(self, position):
         """Vérifie que le labyrinthe construit à partir de position contient
         plus d'une case.
@@ -325,10 +360,11 @@ class Map:
         Parameters:
             position (tuple): //
 
+        Returns:
+            (boolean)
+
         """
-        possible_direction = [direction for direction in DIRECTIONS
-                              if self.couloir_possible(position, direction)]
-        return bool(possible_direction)
+        return bool(self.get_possibles_directions(position))
 
     def couloir_possible(self, position, direction):
         """Renvoie si l'on peut aller dans cette direction
@@ -360,6 +396,9 @@ class Map:
             cases (set): cases du plateau sur lesquelles on peut construire/
                         se déplacer
 
+        Returns:
+            (set): intersection de cases avec les cases du plateau
+
         """
         return cases.intersection(self.cases)
 
@@ -384,8 +423,7 @@ class Map:
         while maze_cases:
             case = maze_cases[-1]
 
-            possible_direction = [direction for direction in DIRECTIONS
-                                  if self.couloir_possible(case, direction)]
+            possible_direction = self.get_possibles_directions(case)
 
             if possible_direction:
                 direction = get_direction(possible_direction, last_direction)
@@ -399,7 +437,9 @@ class Map:
                 last_direction = None
 
         self.mazes_positions.append(maze_positions)
-        self.logger.debug(f"Génération d'un labyrinthe de taille {len(maze_positions)}.")
+        self.logger.debug(
+            f"Génération d'un labyrinthe de taille {len(maze_positions)}."
+        )
 
     def set_connecteurs(self):
         """Trouve toutes les cases pouvant servir de connecteurs
@@ -407,32 +447,107 @@ class Map:
         Parameters:
 
         """
+        Connecteur = namedtuple("Connecteur", "position regions_voisines")
         for position in self.cases:
-            if self.connecteur_possible(position):
-                self.connecteurs.append(position)
+            regions_voisines = self.check_connecteur(position)
+            # si plus de deux régions touchent position
+            if len(regions_voisines) > 1:
+                connecteur = Connecteur(position, regions_voisines)
+                self.connecteurs.append(connecteur)
                 self.board[position] = CONNECTOR
         self.logger.debug(f"Getting possible connectors.")
 
-    def connecteur_possible(self, position):
-        """Renvoie si la case position peut servir de connecteur
+    def check_connecteur(self, position):
+        """Renvoie les régions autour de la case position si la case position
+        peut servir de connecteur
 
         La case doit être EMPTY et adjacente d'au moins deux cases
         appartenant à deux régions différentes.
 
+        Parameters:
+            position (tuple): //
+
+        Returns:
+            (boolean)
+            regions_differentes_voisines (list): régions voisines du connecteur
+
         """
         if position is EMPTY:
-            return False
+            return None
+        # non rajouté en attribut car modifié par la suite
         regions = self.rooms_positions + self.mazes_positions
         voisins = self.check_on_board(positions_voisines(position))
-        regions_differentes_voisines = 0
+        regions_differentes_voisines = []
         for voisin in voisins:
             for region in regions:
                 if voisin in region:
                     regions.remove(region)
-                    regions_differentes_voisines += 1
+                    regions_differentes_voisines.append(region)
                     break
-        return bool(regions_differentes_voisines > 1)
+        return regions_differentes_voisines
 
+    def connect_regions(self):
+        """Regroupement des différentes régions avec un connecteur
+
+        Parameters:
+
+        Returns:
+            self.connected (set): set des cases connectées
+
+        """
+        regions = self.rooms_positions + self.mazes_positions
+        while len(regions) > 1:
+            connecteur = choice(self.connecteurs)
+            self.board[connecteur.position] = ENTRANCE
+
+            # remove connecteur et les autres connecteurs juste à côté de lui
+            voisins = self.check_on_board(positions_voisines(connecteur.position))
+            self.connecteurs = [
+                connecteur
+                for connecteur in self.connecteurs
+                if connecteur.position not in voisins
+            ]
+            # décrémente les régions qui restent à traiter
+            regions = [
+                region
+                for region in regions
+                if region not in connecteur.regions_voisines
+            ]
+
+            # add connected regions to connected
+            self.connected.add(connecteur.position)
+            for region in connecteur.regions_voisines:
+                self.connected.update(region)
+        # pour afficher les cases sur lesquelles l'on peut se déplacer
+        for position in self.connected:
+            self.board[position] = WALKABLE
+
+    def remove_dead_ends(self):
+        """Supprime les portions de labyrinthe inutiles
+
+        """
+        done = False
+        while not done:
+            done = True
+            for position in self.cases:
+                if self.board[position] in [EMPTY, PLAYER, GOAL]:
+                    continue
+                # couloir non relié
+                if self.board[position] == CORRIDOR:
+                    self.board[position] = EMPTY
+                    continue
+                # s'il n'y a qu'une sortie, c'est une case inutile
+                exits = 0
+                voisins = self.check_on_board(positions_voisines(position))
+                voisins.remove(position)
+                for voisin in voisins:
+                    if self.board[voisin] in [WALKABLE]:
+                        exits += 1
+
+                if exits != 1:
+                    continue
+                done = False
+                self.board[position] = EMPTY
 
     def set_tile(self, position, tile_type):
         """Assigne tile_type sur la position du plateau.
@@ -479,6 +594,7 @@ class Map:
 class OutOfWalkError(Exception):
     """Raised when you try to move in a wall"""
 
+
 ###
 
 
@@ -510,7 +626,9 @@ def get_direction(possible_direction, last_direction):
 
     """
     # on privilégie les couloirs droits avec une certaine probabilité
-    choose_last_direction = last_direction in possible_direction and (randrange(0, 100) > 70)
+    choose_last_direction = last_direction in possible_direction and (
+        randrange(0, 100) > 70
+    )
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
@@ -525,19 +643,21 @@ def draw_board(board):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
             if tile == EMPTY:
-                print(' ', end=" ")
+                print("#", end=" ")
             elif tile == WALKABLE:
-                print('.', end=" ")
+                print(".", end=" ")
             elif tile == PLAYER:
-                print('@', end=" ")
+                print("@", end=" ")
             elif tile == ROOM:
-                print('.', end=" ")
+                print(".", end=" ")
             elif tile == CORRIDOR:
-                print('c', end=" ")
+                print("#", end=" ")
             elif tile == GOAL:
-                print('!', end=" ")
+                print("!", end=" ")
             elif tile == CONNECTOR:
-                print('f', end=" ")
+                print("#", end=" ")
+            elif tile == ENTRANCE:
+                print("e", end=" ")
         print()
 
 
@@ -547,7 +667,7 @@ def clear():
     """
     LOGGER.debug("Clear terminal")
     subprocess.Popen("cls" if platform.system() == "Windows" else "clear", shell=True)
-    time.sleep(.01)
+    time.sleep(0.01)
 
 
 def while_true(func):
@@ -556,12 +676,13 @@ def while_true(func):
     Erreurs personnalisées OutOfWalkError
 
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
             try:
                 res = func(*args, **kwargs)
-                if res == 'verif':
+                if res == "verif":
                     continue
                 break
             except ValueError:
@@ -569,6 +690,7 @@ def while_true(func):
             except OutOfWalkError:
                 LOGGER.warn("Un mur vous empêche d'avancer.")
         return res
+
     return wrapper
 
 
@@ -586,7 +708,9 @@ def get_input_direction(carte):
 
     """
     LOGGER.debug("Getting direction.")
-    direction = input(f"Donner la direction ({AVANCER}, {RECULER}, {GAUCHE}, {DROITE}): ")
+    direction = input(
+        f"Donner la direction ({AVANCER}, {RECULER}, {GAUCHE}, {DROITE}): "
+    )
     movements = get_movements(carte.localisation_player)
     LOGGER.debug("Checking direction.")
     if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
@@ -606,8 +730,12 @@ def get_movements(current_localisation):
 
     """
     absc, ordo = current_localisation
-    return {AVANCER: (absc, ordo - 1), RECULER: (absc, ordo + 1),
-            GAUCHE: (absc - 1, ordo), DROITE: (absc + 1, ordo)}
+    return {
+        AVANCER: (absc, ordo - 1),
+        RECULER: (absc, ordo + 1),
+        GAUCHE: (absc - 1, ordo),
+        DROITE: (absc + 1, ordo),
+    }
 
 
 def main():
@@ -625,5 +753,5 @@ def main():
     print("You made it!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

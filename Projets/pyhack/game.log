@@ -1,278 +1,215 @@
-21-Oct-19 12:25:15 - main                                     INFO     Setting up main logger.
-21-Oct-19 12:25:15 - main.Map                                 INFO     Création d'une instance de Map.
-21-Oct-19 12:25:15 - main.Map                                 INFO     Attribution des paramètres des pièces.
-21-Oct-19 12:25:15 - main.Map                                 INFO     Génération du plateau de jeu.
-21-Oct-19 12:25:15 - main.Map                                 INFO     Génération des pièces.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 16 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 16 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 16 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 16 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 49 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 35 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 16 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 28 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 30 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 36 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 24 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 20 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 42 cases.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    Création d'une instance de Room.
-21-Oct-19 12:25:15 - main.Room                                DEBUG    La pièce comporte 25 cases.
-21-Oct-19 12:25:15 - main.Map                                 INFO     Positionnement des pièces sur la carte
-21-Oct-19 12:25:15 - main.Map                                 INFO     Remplissage de la carte par des labyrinthes.
-21-Oct-19 12:25:16 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 1221.
-21-Oct-19 12:25:16 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 7.
-21-Oct-19 12:25:16 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 2.
-21-Oct-19 12:25:16 - main.Map                                 INFO     Attribution des paramètres du jeu.
-21-Oct-19 12:25:16 - main.Map                                 INFO     Start: (38, 10), Goal: (10, 50)
-21-Oct-19 12:25:16 - main.Map                                 DEBUG    Getting possible connectors.
-21-Oct-19 12:25:16 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:40 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:40 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:40 - main.Map                                 DEBUG    Déplacement du joueur sur la case (39, 10)
-21-Oct-19 12:25:40 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:40 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:42 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:42 - main                                     WARNING  Entrer une direction valide.
-21-Oct-19 12:25:42 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:45 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:45 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:45 - main                                     WARNING  Un mur vous empêche d'avancer.
-21-Oct-19 12:25:45 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:46 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:46 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:46 - main.Map                                 DEBUG    Déplacement du joueur sur la case (40, 10)
-21-Oct-19 12:25:46 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:46 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:48 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:48 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:48 - main.Map                                 DEBUG    Déplacement du joueur sur la case (41, 10)
-21-Oct-19 12:25:48 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:48 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:48 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:48 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:48 - main                                     WARNING  Un mur vous empêche d'avancer.
-21-Oct-19 12:25:48 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:50 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:50 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:50 - main                                     WARNING  Un mur vous empêche d'avancer.
-21-Oct-19 12:25:50 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:50 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:50 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:50 - main                                     WARNING  Un mur vous empêche d'avancer.
-21-Oct-19 12:25:50 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:51 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:51 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:51 - main.Map                                 DEBUG    Déplacement du joueur sur la case (41, 11)
-21-Oct-19 12:25:51 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:51 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:52 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:52 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:52 - main.Map                                 DEBUG    Déplacement du joueur sur la case (40, 11)
-21-Oct-19 12:25:52 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:52 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:52 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:52 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:52 - main.Map                                 DEBUG    Déplacement du joueur sur la case (39, 11)
-21-Oct-19 12:25:52 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:53 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:53 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:53 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:53 - main.Map                                 DEBUG    Déplacement du joueur sur la case (38, 11)
-21-Oct-19 12:25:53 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:53 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:53 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:53 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:53 - main.Map                                 DEBUG    Déplacement du joueur sur la case (37, 11)
-21-Oct-19 12:25:53 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:53 - main                                     DEBUG    Getting direction.
-21-Oct-19 12:25:54 - main                                     DEBUG    Checking direction.
-21-Oct-19 12:25:54 - main                                     DEBUG    Checking if movement is allowed.
-21-Oct-19 12:25:54 - main.Map                                 DEBUG    Déplacement du joueur sur la case (37, 12)
-21-Oct-19 12:25:54 - main                                     DEBUG    Clear terminal
-21-Oct-19 12:25:54 - main                                     DEBUG    Getting direction.
+27-Oct-19 19:03:26 - main                                     INFO     Setting up main logger.
+27-Oct-19 19:03:26 - main.Map                                 INFO     Création d'une instance de Map.
+27-Oct-19 19:03:26 - main.Map                                 INFO     Attribution des paramètres des pièces.
+27-Oct-19 19:03:26 - main.Map                                 INFO     Génération du plateau de jeu.
+27-Oct-19 19:03:26 - main.Map                                 INFO     Génération des pièces.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 28 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 35 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 49 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 16 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 20 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 36 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 42 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 25 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 30 cases.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    Création d'une instance de Room.
+27-Oct-19 19:03:26 - main.Room                                DEBUG    La pièce comporte 24 cases.
+27-Oct-19 19:03:26 - main.Map                                 INFO     Positionnement des pièces sur la carte
+27-Oct-19 19:03:26 - main.Map                                 INFO     Remplissage de la carte par des labyrinthes.
+27-Oct-19 19:03:27 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 1121.
+27-Oct-19 19:03:27 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 6.
+27-Oct-19 19:03:27 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 20.
+27-Oct-19 19:03:27 - main.Map                                 DEBUG    Génération d'un labyrinthe de taille 4.
+27-Oct-19 19:03:27 - main.Map                                 INFO     Attribution des paramètres du jeu.
+27-Oct-19 19:03:27 - main.Map                                 INFO     Start: (49, 9), Goal: (9, 44)
+27-Oct-19 19:03:27 - main.Map                                 DEBUG    Getting possible connectors.
+27-Oct-19 19:03:27 - main                                     DEBUG    Getting direction.
