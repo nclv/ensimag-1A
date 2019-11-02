@@ -18,7 +18,7 @@ Finalement, on relie le tout et on supprime les couloirs inutiles
 from random import randrange, choice
 from operator import add
 from itertools import product
-from collections import namedtuple, defaultdict
+from collections import namedtuple
 import subprocess
 import platform
 import time
@@ -39,7 +39,7 @@ except AssertionError:
     )
 
 try:
-    import numpy as np  # Array
+    import numpy as np
 except ImportError:
     subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
     raise SystemExit()
@@ -58,7 +58,7 @@ GAUCHE = "q"
 DROITE = "d"
 
 EMPTY = 0
-WALKABLE = 1
+VISITED = 1
 PLAYER = 2
 ROOM = 3
 CORRIDOR = 4
@@ -66,6 +66,7 @@ GOAL = 5
 CONNECTOR = 6
 ENTRANCE = 7
 
+WALKABLE = [ROOM, CORRIDOR, ENTRANCE, GOAL]
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
 
@@ -95,11 +96,11 @@ class Room:
 
     """
 
-    def __init__(self, abscisse: int, ordonnee: int, width: int, height: int):
+    def __init__(self, abscisse, ordonnee, width, height):
         """Constructeur de la classe Room.
 
         Parameters:
-            abscisse, ordonnee, width, height (int): description
+            abscisse, ordonnee, width, height (int): //
 
         """
         self.logger = logging.getLogger(MAIN_LOGGER + "." + Room.__name__)
@@ -111,6 +112,7 @@ class Room:
         self.ordo_top_left = ordonnee + height
 
         self.nombre_de_cases = self.get_cases_number()
+        self.cases = self.get_cases()
         self.logger.debug(f"La pièce comporte {self.nombre_de_cases} cases.")
 
     def intersect(self, room2):
@@ -121,7 +123,10 @@ class Room:
         be a separating axis), or vice versa, or one of the top sides will be
         below the bottom side of the other rectange, or vice versa.
 
-        On agrandit le premier rectangle pour empêcher les pièces d'être côte-à-côte
+        On agrandit le premier rectangle pour empêcher les pièces d'être côte à côte
+
+        self.cases.isdisjoint(room2.cases) ne prend pas en compte les pièces
+        côte à côte
 
         Parameters:
             room2 (Room): deuxième pièce
@@ -137,23 +142,24 @@ class Room:
             and self.ordo_top_left + 1 >= room2.ordo_bottom_left
         )
 
-    def contain(self, point):
-        """Vérifie que le point est dans la pièce (intérieur et côté).
-
-        Parameters:
-             point (tuple): point
+    def get_cases(self):
+        """Retourne les cases d'une pièce.
 
         Returns:
-            (boolean): True if the point is in the room
+            (set): cases
 
         """
-        return (
-            self.absc_bottom_left <= point[0] <= self.absc_bottom_right
-            and self.ordo_bottom_left <= point[1] <= self.ordo_top_left
+        return set(
+            product(
+                range(self.absc_bottom_left, self.absc_bottom_right + 1),
+                range(self.ordo_bottom_left, self.ordo_top_left + 1),
+            )
         )
 
     def get_cases_number(self):
         """Retourne le nombre de cases dans une pièces.
+
+        Indépendant de self.get_cases
 
         Returns:
             (int): nombre de cases
@@ -163,7 +169,6 @@ class Room:
             self.ordo_top_left - self.ordo_bottom_left + 1
         )
 
-    # TODO: room.get_positions ?
     # TODO: room.get_connecteurs ?
     # TODO: room.get_count_entrance ?
 
@@ -220,17 +225,23 @@ class Map:
         # va contenir des namedtuple(position, liste des régions voisines) non
         # hashable donc pas de set
         self.connecteurs = []
+        # contient toutes les cases que l'on peut parcourir
         self.connected = set()
 
     def set_game_parameters(self):
-        """Paramètres par défauts du jeu."""
+        """Paramètres par défauts du jeu.
+
+        Les positions de départ et d'arrivée ne doivent pas se trouver dans
+        la même pièce.
+
+        """
         self.logger.info("Attribution des paramètres du jeu.")
         flat_rooms_positions = [
             position
-            for room_positions in self.rooms_positions
+            for room_positions in self.rooms_positions[1:]
             for position in room_positions
         ]
-        self.start = choice(flat_rooms_positions)
+        self.start = choice(list(self.rooms_positions[0]))
         self.goal = choice(flat_rooms_positions)
         self.logger.info(f"Start: {self.start}, Goal: {self.goal}")
 
@@ -278,18 +289,10 @@ class Map:
 
         """
         self.logger.info(f"Positionnement des pièces sur la carte")
-        # placement des pièces
         for room in rooms:
-            # room.get_positions ?
-            room_positions = set()
-            for position in self.cases:
-                if room.contain(position):
-                    self.board[position] = ROOM
-                    room_positions.add(position)
-                #  si on a parcouru toutes les cases de la pièce on change de pièce
-                if len(room_positions) > room.nombre_de_cases:
-                    break
-            self.rooms_positions.append(room_positions)
+            for position in room.cases:
+                self.board[position] = ROOM
+            self.rooms_positions.append(room.cases)
 
     def get_rooms(self):
         """Génère les pièces sur la carte.
@@ -335,8 +338,10 @@ class Map:
         for position in self.cases:
             voisins = self.check_on_board(positions_voisines(position))
             # autorisé si on peut construire un labyrinthe à partir de position
-            check_empty_voisins = all(not self.board[voisin] for voisin in voisins)
-            allowed = check_empty_voisins and self.check_more_than_one_case(position)
+            allowed = self.check_empty_voisins(
+                voisins
+            ) and self.check_more_than_one_case(position)
+
             if allowed:
                 self.gen_maze(position)
 
@@ -355,6 +360,18 @@ class Map:
             for direction in DIRECTIONS
             if self.couloir_possible(position, direction)
         ]
+
+    def check_empty_voisins(self, voisins):
+        """Vérifie que les positions du set voisins sont vides.
+
+        Parameters:
+            voisins (set): //
+
+        Returns:
+            (boolean)
+
+        """
+        return all(self.board[voisin] == EMPTY for voisin in voisins)
 
     def check_more_than_one_case(self, position):
         """Vérifie que le labyrinthe construit à partir de position contient plus d'une case.
@@ -389,7 +406,7 @@ class Map:
         correct_voisins = self.check_on_board(voisins)
         if not correct_voisins:
             return False
-        return all(not self.board[case] for case in correct_voisins)
+        return self.check_empty_voisins(correct_voisins)
 
     def check_on_board(self, cases):
         """Renvoie les valeurs de table qui sont sur la carte.
@@ -516,8 +533,10 @@ class Map:
                 if region not in connecteur.regions_voisines
             ]
             # TODO: coder à part la suppression des connecteurs adjacents
+            # TODO: remove tous les connecteurs du même mur de la pièce ?
             # remove connecteur et les autres connecteurs juste à côté de lui
             voisins = self.check_on_board(positions_voisines(connecteur.position))
+            voisins.add(connecteur.position)
             self.connecteurs = [
                 connecteur
                 for connecteur in self.connecteurs
@@ -527,10 +546,6 @@ class Map:
             self.connected.add(connecteur.position)
             for region in connecteur.regions_voisines:
                 self.connected.update(region)
-
-        # pour afficher les cases sur lesquelles l'on peut se déplacer
-        for position in self.connected:
-            self.board[position] = WALKABLE
 
         self.logger.debug("Régions connectées.")
 
@@ -543,18 +558,14 @@ class Map:
         while not done:
             done = True
             for position in self.cases:
+                # on ne traite pas les murs
                 if self.board[position] == EMPTY:
-                    continue
-                # couloir non relié
-                if self.board[position] == CORRIDOR:
-                    self.board[position] = EMPTY
                     continue
                 # s'il n'y a qu'une sortie, c'est une case inutile
                 exits_count = 0
                 voisins = self.check_on_board(positions_voisines(position))
-                voisins.remove(position)
                 for voisin in voisins:
-                    if self.board[voisin] == WALKABLE:
+                    if self.board[voisin] in WALKABLE:
                         exits_count += 1
                 if exits_count != 1:
                     continue
@@ -577,17 +588,18 @@ class Map:
         absc, ordo = position
         self.board[absc][ordo] = tile_type
 
-    def move_player(self, position, previous_position):
+    def move_entity(self, entity, position, previous_position):
         """Déplace le joueur sur la position.
 
         Parameters:
+            entity (string): entité à déplacer
             position (tuple): //
             previous_position (tuple): //
 
         """
-        self.logger.debug(f"Déplacement du joueur sur la case {position}")
-        self.set_tile(position, PLAYER)
-        self.set_tile(previous_position, WALKABLE)
+        self.logger.debug(f"Déplacement de l'entité {entity} sur la case {position}")
+        self.set_tile(position, entity)
+        self.set_tile(previous_position, VISITED)
 
     def bad_movement(self, direction, movements):
         """Vérification de la possibilité du mouvement sur le plateau.
@@ -601,7 +613,7 @@ class Map:
 
         """
         absc, ordo = movements[direction]
-        return not self.board[absc][ordo] in [WALKABLE, GOAL]
+        return not self.board[absc][ordo] in WALKABLE + [VISITED]
 
 
 class OutOfWalkError(Exception):
@@ -609,7 +621,7 @@ class OutOfWalkError(Exception):
 
 
 def positions_voisines(position):
-    """Retourne position et les positions voisines de position.
+    """Retourne les positions voisines de position.
     (haut/bas/gauche/droite)
 
     Parameters:
@@ -620,7 +632,6 @@ def positions_voisines(position):
 
     """
     voisins = {add_tuple(position, direction) for direction in DIRECTIONS}
-    voisins.add(position)
     return voisins
 
 
@@ -645,6 +656,8 @@ def get_direction(possible_direction, last_direction):
 def draw_board(board):
     """Affiche le dongeon sur le terminal.
 
+    # TODO: sauvegarder plusieurs plateaux de debug
+
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
 
@@ -654,20 +667,20 @@ def draw_board(board):
             tile = board[absc][ordo]
             if tile == EMPTY:
                 print("#", end=" ")
-            elif tile == WALKABLE:
+            elif tile == VISITED:
                 print(".", end=" ")
             elif tile == PLAYER:
                 print("@", end=" ")
             elif tile == ROOM:
                 print(".", end=" ")
             elif tile == CORRIDOR:
-                print("#", end=" ")
+                print(".", end=" ")
             elif tile == GOAL:
                 print("!", end=" ")
             elif tile == CONNECTOR:
                 print("#", end=" ")
             elif tile == ENTRANCE:
-                print("e", end=" ")
+                print(".", end=" ")
         print()
 
 
@@ -753,7 +766,7 @@ def main():
     while carte.localisation_player != carte.goal:
         draw_board(carte.board)
         direction, movements = get_input_direction(carte)
-        carte.move_player(movements[direction], carte.localisation_player)
+        carte.move_entity(PLAYER, movements[direction], carte.localisation_player)
         carte.localisation_player = movements[direction]
         carte.discovered.add(carte.localisation_player)
         clear()
