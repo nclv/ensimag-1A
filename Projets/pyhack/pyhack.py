@@ -707,9 +707,9 @@ def while_true(func):
                     continue
                 break
             except ValueError:
-                LOGGER.warn("Entrer une direction valide.")
+                LOGGER.warning("Entrer une direction valide.")
             except OutOfWalkError:
-                LOGGER.warn("Un mur vous empêche d'avancer.")
+                LOGGER.warning("Un mur vous empêche d'avancer.")
         return res
 
     return wrapper

@@ -1,218 +1,525 @@
-02-Nov-19 11:34:45 - main                                     INFO     Setting up main logger.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Création d'une instance de Map.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Attribution des paramètres des pièces.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Génération du plateau de jeu.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Génération des pièces.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 30 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 30 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 30 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 35 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 49 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 36 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 25 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 16 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 24 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 28 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 30 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 42 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 30 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    Création d'une instance de Room.
-02-Nov-19 11:34:45 - main.Room                                DEBUG    La pièce comporte 20 cases.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Positionnement des pièces sur la carte
-02-Nov-19 11:34:45 - main.Map                                 INFO     Remplissage de la carte par des labyrinthes.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Génération d'un labyrinthe.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Labyrinthe de taille 1199 généré.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Génération d'un labyrinthe.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Labyrinthe de taille 2 généré.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Getting possible connectors.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Connection des régions.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Régions connectées.
-02-Nov-19 11:34:45 - main.Map                                 DEBUG    Suppression des portions de couloir inutiles.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Attribution des paramètres du jeu.
-02-Nov-19 11:34:45 - main.Map                                 INFO     Start: (15, 17), Goal: (38, 4)
-02-Nov-19 11:34:45 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:05 - main                                     INFO     Setting up main logger.
+03-Nov-19 20:31:05 - main.Map                                 INFO     Création d'une instance de Map.
+03-Nov-19 20:31:05 - main.Map                                 INFO     Attribution des paramètres des pièces.
+03-Nov-19 20:31:05 - main.Map                                 INFO     Génération du plateau de jeu.
+03-Nov-19 20:31:05 - main.Map                                 INFO     Génération des pièces.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 49 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 49 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 49 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 25 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 42 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 30 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 24 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 36 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 16 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 20 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 35 cases.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    Création d'une instance de Room.
+03-Nov-19 20:31:05 - main.Room                                DEBUG    La pièce comporte 28 cases.
+03-Nov-19 20:31:05 - main.Map                                 INFO     Positionnement des pièces sur la carte
+03-Nov-19 20:31:05 - main.Map                                 INFO     Remplissage de la carte par des labyrinthes.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 1158 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 14 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 8 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 9 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 5 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Génération d'un labyrinthe.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Labyrinthe de taille 5 généré.
+03-Nov-19 20:31:05 - main.Map                                 DEBUG    Getting possible connectors.
+03-Nov-19 20:31:06 - main.Map                                 INFO     Connection des régions.
+03-Nov-19 20:31:06 - main.Map                                 DEBUG    Régions connectées.
+03-Nov-19 20:31:06 - main.Map                                 DEBUG    Suppression des portions de couloir inutiles.
+03-Nov-19 20:31:06 - main.Map                                 INFO     Attribution des paramètres du jeu.
+03-Nov-19 20:31:06 - main.Map                                 INFO     Start: (14, 50), Goal: (34, 5)
+03-Nov-19 20:31:06 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:08 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:08 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:08 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:08 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:10 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:10 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:10 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 50)
+03-Nov-19 20:31:10 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:10 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:11 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (12, 50)
+03-Nov-19 20:31:11 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:11 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:11 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (11, 50)
+03-Nov-19 20:31:11 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:11 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:11 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:11 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (10, 50)
+03-Nov-19 20:31:11 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:11 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:12 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:12 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:12 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (10, 49)
+03-Nov-19 20:31:12 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:12 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:16 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:16 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:16 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (10, 48)
+03-Nov-19 20:31:16 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:16 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:17 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:17 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:17 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:17 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:17 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:17 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:17 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (10, 47)
+03-Nov-19 20:31:17 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:17 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:18 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:18 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:18 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (11, 47)
+03-Nov-19 20:31:18 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:19 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:20 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:20 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:20 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:20 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:20 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:20 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:20 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (11, 46)
+03-Nov-19 20:31:20 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:20 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:21 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:21 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:21 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (12, 46)
+03-Nov-19 20:31:21 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:21 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:21 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:21 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:21 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 46)
+03-Nov-19 20:31:21 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:21 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:22 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:22 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:22 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 45)
+03-Nov-19 20:31:22 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:22 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:22 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:22 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:22 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 44)
+03-Nov-19 20:31:22 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:22 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:23 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:23 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:23 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 43)
+03-Nov-19 20:31:23 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:23 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:23 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:23 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:23 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 42)
+03-Nov-19 20:31:23 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:23 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:24 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:24 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:24 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (13, 41)
+03-Nov-19 20:31:24 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:24 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:24 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:24 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:24 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (14, 41)
+03-Nov-19 20:31:24 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:24 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:25 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (15, 41)
+03-Nov-19 20:31:25 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:25 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:25 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (16, 41)
+03-Nov-19 20:31:25 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:25 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:25 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:25 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (17, 41)
+03-Nov-19 20:31:25 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:26 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:26 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:26 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:26 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (17, 40)
+03-Nov-19 20:31:26 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:26 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:26 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:26 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:26 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (17, 39)
+03-Nov-19 20:31:26 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:26 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:27 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (17, 38)
+03-Nov-19 20:31:27 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:27 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:27 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (18, 38)
+03-Nov-19 20:31:27 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:27 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:27 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:27 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:27 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:28 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:28 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:28 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (18, 37)
+03-Nov-19 20:31:28 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:29 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:29 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:29 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:29 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (18, 36)
+03-Nov-19 20:31:29 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:29 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:30 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:30 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:30 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (18, 35)
+03-Nov-19 20:31:30 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:30 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:31 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:31 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:31 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:31 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:31 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:31 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:31 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:32 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:32 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:32 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:32 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:32 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:32 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (18, 36)
+03-Nov-19 20:31:32 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:33 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:33 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:33 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:33 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (19, 36)
+03-Nov-19 20:31:33 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:33 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:33 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:33 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:33 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:34 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:34 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:34 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:34 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:34 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:34 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:35 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:35 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:35 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (20, 36)
+03-Nov-19 20:31:35 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:35 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:35 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:35 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:35 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (21, 36)
+03-Nov-19 20:31:35 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:35 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:36 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:36 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:36 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (22, 36)
+03-Nov-19 20:31:36 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:36 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:36 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:36 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:36 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (22, 37)
+03-Nov-19 20:31:36 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:36 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:37 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (22, 38)
+03-Nov-19 20:31:37 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:37 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:37 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (22, 39)
+03-Nov-19 20:31:37 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:37 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:37 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:37 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (23, 39)
+03-Nov-19 20:31:37 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:37 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:38 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (24, 39)
+03-Nov-19 20:31:38 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:38 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:38 - main                                     WARNING  Un mur vous empêche d'avancer.
+03-Nov-19 20:31:38 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:38 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:38 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (24, 38)
+03-Nov-19 20:31:38 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:38 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:39 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:39 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:39 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (24, 37)
+03-Nov-19 20:31:39 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:39 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:39 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:39 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:39 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (24, 36)
+03-Nov-19 20:31:39 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:39 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:40 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:40 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:40 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:40 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:40 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:40 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:41 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:41 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:41 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (24, 35)
+03-Nov-19 20:31:41 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:41 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:41 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:41 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:41 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (23, 35)
+03-Nov-19 20:31:41 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:41 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:42 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:42 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:42 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:42 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:42 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:42 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (23, 34)
+03-Nov-19 20:31:42 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:42 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:43 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:43 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:43 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (23, 33)
+03-Nov-19 20:31:43 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:43 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:44 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (22, 33)
+03-Nov-19 20:31:44 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:44 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:44 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (21, 33)
+03-Nov-19 20:31:44 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:44 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:44 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:44 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (20, 33)
+03-Nov-19 20:31:44 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:44 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:45 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:45 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:45 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:45 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:45 - main                                     WARNING  Entrer une direction valide.
+03-Nov-19 20:31:45 - main                                     DEBUG    Getting direction.
+03-Nov-19 20:31:45 - main                                     DEBUG    Checking direction.
+03-Nov-19 20:31:45 - main                                     DEBUG    Checking if movement is allowed.
+03-Nov-19 20:31:45 - main.Map                                 DEBUG    Déplacement de l'entité 2 sur la case (20, 32)
+03-Nov-19 20:31:45 - main                                     DEBUG    Clear terminal
+03-Nov-19 20:31:46 - main                                     DEBUG    Getting direction.
