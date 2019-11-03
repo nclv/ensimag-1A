@@ -1,0 +1,15 @@
+digraph g {
+Hello -> comment [ label=1 ];
+Hello -> vous [ label=2 ];
+comment -> allez [ label=1 ];
+allez -> vous [ label=1 ];
+vous -> Bonjour [ label=1 ];
+vous -> je [ label=2 ];
+Bonjour -> a [ label=1 ];
+a -> vous [ label=1 ];
+je -> vais [ label=1 ];
+je -> Hello [ label=1 ];
+vais -> tres [ label=1 ];
+tres -> bien [ label=1 ];
+bien -> Hello [ label=1 ];
+}
