@@ -111,8 +111,6 @@ class Room:
         self.absc_bottom_right = abscisse + width
         self.ordo_top_left = ordonnee + height
 
-        self.nombre_de_cases = self.get_cases_number()
-        self.cases = self.get_cases()
         self.logger.debug(f"La pièce comporte {self.nombre_de_cases} cases.")
 
     def intersect(self, room2):
@@ -142,7 +140,8 @@ class Room:
             and self.ordo_top_left + 1 >= room2.ordo_bottom_left
         )
 
-    def get_cases(self):
+    @property
+    def cases(self):
         """Retourne les cases d'une pièce.
 
         Returns:
@@ -156,7 +155,8 @@ class Room:
             )
         )
 
-    def get_cases_number(self):
+    @property
+    def nombre_de_cases(self):
         """Retourne le nombre de cases dans une pièces.
 
         Indépendant de self.get_cases
