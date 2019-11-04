@@ -4,8 +4,9 @@
 """
 Nicolas VINCENT
 
-linked_list
+linked_list avec iterable
 """
+
 
 class Cellule:
 
@@ -23,6 +24,7 @@ class Cellule:
         """
         self.valeur = valeur
         self.nextcellule = suivante
+
 
 class LinkedList:
 
@@ -46,12 +48,14 @@ class LinkedList:
 
     """
 
-    def __init__(self):
+    def __init__(self, iterable=None):
         """Constructeur de la cellule
 
+        Parameters:
+            iterable (Iterable): //
+
         """
-        self.head = None
-        self.tail = None
+        self.create(iterable=iterable)
 
     # O(1) !!!
     def insertStart(self, valeur):
@@ -65,6 +69,21 @@ class LinkedList:
 
         if self.tail is None:
             self.tail = self.head
+
+    # O(1)
+    def insertEnd(self, valeur):
+        """Insertion d'une cellule en queue.
+
+        Parameters:
+            valeur ():
+
+        """
+        newtail = Cellule(valeur, None)
+        if self.tail:
+            self.tail.nextcellule = newtail
+        else:
+            self.head = newtail
+        self.tail = newtail
 
     def remove(self, valeur):
         """Enlève la cellule contenant la valeur.
@@ -89,36 +108,116 @@ class LinkedList:
         else:
             previouscellule.nextcellule = currentcellule.nextcellule
 
-    # O(1)
-    def insertEnd(self, valeur):
-        """Insertion d'une cellule en queue.
-
-        Parameters:
-            valeur ():
-
-        """
-        newtail = Cellule(valeur, None)
-        if self.tail:
-            self.tail.nextcellule = newtail
-        else:
-            self.head = newtail
-        self.tail = newtail
-
-    def traverseList(self):
-        """Yield les éléments de la liste chaînée
+    def cells(self):
+        """Yield les cellules de la liste chaînée
 
         """
         actualcellule = self.head
 
         while actualcellule is not None:
-            yield actualcellule.valeur
+            yield actualcellule
             actualcellule = actualcellule.nextcellule
 
     def recherche(self, valeur):
         """Recherche une valeur dans la liste chaînée
 
         """
-        for cellule in self.traverseList():
+        for cellule in self.cells():
             if cellule.valeur == valeur:
                 return cellule
         return None
+
+    def transformation(self, fonction):
+        """Remplace valeur par fonction(valeur) pour chaque élément de la liste.
+
+        Parameters:
+            fonction (function): //
+
+        """
+        for cellule_courante in self.cells():
+            cellule_courante.valeur = fonction(cellule_courante.valeur)
+
+    def iterateur_filtre(self, fonction):
+        """Itérateur qui renvoie tout élément dont fonction(valeur) est vrai.
+
+        Parameters:
+            fonction (function): fonction qui retourne un booléen
+
+        """
+
+        for cellule_courante in self.cells():
+            if fonction(cellule_courante.valeur):
+                yield cellule_courante
+
+    def create(self, iterable=None):
+        """Création d'une liste chaînée."""
+        self.head = None
+        self.tail = None
+        if iterable:
+            for element in iterable:
+                self.insertEnd(element)
+
+    def filtre(self, fonction):
+        """Renvoie tout élément dont fonction(valeur) est vrai.
+
+        Parameters:
+            fonction (function): fonction qui retourne un booléen
+
+        """
+        # self.create(iterable=self.iterateur_filtre(fonction))
+        cellules_gardees = self.iterateur_filtre(fonction)
+        try:
+            self.head = next(cellules_gardees)
+        except StopIteration:
+            self.head, self.tail = None, None
+
+        self.tail = self.head
+        for cellule_gardee in cellules_gardees:
+            self.tail.nextcellule = cellule_gardee
+            self.tail = cellule_gardee
+
+        self.tail.nextcellule = None
+
+    def concatenation(self, liste_fin):
+        """Concatène la liste_fin à la liste chaînée.
+
+        Parameters:
+            liste_fin (LinkedList): //
+
+        """
+        if self.tail:
+            self.tail.nextcellule = liste_fin.head
+        else:
+            self.head = liste_fin.head
+
+        if liste_fin.tail:
+            self.tail = liste_fin.tail
+
+        liste_fin.head, liste_fin.tail = None, None
+
+    def decoupe(self, fonction):
+        """Tri des éléments selon fonction().
+
+        Parameters:
+            fonction (function): fonction qui retourne un booléen
+
+        """
+        listes = [LinkedList() for _ in range(2)]
+
+        # TODO:
+
+        for liste in listes:
+            liste.tail.nextcellule = None
+        self.head, self.tail = None, None
+
+        return listes
+
+    def ordo(self, fonction):
+        """Ordonne les valeurs selon fonction.
+
+        Parameters:
+            fonction (function): fonction qui retourne un booléen
+
+        """
+        pars, impairs = self.decoupe(fonction)
+        pairs.concatenation(impairs)

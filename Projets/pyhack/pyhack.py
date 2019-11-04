@@ -183,6 +183,10 @@ class Map:
 
     # pylint: disable=too-many-instance-attributes
 
+    MAX_ROOMS = 100
+    MIN_ROOM_SIZE = 3
+    MAX_ROOM_SIZE = 7
+
     def __init__(self, width, height):
         """Initialise la carte.
 
@@ -214,9 +218,6 @@ class Map:
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
         self.logger.info("Attribution des paramètres des pièces.")
-        self.max_rooms = 100
-        self.min_room_size = 3
-        self.max_room_size = 7
 
         # [room1, room2, ...] où room1 est le set des cases (tuple) de room1
         self.rooms_positions = []
@@ -306,9 +307,9 @@ class Map:
         self.logger.info("Génération des pièces.")
         rooms = []
 
-        for _ in range(self.max_rooms):
-            width = randrange(self.min_room_size, self.max_room_size)
-            height = randrange(self.min_room_size, self.max_room_size)
+        for _ in range(self.MAX_ROOMS):
+            width = randrange(self.MIN_ROOM_SIZE, self.MAX_ROOM_SIZE)
+            height = randrange(self.MIN_ROOM_SIZE, self.MAX_ROOM_SIZE)
             # on veut une délimitation autour des pièces
             abscisse = randrange(1, self.width - width - 1)
             ordonnee = randrange(1, self.height - height - 1)
