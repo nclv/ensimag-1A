@@ -244,6 +244,8 @@ class Map:
         self.rooms_positions = []
         self.mazes_positions = []
 
+        self.all_voisins = self.get_voisins()
+
         # va contenir des namedtuple(position, liste des régions voisines) non
         # hashable donc pas de set
         self.connecteurs = []
@@ -345,6 +347,16 @@ class Map:
 
         return rooms
 
+    def get_voisins(self):
+        """Renvoie les voisins de toutes les cases de la carte.
+
+        """
+        all_voisins = dict()
+        for position in self.cases:
+            voisins = self.check_on_board(positions_voisines(position))
+            all_voisins[position] = voisins
+        return all_voisins
+
     def fill_maze(self):
         """Rempli la carte avec un labyrinthe serpentant entre les pièces.
 
@@ -358,7 +370,7 @@ class Map:
         """
         self.logger.info("Remplissage de la carte par des labyrinthes.")
         for position in self.cases:
-            voisins = self.check_on_board(positions_voisines(position))
+            voisins = self.all_voisins[position]
             # autorisé si on peut construire un labyrinthe à partir de position
             allowed = self.check_empty_voisins(
                 voisins
@@ -522,7 +534,7 @@ class Map:
             return None
         # non rajouté en attribut car modifié par la suite
         regions = self.rooms_positions + self.mazes_positions
-        voisins = self.check_on_board(positions_voisines(position))
+        voisins = self.all_voisins[position]
         regions_differentes_voisines = []
         for voisin in voisins:
             for region in regions:
@@ -585,7 +597,7 @@ class Map:
                     continue
                 # s'il n'y a qu'une sortie, c'est une case inutile
                 exits_count = 0
-                voisins = self.check_on_board(positions_voisines(position))
+                voisins = self.all_voisins[position]
                 for voisin in voisins:
                     if self.board[voisin] in WALKABLE:
                         exits_count += 1
@@ -787,5 +799,5 @@ def main():
 
 if __name__ == "__main__":
     #main()
-    carte = Map(60, 60)
+    carte = Map(200, 200)
     carte.gen_board()
