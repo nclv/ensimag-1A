@@ -69,6 +69,27 @@ ENTRANCE = 7
 WALKABLE = [ROOM, CORRIDOR, ENTRANCE, GOAL]
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
+AFFICHAGE_DEBUG = {
+    EMPTY: "#",
+    VISITED: "v",
+    PLAYER: "@",
+    ROOM: "r",
+    CORRIDOR: "c",
+    GOAL: "!",
+    CONNECTOR: "f",
+    ENTRANCE: "e",
+}
+
+AFFICHAGE = {
+    EMPTY: "#",
+    VISITED: ".",
+    PLAYER: "@",
+    ROOM: ".",
+    CORRIDOR: ".",
+    GOAL: "!",
+    CONNECTOR: "#",
+    ENTRANCE: ".",
+}
 
 # TODO: réorganiser les classes avec SOLID
 
@@ -654,34 +675,20 @@ def get_direction(possible_direction, last_direction):
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
-def draw_board(board):
+def draw_board(board, affichage):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
 
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
+        affichage (dict): dictionnaire contenant les caractères affichés
 
     """
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
-            if tile == EMPTY:
-                print("#", end=" ")
-            elif tile == VISITED:
-                print(".", end=" ")
-            elif tile == PLAYER:
-                print("@", end=" ")
-            elif tile == ROOM:
-                print(".", end=" ")
-            elif tile == CORRIDOR:
-                print(".", end=" ")
-            elif tile == GOAL:
-                print("!", end=" ")
-            elif tile == CONNECTOR:
-                print("#", end=" ")
-            elif tile == ENTRANCE:
-                print(".", end=" ")
+            print(affichage[tile], end=" ")
         print()
 
 
@@ -735,6 +742,8 @@ def get_input_direction(carte):
     )
     movements = get_movements(carte.localisation_player)
     LOGGER.debug("Checking direction.")
+    if direction in ["quit", "exit"]:
+        return direction, movements
     if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
         raise ValueError()
     LOGGER.debug("Checking if movement is allowed.")
@@ -765,8 +774,10 @@ def main():
     carte = Map(60, 60)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board)
+        draw_board(carte.board, AFFICHAGE)
         direction, movements = get_input_direction(carte)
+        if direction in ["quit", "exit"]:
+            break
         carte.move_entity(PLAYER, movements[direction], carte.localisation_player)
         carte.localisation_player = movements[direction]
         carte.discovered.add(carte.localisation_player)
@@ -775,4 +786,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    carte = Map(60, 60)
+    carte.gen_board()
