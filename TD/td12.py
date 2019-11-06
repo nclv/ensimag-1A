@@ -57,6 +57,14 @@ class LinkedList:
         """
         self.create(iterable=iterable)
 
+    def create(self, iterable=None):
+        """Création d'une liste chaînée."""
+        self.head = None
+        self.tail = None
+        if iterable:
+            for element in iterable:
+                self.insertEnd(element)
+
     # O(1) !!!
     def insertStart(self, valeur):
         """Insertion d'une cellule en tête.
@@ -149,14 +157,6 @@ class LinkedList:
             if fonction(cellule_courante.valeur):
                 yield cellule_courante
 
-    def create(self, iterable=None):
-        """Création d'une liste chaînée."""
-        self.head = None
-        self.tail = None
-        if iterable:
-            for element in iterable:
-                self.insertEnd(element)
-
     def filtre(self, fonction):
         """Renvoie tout élément dont fonction(valeur) est vrai.
 
@@ -195,6 +195,17 @@ class LinkedList:
 
         liste_fin.head, liste_fin.tail = None, None
 
+    def reverse(self):
+        """Function to reverse the linked list."""
+        prev = None
+        current = self.head
+        while (current is not None):
+            next = current.nextcellule
+            current.nextcellule = prev
+            prev = current
+            current = next
+        self.head = prev
+
     def decoupe(self, fonction):
         """Tri des éléments selon fonction().
 
@@ -219,5 +230,62 @@ class LinkedList:
             fonction (function): fonction qui retourne un booléen
 
         """
-        pars, impairs = self.decoupe(fonction)
+        pairs, impairs = self.decoupe(fonction)
         pairs.concatenation(impairs)
+
+class LinkedListSentinelle:
+
+    """Liste chaînée avec sentinelle.
+    """
+
+    def __init__(self, valeurs=None):
+        """Initialisation de la class."""
+        self.head = Cellule(None) #c'est une sentinelle
+        self.tail = self.head
+        if valeurs is not None:
+            for valeur in valeurs:
+                self.insertEnd(valeur)
+
+    def insertEnd(self, valeur):
+        """Ajoût en queue"""
+        self.tail.nextcellule = Cellule(valeur)
+        self.tail = self.tail.nextcellule
+
+    def insertStart(self, valeur):
+        """Ajoût en tête"""
+        self.head.nextcellule = Cellule(valeur, self.head.nextcellule)
+
+        if self.tail == self.head:
+            self.tail = self.head.nextcellule
+
+    def cells(self):
+        """Yield les cellules de la liste chaînée."""
+        actualcellule = self.head
+
+        while actualcellule is not None:
+            yield actualcellule
+            actualcellule = actualcellule.nextcellule
+
+    def valeurs(self):
+        """Itère sur les valeurs."""
+        cellules = self.cells()
+        next(cellules)
+        for cellule in cellules:
+            yield cellule.valeur
+
+    def del_cellule(self, valeur):
+        """Supprimer la première cellule de valeur valeur."""
+        if self.head is None:
+            return
+
+        currentcellule = self.head
+        previouscellule = None
+
+        while currentcellule.valeur != valeur:
+            previouscellule = currentcellule
+            currentcellule = currentcellule.nextcellule
+
+        if previouscellule is None:
+            self.head = currentcellule.nextcellule
+        else:
+            previouscellule.nextcellule = currentcellule.nextcellule

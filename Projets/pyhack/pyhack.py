@@ -244,6 +244,9 @@ class Map:
         self.rooms_positions = []
         self.mazes_positions = []
 
+        # cProfile: il est moins couteux de chercher les voisins de positions
+        # dans un dictionnaires des voisins que de rappeler la fonction donnant
+        # les voisins.
         self.all_voisins = self.get_voisins()
 
         # va contenir des namedtuple(position, liste des régions voisines) non
@@ -799,5 +802,5 @@ def main():
 
 if __name__ == "__main__":
     #main()
-    carte = Map(200, 200)
+    carte = Map(60, 60)
     carte.gen_board()
