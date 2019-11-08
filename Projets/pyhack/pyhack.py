@@ -398,6 +398,8 @@ class Map:
     def check_empty_voisins(self, voisins):
         """Vérifie que les positions du set voisins sont vides.
 
+        TODO: OPTIMISER
+
         Parameters:
             voisins (set): //
 
@@ -423,6 +425,8 @@ class Map:
         """Renvoie si l'on peut aller dans cette direction.
 
          - on ne doit pas toucher de pièce ou d'autre couloir
+
+        TODO: OPTIMISER
 
         Parameters:
             position (tuple): //
@@ -523,6 +527,8 @@ class Map:
         La case doit être EMPTY et adjacente d'au moins deux cases
         appartenant à deux régions différentes.
 
+        TODO: OPTIMISER
+
         Parameters:
             position (tuple): //
 
@@ -569,7 +575,7 @@ class Map:
             # TODO: coder à part la suppression des connecteurs adjacents
             # TODO: remove tous les connecteurs du même mur de la pièce ?
             # remove connecteur et les autres connecteurs juste à côté de lui
-            voisins = self.check_on_board(positions_voisines(connecteur.position))
+            voisins = self.all_voisins[connecteur.position]
             voisins.add(connecteur.position)
             self.connecteurs = [
                 connecteur
@@ -584,7 +590,11 @@ class Map:
         self.logger.debug("Régions connectées.")
 
     def remove_dead_ends(self):
-        """Supprime les portions de labyrinthe inutiles."""
+        """Supprime les portions de labyrinthe inutiles.
+
+        TODO: OPTIMISER
+
+        """
         self.logger.debug("Suppression des portions de couloir inutiles.")
         done = False
         while not done:
@@ -606,7 +616,7 @@ class Map:
                 self.board[position] = EMPTY
 
     def set_tile(self, position, tile_type):
-        """Assigne tile_type sur la position du plateau.
+        """Assign tile_type sur la position du plateau.
 
         Parameters:
             position (tuple): position du plateau
@@ -714,6 +724,7 @@ def while_true(func):
     Erreurs personnalisées OutOfWalkableError
 
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
@@ -795,5 +806,5 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    carte = Map(60, 60)
+    carte = Map(200, 200)
     carte.gen_board()
