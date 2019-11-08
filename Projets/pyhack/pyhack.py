@@ -351,14 +351,11 @@ class Map:
         return rooms
 
     def get_voisins(self):
-        """Renvoie les voisins de toutes les cases de la carte.
-
-        """
-        all_voisins = dict()
-        for position in self.cases:
-            voisins = self.check_on_board(positions_voisines(position))
-            all_voisins[position] = voisins
-        return all_voisins
+        """Renvoie les voisins de toutes les cases de la carte."""
+        return {
+            position: self.check_on_board(positions_voisines(position))
+            for position in self.cases
+        }
 
     def fill_maze(self):
         """Rempli la carte avec un labyrinthe serpentant entre les pièces.
@@ -587,9 +584,7 @@ class Map:
         self.logger.debug("Régions connectées.")
 
     def remove_dead_ends(self):
-        """Supprime les portions de labyrinthe inutiles.
-
-        """
+        """Supprime les portions de labyrinthe inutiles."""
         self.logger.debug("Suppression des portions de couloir inutiles.")
         done = False
         while not done:
@@ -653,13 +648,12 @@ class Map:
         return not self.board[absc][ordo] in WALKABLE + [VISITED]
 
 
-class OutOfWalkError(Exception):
+class OutOfWalkableError(Exception):
     """Raised when you try to move in a wall."""
 
 
 def positions_voisines(position):
-    """Retourne les positions voisines de position.
-    (haut/bas/gauche/droite)
+    """Retourne les positions voisines de position (haut/bas/gauche/droite).
 
     Parameters:
         position (tuple): case dont on veut connaitre les voisins
@@ -717,10 +711,9 @@ def clear():
 def while_true(func):
     """Décore la fonction d'une boucle while True pour les inputs.
 
-    Erreurs personnalisées OutOfWalkError
+    Erreurs personnalisées OutOfWalkableError
 
     """
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
@@ -731,7 +724,7 @@ def while_true(func):
                 break
             except ValueError:
                 LOGGER.warning("Entrer une direction valide.")
-            except OutOfWalkError:
+            except OutOfWalkableError:
                 LOGGER.warning("Un mur vous empêche d'avancer.")
         return res
 
@@ -763,7 +756,7 @@ def get_input_direction(carte):
         raise ValueError()
     LOGGER.debug("Checking if movement is allowed.")
     if carte.bad_movement(direction, movements):
-        raise OutOfWalkError()
+        raise OutOfWalkableError()
 
     return direction, movements
 
@@ -801,6 +794,6 @@ def main():
 
 
 if __name__ == "__main__":
-    #main()
+    # main()
     carte = Map(60, 60)
     carte.gen_board()
