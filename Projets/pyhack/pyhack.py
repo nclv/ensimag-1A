@@ -69,6 +69,27 @@ ENTRANCE = 7
 WALKABLE = [ROOM, CORRIDOR, ENTRANCE, GOAL]
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
+AFFICHAGE_DEBUG = {
+    EMPTY: "#",
+    VISITED: "v",
+    PLAYER: "@",
+    ROOM: "r",
+    CORRIDOR: "c",
+    GOAL: "!",
+    CONNECTOR: "f",
+    ENTRANCE: "e",
+}
+
+AFFICHAGE = {
+    EMPTY: "#",
+    VISITED: ".",
+    PLAYER: "@",
+    ROOM: ".",
+    CORRIDOR: ".",
+    GOAL: "!",
+    CONNECTOR: "#",
+    ENTRANCE: ".",
+}
 
 # TODO: réorganiser les classes avec SOLID
 
@@ -111,8 +132,6 @@ class Room:
         self.absc_bottom_right = abscisse + width
         self.ordo_top_left = ordonnee + height
 
-        self.nombre_de_cases = self.get_cases_number()
-        self.cases = self.get_cases()
         self.logger.debug(f"La pièce comporte {self.nombre_de_cases} cases.")
 
     def intersect(self, room2):
@@ -142,7 +161,8 @@ class Room:
             and self.ordo_top_left + 1 >= room2.ordo_bottom_left
         )
 
-    def get_cases(self):
+    @property
+    def cases(self):
         """Retourne les cases d'une pièce.
 
         Returns:
@@ -156,7 +176,8 @@ class Room:
             )
         )
 
-    def get_cases_number(self):
+    @property
+    def nombre_de_cases(self):
         """Retourne le nombre de cases dans une pièces.
 
         Indépendant de self.get_cases
@@ -182,6 +203,10 @@ class Map:
     """
 
     # pylint: disable=too-many-instance-attributes
+
+    MAX_ROOMS = 100
+    MIN_ROOM_SIZE = 3
+    MAX_ROOM_SIZE = 7
 
     def __init__(self, width, height):
         """Initialise la carte.
@@ -214,13 +239,15 @@ class Map:
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
         self.logger.info("Attribution des paramètres des pièces.")
-        self.max_rooms = 100
-        self.min_room_size = 3
-        self.max_room_size = 7
 
         # [room1, room2, ...] où room1 est le set des cases (tuple) de room1
         self.rooms_positions = []
         self.mazes_positions = []
+
+        # cProfile: il est moins couteux de chercher les voisins de positions
+        # dans un dictionnaires des voisins que de rappeler la fonction donnant
+        # les voisins.
+        self.all_voisins = self.get_voisins()
 
         # va contenir des namedtuple(position, liste des régions voisines) non
         # hashable donc pas de set
@@ -306,9 +333,9 @@ class Map:
         self.logger.info("Génération des pièces.")
         rooms = []
 
-        for _ in range(self.max_rooms):
-            width = randrange(self.min_room_size, self.max_room_size)
-            height = randrange(self.min_room_size, self.max_room_size)
+        for _ in range(self.MAX_ROOMS):
+            width = randrange(self.MIN_ROOM_SIZE, self.MAX_ROOM_SIZE)
+            height = randrange(self.MIN_ROOM_SIZE, self.MAX_ROOM_SIZE)
             # on veut une délimitation autour des pièces
             abscisse = randrange(1, self.width - width - 1)
             ordonnee = randrange(1, self.height - height - 1)
@@ -323,6 +350,16 @@ class Map:
 
         return rooms
 
+    def get_voisins(self):
+        """Renvoie les voisins de toutes les cases de la carte.
+
+        """
+        all_voisins = dict()
+        for position in self.cases:
+            voisins = self.check_on_board(positions_voisines(position))
+            all_voisins[position] = voisins
+        return all_voisins
+
     def fill_maze(self):
         """Rempli la carte avec un labyrinthe serpentant entre les pièces.
 
@@ -336,7 +373,7 @@ class Map:
         """
         self.logger.info("Remplissage de la carte par des labyrinthes.")
         for position in self.cases:
-            voisins = self.check_on_board(positions_voisines(position))
+            voisins = self.all_voisins[position]
             # autorisé si on peut construire un labyrinthe à partir de position
             allowed = self.check_empty_voisins(
                 voisins
@@ -500,7 +537,7 @@ class Map:
             return None
         # non rajouté en attribut car modifié par la suite
         regions = self.rooms_positions + self.mazes_positions
-        voisins = self.check_on_board(positions_voisines(position))
+        voisins = self.all_voisins[position]
         regions_differentes_voisines = []
         for voisin in voisins:
             for region in regions:
@@ -563,7 +600,7 @@ class Map:
                     continue
                 # s'il n'y a qu'une sortie, c'est une case inutile
                 exits_count = 0
-                voisins = self.check_on_board(positions_voisines(position))
+                voisins = self.all_voisins[position]
                 for voisin in voisins:
                     if self.board[voisin] in WALKABLE:
                         exits_count += 1
@@ -653,34 +690,20 @@ def get_direction(possible_direction, last_direction):
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
-def draw_board(board):
+def draw_board(board, affichage):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
 
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
+        affichage (dict): dictionnaire contenant les caractères affichés
 
     """
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
-            if tile == EMPTY:
-                print("#", end=" ")
-            elif tile == VISITED:
-                print(".", end=" ")
-            elif tile == PLAYER:
-                print("@", end=" ")
-            elif tile == ROOM:
-                print(".", end=" ")
-            elif tile == CORRIDOR:
-                print(".", end=" ")
-            elif tile == GOAL:
-                print("!", end=" ")
-            elif tile == CONNECTOR:
-                print("#", end=" ")
-            elif tile == ENTRANCE:
-                print(".", end=" ")
+            print(affichage[tile], end=" ")
         print()
 
 
@@ -707,9 +730,9 @@ def while_true(func):
                     continue
                 break
             except ValueError:
-                LOGGER.warn("Entrer une direction valide.")
+                LOGGER.warning("Entrer une direction valide.")
             except OutOfWalkError:
-                LOGGER.warn("Un mur vous empêche d'avancer.")
+                LOGGER.warning("Un mur vous empêche d'avancer.")
         return res
 
     return wrapper
@@ -734,6 +757,8 @@ def get_input_direction(carte):
     )
     movements = get_movements(carte.localisation_player)
     LOGGER.debug("Checking direction.")
+    if direction in ["quit", "exit"]:
+        return direction, movements
     if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
         raise ValueError()
     LOGGER.debug("Checking if movement is allowed.")
@@ -764,8 +789,10 @@ def main():
     carte = Map(60, 60)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board)
+        draw_board(carte.board, AFFICHAGE)
         direction, movements = get_input_direction(carte)
+        if direction in ["quit", "exit"]:
+            break
         carte.move_entity(PLAYER, movements[direction], carte.localisation_player)
         carte.localisation_player = movements[direction]
         carte.discovered.add(carte.localisation_player)
@@ -774,4 +801,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    carte = Map(60, 60)
+    carte.gen_board()
