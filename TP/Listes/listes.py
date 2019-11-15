@@ -53,7 +53,6 @@ class LinkedList:
         """
         self.head = None
         self.tail = None
-        self.taille = 0
 
     # O(1) !!!
     def insertStart(self, valeur):

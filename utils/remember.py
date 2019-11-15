@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 
+
 """
 Patterns
 """
@@ -18,7 +19,7 @@ for room in rooms:
         board[absc][ordo] = 1
         break
 board[absc][ordo] = any(in_and_side_room((absc, ordo), room) for room in rooms)
-        
+
 def connect_rooms_corridor(self):
     """Renvoi toutes les cases pouvant connecter une pièce avec un couloir
 
