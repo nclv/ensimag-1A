@@ -36,6 +36,7 @@ except AssertionError:
     raise SystemExit(
         "Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
         "Installer une version supérieure à 3.6 pour le faire tourner.",
+        "(we love fstrings ;) )"
     )
 
 try:
@@ -52,11 +53,13 @@ LOGGER.info("Setting up main logger.")
 
 # TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
+# Différents mouvements possibles
 AVANCER = "z"
 RECULER = "s"
 GAUCHE = "q"
 DROITE = "d"
 
+# Différentes valeurs d'une case du plateau
 EMPTY = 0
 VISITED = 1
 PLAYER = 2
@@ -69,6 +72,7 @@ ENTRANCE = 7
 WALKABLE = [ROOM, CORRIDOR, ENTRANCE, GOAL]
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
+# Gestion de l'affichage
 AFFICHAGE_DEBUG = {
     EMPTY: "#",
     VISITED: "v",
@@ -99,6 +103,9 @@ def add_tuple(tuple1, tuple2):
 
     Parameters:
         tuple1/tuple2 (tuple): //
+
+    Returns:
+        (tuple): somme de tuple1 et de tuple2
 
     """
     return tuple(map(add, tuple1, tuple2))
@@ -272,6 +279,7 @@ class Map:
         self.goal = choice(flat_rooms_positions)
         self.logger.info(f"Start: {self.start}, Goal: {self.goal}")
 
+        # Initialisation de la position du joueur
         self.localisation_player = self.start
 
     def gen_board(self):
@@ -352,6 +360,9 @@ class Map:
 
     def get_voisins(self):
         """Renvoie les voisins de toutes les cases de la carte.
+
+        Returns:
+            all_voisins (dict): dictionnaire associant à chaque position ses voisins
 
         """
         all_voisins = dict()
@@ -560,6 +571,8 @@ class Map:
         self.logger.info("Connection des régions.")
         regions = self.rooms_positions + self.mazes_positions
 
+        # ISSUE: Room conneted to itself apart from the game
+
         while regions:
             connecteur = choice(self.connecteurs)
             self.board[connecteur.position] = ENTRANCE
@@ -652,6 +665,26 @@ class Map:
         absc, ordo = movements[direction]
         return not self.board[absc][ordo] in WALKABLE + [VISITED]
 
+    def visibility(self):
+
+        portee = 5
+        voisins = self.all_voisins[self.localisation_player]
+        # Initialisation des cases visibles
+        visibles = set()
+        visibles.update(voisins)
+        #while voisins:
+        for _ in range(portee):
+            new_voisins = voisins
+            for case in voisins:
+                if self.board[case] == EMPTY:
+                    pass
+                else:
+                    new_voisins.add(self.all_voisins[case])
+                visibles.add(case)
+            new_voisins.symmetric_difference(voisins)
+            voisins = new_voisins
+
+
 
 class OutOfWalkError(Exception):
     """Raised when you try to move in a wall."""
@@ -700,6 +733,8 @@ def draw_board(board, affichage):
         affichage (dict): dictionnaire contenant les caractères affichés
 
     """
+    # self.localisation_player[0] - portee, self.localisation_player[0] + portee
+    # self.localisation_player[1] - portee, self.localisation_player[1] + portee
     for ordo in range(board.shape[1]):
         for absc in range(board.shape[0]):
             tile = board[absc][ordo]
@@ -720,7 +755,6 @@ def while_true(func):
     Erreurs personnalisées OutOfWalkError
 
     """
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
@@ -756,9 +790,11 @@ def get_input_direction(carte):
         f"Donner la direction ({AVANCER}, {RECULER}, {GAUCHE}, {DROITE}): "
     )
     movements = get_movements(carte.localisation_player)
-    LOGGER.debug("Checking direction.")
+    # Exit case
     if direction in ["quit", "exit"]:
         return direction, movements
+    # Checks
+    LOGGER.debug("Checking direction.")
     if direction not in [AVANCER, RECULER, GAUCHE, DROITE]:
         raise ValueError()
     LOGGER.debug("Checking if movement is allowed.")
@@ -801,6 +837,6 @@ def main():
 
 
 if __name__ == "__main__":
-    #main()
-    carte = Map(60, 60)
-    carte.gen_board()
+    main()
+    # carte = Map(60, 60)
+    # carte.gen_board()
