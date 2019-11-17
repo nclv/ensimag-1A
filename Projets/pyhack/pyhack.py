@@ -359,17 +359,11 @@ class Map:
         return rooms
 
     def get_voisins(self):
-        """Renvoie les voisins de toutes les cases de la carte.
-
-        Returns:
-            all_voisins (dict): dictionnaire associant à chaque position ses voisins
-
-        """
-        all_voisins = dict()
-        for position in self.cases:
-            voisins = self.check_on_board(positions_voisines(position))
-            all_voisins[position] = voisins
-        return all_voisins
+        """Renvoie les voisins de toutes les cases de la carte."""
+        return {
+            position: self.check_on_board(positions_voisines(position))
+            for position in self.cases
+        }
 
     def fill_maze(self):
         """Rempli la carte avec un labyrinthe serpentant entre les pièces.
@@ -412,6 +406,8 @@ class Map:
     def check_empty_voisins(self, voisins):
         """Vérifie que les positions du set voisins sont vides.
 
+        TODO: OPTIMISER
+
         Parameters:
             voisins (set): //
 
@@ -437,6 +433,8 @@ class Map:
         """Renvoie si l'on peut aller dans cette direction.
 
          - on ne doit pas toucher de pièce ou d'autre couloir
+
+        TODO: OPTIMISER
 
         Parameters:
             position (tuple): //
@@ -537,6 +535,8 @@ class Map:
         La case doit être EMPTY et adjacente d'au moins deux cases
         appartenant à deux régions différentes.
 
+        TODO: OPTIMISER
+
         Parameters:
             position (tuple): //
 
@@ -585,7 +585,7 @@ class Map:
             # TODO: coder à part la suppression des connecteurs adjacents
             # TODO: remove tous les connecteurs du même mur de la pièce ?
             # remove connecteur et les autres connecteurs juste à côté de lui
-            voisins = self.check_on_board(positions_voisines(connecteur.position))
+            voisins = self.all_voisins[connecteur.position]
             voisins.add(connecteur.position)
             self.connecteurs = [
                 connecteur
@@ -601,6 +601,8 @@ class Map:
 
     def remove_dead_ends(self):
         """Supprime les portions de labyrinthe inutiles.
+
+        TODO: OPTIMISER
 
         """
         self.logger.debug("Suppression des portions de couloir inutiles.")
@@ -624,7 +626,7 @@ class Map:
                 self.board[position] = EMPTY
 
     def set_tile(self, position, tile_type):
-        """Assigne tile_type sur la position du plateau.
+        """Assign tile_type sur la position du plateau.
 
         Parameters:
             position (tuple): position du plateau
@@ -686,13 +688,12 @@ class Map:
 
 
 
-class OutOfWalkError(Exception):
+class OutOfWalkableError(Exception):
     """Raised when you try to move in a wall."""
 
 
 def positions_voisines(position):
-    """Retourne les positions voisines de position.
-    (haut/bas/gauche/droite)
+    """Retourne les positions voisines de position (haut/bas/gauche/droite).
 
     Parameters:
         position (tuple): case dont on veut connaitre les voisins
@@ -752,7 +753,7 @@ def clear():
 def while_true(func):
     """Décore la fonction d'une boucle while True pour les inputs.
 
-    Erreurs personnalisées OutOfWalkError
+    Erreurs personnalisées OutOfWalkableError
 
     """
     @functools.wraps(func)
@@ -765,7 +766,7 @@ def while_true(func):
                 break
             except ValueError:
                 LOGGER.warning("Entrer une direction valide.")
-            except OutOfWalkError:
+            except OutOfWalkableError:
                 LOGGER.warning("Un mur vous empêche d'avancer.")
         return res
 
@@ -799,7 +800,7 @@ def get_input_direction(carte):
         raise ValueError()
     LOGGER.debug("Checking if movement is allowed.")
     if carte.bad_movement(direction, movements):
-        raise OutOfWalkError()
+        raise OutOfWalkableError()
 
     return direction, movements
 
@@ -837,6 +838,12 @@ def main():
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     main()
     # carte = Map(60, 60)
     # carte.gen_board()
+=======
+    # main()
+    carte = Map(200, 200)
+    carte.gen_board()
+>>>>>>> c561173e2d66ec0da4a93e65c278373a7ac07293

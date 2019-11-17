@@ -1,0 +1,2 @@
+python3.6 -m cProfile -o perf.prof pyhack.py
+python3.6 -m snakeviz perf.prof
