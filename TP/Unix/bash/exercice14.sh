@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# supprimer les espaces dans les noms de fichiers; 
+# supprimer les espaces dans les noms de fichiers;
 # renommer si le nom existe deja
 
 # creer des fichiers pour tester
@@ -8,7 +8,7 @@ echo "blabla" > "un nom avec espaces"
 echo "blabla" > "un autre nom avec espaces"
 echo "blabla" > "unnomavecespaces"
 echo "blabla" > "unnomavecespaces1"
-#
+# find -name "* *" -type f | rename 's/ /_/g'
 
 c=0
 for f in *; do
