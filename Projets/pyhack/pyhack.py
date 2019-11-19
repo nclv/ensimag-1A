@@ -54,6 +54,7 @@ LOGGER.info("Setting up main logger.")
 # TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
 # Différents mouvements possibles
+# touches diretcionnelles: ^[[A^[[B^[[D^[[C
 AVANCER = "z"
 RECULER = "s"
 GAUCHE = "q"
@@ -151,7 +152,7 @@ class Room:
 
         On agrandit le premier rectangle pour empêcher les pièces d'être côte à côte
 
-        self.cases.isdisjoint(room2.cases) ne prend pas en compte les pièces
+        self.inner_cases.isdisjoint(room2.cases) ne prend pas en compte les pièces
         côte à côte
 
         Parameters:
@@ -231,8 +232,11 @@ class Map:
 
         # tableau
         self.board = np.zeros(shape=(self.width, self.height))
+        self.cases = set(product(range(self.width), range(self.height)))
         # ensemble des possibilités de génération (on exclut la limite du plateau)
-        self.cases = set(product(range(1, self.width - 1), range(1, self.height - 1)))
+        self.inner_cases = set(
+            product(range(1, self.width - 1), range(1, self.height - 1))
+        )
 
         self.set_regions_parameters()
 
@@ -360,10 +364,10 @@ class Map:
         return rooms
 
     def get_voisins(self):
-        """Renvoie les voisins de toutes les cases de la carte."""
+        """Renvoie les voisins de toutes les cases de la carte (avec les bords)"""
         return {
-            position: self.check_on_board(positions_voisines(position))
-            for position in self.cases
+            position: positions_voisines(position).intersection(self.cases)
+            for position in self.inner_cases
         }
 
     def fill_maze(self):
@@ -378,7 +382,7 @@ class Map:
 
         """
         self.logger.info("Remplissage de la carte par des labyrinthes.")
-        for position in self.cases:
+        for position in self.inner_cases:
             voisins = self.all_voisins[position]
             # autorisé si on peut construire un labyrinthe à partir de position
             allowed = self.check_empty_voisins(
@@ -450,23 +454,10 @@ class Map:
         voisins.remove(position)
         voisins.add(next_case)
 
-        correct_voisins = self.check_on_board(voisins)
+        correct_voisins = voisins.intersection(self.inner_cases)
         if not correct_voisins:
             return False
         return self.check_empty_voisins(correct_voisins)
-
-    def check_on_board(self, cases):
-        """Renvoie les valeurs de table qui sont sur la carte.
-
-        Parameters:
-            cases (set): cases du plateau sur lesquelles on peut construire/
-                        se déplacer
-
-        Returns:
-            (set): intersection de cases avec les cases du plateau
-
-        """
-        return cases.intersection(self.cases)
 
     def gen_maze(self, position):
         """Génère un labyrinthe à partir de la position fournie.
@@ -513,7 +504,7 @@ class Map:
         # TODO: min_entrance de 2 ?
 
         Parameters:
-            self.cases (set): cases du plateau autorisées
+            self.inner_cases (set): cases du plateau autorisées
 
         Returns:
             self.connecteurs (list): liste des connecteurs possibles
@@ -521,7 +512,7 @@ class Map:
         """
         self.logger.debug(f"Getting possible connectors.")
         Connecteur = namedtuple("Connecteur", "position regions_voisines")
-        for position in self.cases:
+        for position in self.inner_cases:
             regions_voisines = self.check_connecteur(position)
             # si plus de deux régions touchent position
             if len(regions_voisines) > 1:
@@ -610,7 +601,7 @@ class Map:
         done = False
         while not done:
             done = True
-            for position in self.cases:
+            for position in self.inner_cases:
                 # on ne traite pas les murs
                 if self.board[position] == EMPTY:
                     continue
@@ -690,39 +681,13 @@ class Map:
         for _ in range(self.visibility):
             new_voisins = voisins.copy()
             for case in voisins:
-                if self.board[case] != EMPTY:
+                if self.board[case] not in [EMPTY, CONNECTOR]:
                     new_voisins.update(self.all_voisins[case])
                 visibles.add(case)
             new_voisins.symmetric_difference(voisins)
             voisins = new_voisins
 
         return visibles
-
-    @property
-    def reduced_board(self):
-        """Renvoie un tableau réduit autour de la position du joueur
-
-        Parameters:
-            self.localisation_player (tuple): //
-            self.board (np.ndarray): //
-            self.visibility (int): //
-            self.width / self.height : //
-
-        Returns:
-            reduced_board (np.ndarray): sous-tableau numpy référence de self.board
-
-        """
-        ligne, colonne = self.localisation_player
-        # Une modification de reduced_board se repercute sur board
-        reduced_board = self.board[
-            max(0, ligne - self.visibility): min(
-                self.width, ligne + self.visibility + 1
-            ),
-            max(0, colonne - self.visibility): min(
-                self.height, colonne + self.visibility + 1
-            ),
-        ]
-        return reduced_board
 
 
 class OutOfWalkableError(Exception):
@@ -774,7 +739,6 @@ def draw_board(board, affichage, cases_visibles):
     for colonne in range(board.shape[1]):
         for ligne in range(board.shape[0]):
             tile = board[ligne][colonne]
-            #print((ligne, colonne), cases_visibles)
             if (ligne, colonne) in cases_visibles:
                 print(affichage[tile], end=" ")
             else:
