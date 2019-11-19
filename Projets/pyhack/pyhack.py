@@ -36,7 +36,7 @@ except AssertionError:
     raise SystemExit(
         "Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
         "Installer une version supérieure à 3.6 pour le faire tourner.",
-        "(we love fstrings ;) )"
+        "(we love fstrings ;) )",
     )
 
 try:
@@ -117,10 +117,10 @@ class Room:
     Une pièce est représentée par deux points de la diagonale de la pièce.
 
     Attributes:
-         absc (int): //
-         ordo (int): //
-         bottom_right (int): //
-         top_left (int): //
+         absc_bottom_left (int): //
+         ordo_bottom_left (int): //
+         absc_bottom_right (int): //
+         ordo_top_left (int): //
 
     """
 
@@ -242,6 +242,7 @@ class Map:
         # variables modifiables
         self.localisation_player = self.start
         self.discovered = set()
+        self.visibility = 5
 
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
@@ -637,8 +638,8 @@ class Map:
             self.board (np.ndarray): tableau 2D avec tile_type sur position
 
         """
-        absc, ordo = position
-        self.board[absc][ordo] = tile_type
+        ligne, colonne = position
+        self.board[ligne][colonne] = tile_type
 
     def move_entity(self, entity, position, previous_position):
         """Déplace le joueur sur la position.
@@ -664,28 +665,64 @@ class Map:
             (bool): True si le mouvement n'emmène pas sur une pièce ou un couloir
 
         """
-        absc, ordo = movements[direction]
-        return not self.board[absc][ordo] in WALKABLE + [VISITED]
+        ligne, colonne = movements[direction]
+        return not self.board[ligne][colonne] in WALKABLE + [VISITED]
 
-    def visibility(self):
+    @property
+    def visibiles_cases(self):
+        """Renvoie les cases visibles.
 
-        portee = 5
+        Parameters:
+            self.board (np.ndarray): //
+            self.localisation_player (tuple): //
+            self.all_voisins (dict): //
+
+        Returns:
+            visibles (set): cases visibles depuis la position du joueur
+
+        """
         voisins = self.all_voisins[self.localisation_player]
         # Initialisation des cases visibles
         visibles = set()
         visibles.update(voisins)
-        #while voisins:
-        for _ in range(portee):
-            new_voisins = voisins
+        # while voisins:
+        # ajoute les voisins des voisins dans les cases visibles
+        for _ in range(self.visibility):
+            new_voisins = voisins.copy()
             for case in voisins:
-                if self.board[case] == EMPTY:
-                    pass
-                else:
-                    new_voisins.add(self.all_voisins[case])
+                if self.board[case] != EMPTY:
+                    new_voisins.update(self.all_voisins[case])
                 visibles.add(case)
             new_voisins.symmetric_difference(voisins)
             voisins = new_voisins
 
+        return visibles
+
+    @property
+    def reduced_board(self):
+        """Renvoie un tableau réduit autour de la position du joueur
+
+        Parameters:
+            self.localisation_player (tuple): //
+            self.board (np.ndarray): //
+            self.visibility (int): //
+            self.width / self.height : //
+
+        Returns:
+            reduced_board (np.ndarray): sous-tableau numpy référence de self.board
+
+        """
+        ligne, colonne = self.localisation_player
+        # Une modification de reduced_board se repercute sur board
+        reduced_board = self.board[
+            max(0, ligne - self.visibility): min(
+                self.width, ligne + self.visibility + 1
+            ),
+            max(0, colonne - self.visibility): min(
+                self.height, colonne + self.visibility + 1
+            ),
+        ]
+        return reduced_board
 
 
 class OutOfWalkableError(Exception):
@@ -724,7 +761,7 @@ def get_direction(possible_direction, last_direction):
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
-def draw_board(board, affichage):
+def draw_board(board, affichage, cases_visibles):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
@@ -734,12 +771,14 @@ def draw_board(board, affichage):
         affichage (dict): dictionnaire contenant les caractères affichés
 
     """
-    # self.localisation_player[0] - portee, self.localisation_player[0] + portee
-    # self.localisation_player[1] - portee, self.localisation_player[1] + portee
-    for ordo in range(board.shape[1]):
-        for absc in range(board.shape[0]):
-            tile = board[absc][ordo]
-            print(affichage[tile], end=" ")
+    for colonne in range(board.shape[1]):
+        for ligne in range(board.shape[0]):
+            tile = board[ligne][colonne]
+            #print((ligne, colonne), cases_visibles)
+            if (ligne, colonne) in cases_visibles:
+                print(affichage[tile], end=" ")
+            else:
+                print(" ", end=" ")
         print()
 
 
@@ -747,7 +786,7 @@ def clear():
     """Modifie l'affichage."""
     LOGGER.debug("Clear terminal")
     subprocess.Popen("cls" if platform.system() == "Windows" else "clear", shell=True)
-    time.sleep(0.1)
+    time.sleep(0.01)
 
 
 def while_true(func):
@@ -756,6 +795,7 @@ def while_true(func):
     Erreurs personnalisées OutOfWalkableError
 
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
@@ -812,12 +852,12 @@ def get_movements(current_localisation):
         current_localisation (tuple): //
 
     """
-    absc, ordo = current_localisation
+    ligne, colonne = current_localisation
     return {
-        AVANCER: (absc, ordo - 1),
-        RECULER: (absc, ordo + 1),
-        GAUCHE: (absc - 1, ordo),
-        DROITE: (absc + 1, ordo),
+        AVANCER: (ligne, colonne - 1),
+        RECULER: (ligne, colonne + 1),
+        GAUCHE: (ligne - 1, colonne),
+        DROITE: (ligne + 1, colonne),
     }
 
 
@@ -826,7 +866,7 @@ def main():
     carte = Map(60, 60)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, AFFICHAGE)
+        draw_board(carte.board, AFFICHAGE, carte.visibiles_cases)
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
@@ -838,12 +878,6 @@ def main():
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
     # carte = Map(60, 60)
     # carte.gen_board()
-=======
-    # main()
-    carte = Map(200, 200)
-    carte.gen_board()
->>>>>>> c561173e2d66ec0da4a93e65c278373a7ac07293
