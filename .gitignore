@@ -1,3 +1,4 @@
 # Byte-compiled / optimized / DLL files
 utils/__pycache__/
 Projets/pyhack/__pycache__/
+.ipynb_checkpoints/

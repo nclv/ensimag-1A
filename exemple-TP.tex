@@ -1,0 +1,144 @@
+\documentclass[12pt]{book}
+% charge un formatage standard pour le document contenu dans le fichier
+% article.cls
+% à la place de "article" on peut aussi mettre report, book,...
+
+% chargement des packages
+\usepackage[utf8]{inputenc} % permet d'écrire des caractère spéciaux dans le *.tex
+\usepackage[T1]{fontenc} % encodage de ces caractères spéciaux (ç,é,ï,...)
+\usepackage[french]{babel} % formatage typique à une langue
+\usepackage{amsmath,amssymb,amsthm} % packages utiles pour les mathématiques
+\usepackage{listings}
+%\lstset{language=Python} % pour inclure du code python...
+\lstset{language=TeX} % pour inclure du code LaTeX
+\usepackage{graphicx} % pour inclure des images
+\textheight20cm % pour régler la hauteur utile du texte
+
+% définir des macros [un plus par rapport aux notebooks]
+\def\bbR{{\mathbb{C}}} % ensemble des complexes, \mathbb nécessite le package amssymb
+\def\bbC{{\mathbb{R}}} % ensemble des réels
+\newtheorem{theorem}{Théorème} % on définit un environnement de théorème
+
+% informations de titre
+\title{Un exemple de fichier LaTeX}
+\author{Brigitte Bidegaray-Fesquet, Guillaume James, Adam Larat, \\
+Hubert Leterme, Valérie Perrier et Simon Santoso}
+\date{\today} % la date du jour, on peut mettre n'importe quelle autre date
+
+% A partir d'ici commence vraiment le document...
+\begin{document}
+\maketitle % affiche les informations de titre
+
+\section{Apprenons par l'exemple, un extrait du TP}
+% commence une section la numérotation se fait automatiquement
+
+\subsection{Les séries de Fourier}
+% sous-section, numérotée automatiquement aussi
+Soit $f:\bbR\mapsto\bbC$ une fonction $T$ périodique, la série de Fourier de $f$ s'écrit comme une combinaison linéaire de fonctions sinusoïdales:
+% l'espace avant les deux points correspondant à la norme française
+% sont automatiquement ajoutés grâce à \usepackage[french]{babel}
+\begin{equation}
+	f(t) = \sum_{n=-\infty}^\infty c_n(f) \exp\left(2i\pi\frac{n}{T}t\right),
+\end{equation}
+% contrairement à dans le notebook, cette équation sera numérotée, pour ne pas % numéroter utiliser {equation*} disponible grâce à \usepackage{amsmath}
+où les coefficients $c_n(f)$ de $f$ sont appelés \textit{coefficients de Fourier}
+et sont définis comme suit:
+\begin{equation}
+	c_n(f) = \frac1T \int_{-T/2}^{T/2} f(t) \exp\left(-2i\pi\frac{n}{T}t\right) dt.
+\end{equation}
+Dans le cas de fonctions $f:\bbR\mapsto\bbR$, quelques simplifications
+peuvent être faites, la série de Fourier peut s'écrire comme suit:
+\begin{equation}
+	f(t) = a_0(f)
+    + \sum_{n=1}^\infty \left[
+      a_n(f) \cos\left(2\pi\frac{n}{T}t\right)
+    + b_n(f) \sin\left(2\pi\frac{n}{T}t\right)\right],
+\end{equation}
+où les coefficients $a_n(f)$ et $b_n(f)$, sont définis comme suit:
+\begin{equation}
+\label{eq:coeffs_a_et_b}
+	\left\{
+    \begin{aligned}
+		a_0(f) & = \frac1T \int_{-T/2}^{T/2} f(t) dt, \\
+		a_n(f) & = \frac2T \int_{-T/2}^{T/2} f(t) \cos\left(2\pi\frac{n}{T}t\right) dt, \\
+		b_n(f) & = \frac2T \int_{-T/2}^{T/2} f(t) \sin\left(2\pi\frac{n}{T}t\right) dt.
+	\end{aligned}
+    \right.
+\end{equation}
+
+\subsection{Exemple de théorème}
+
+\begin{theorem}
+\label{th:Fourier}
+La fonction 1-périodique $f$, définie sur $[-\frac12, \frac12[$ par
+\begin{equation*}
+    f(x) = \begin{cases}
+    -1 & \text{pour } -\frac12 \leq x \leq 0, \\
+    1 & \text{pour } 0 < x < \frac12
+    \end{cases}
+\end{equation*}
+admet pour série de Fourier
+\begin{equation*}
+    f(x) = \frac4\pi \sum_{n=0}^{+\infty} \frac{\sin(2(2n+1)\pi x)}{2n+1}.
+\end{equation*}
+\end{theorem}
+
+\begin{proof}
+Utiliser la formule \eqref{eq:coeffs_a_et_b}.
+\end{proof}
+
+\section{Présenter ses résultats}
+
+\subsection{Les images}
+
+La figure \ref{fig:exemple} permet d'illustrer le théorème \ref{th:Fourier}.
+Comme vous le voyez la figure est flottante~: elle n'apparaît pas forcément là où elle est déclarée.
+Les flottants sont numérotés automatiquement.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=.5\textwidth]{sampleimage.pdf}
+\caption{\label{fig:exemple}Une figure d'exemple.}
+\end{figure}
+
+\subsection{Les tableaux}
+
+Les tableaux sont une autre sorte de flottants. Un autre exemple issu du TP est donné  dans la table \ref{tab:operations}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{l|l}
+\textbf{commande} & \textbf{description} \\
+\hline
+\verb!A[k,:]! & $k$-ième ligne de la matrice $A$ \\
+\verb!A + B! & somme \\
+\verb!np.dot(A,B)! & produit \\
+\end{tabular}
+\caption{\label{tab:operations}Quelques opérations sur les matrices.}
+\end{table}
+
+\subsection{Les codes}
+
+La table \ref{tab:operations} donne un tout petit exemple de représentation brut de code.
+Pour les plus gros exemples il y a l'environnement \verb!verbatim!, mais on peut encore faire mieux avec le package \verb!listings!.
+Par exemple le code pour inclure une figure est le suivant:
+
+\begin{lstlisting}
+\begin{figure}[t]
+\centering
+\includegraphics[width=.5\textwidth]{sampleimage.pdf}
+\caption{\label{fig:exemple}Une figure d'exemple.}
+\end{figure}
+\end{lstlisting}
+
+\section{Pour finir...}
+
+Un rapport en bonne et due forme doit citer ses références. Clairement, nous avons utilisé ici \cite{ref1}.
+
+\bibliographystyle{plain} % correspond au style plain.bst,... il y en a d'autres bien sûr
+\begin{thebibliography}{9}
+\bibitem{ref1} Brigitte Bidegaray-Fesquet, Guillaume James, Adam Larat, Hubert Leterme, Valérie Perrier, Simon Santoso. \textit{Mini-stage d'analyse pour l'ingénieur.}
+Notebook Python. Consulté le 28 octobre 2019.
+\end{thebibliography}
+
+\end{document}

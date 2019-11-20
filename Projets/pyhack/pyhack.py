@@ -36,7 +36,7 @@ except AssertionError:
     raise SystemExit(
         "Ce jeu ne supporte pas Python {}.".format(platform.python_version()),
         "Installer une version supérieure à 3.6 pour le faire tourner.",
-        "(we love fstrings ;) )"
+        "(we love fstrings ;) )",
     )
 
 try:
@@ -54,6 +54,7 @@ LOGGER.info("Setting up main logger.")
 # TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
 # Différents mouvements possibles
+# touches diretcionnelles: ^[[A^[[B^[[D^[[C
 AVANCER = "z"
 RECULER = "s"
 GAUCHE = "q"
@@ -117,10 +118,10 @@ class Room:
     Une pièce est représentée par deux points de la diagonale de la pièce.
 
     Attributes:
-         absc (int): //
-         ordo (int): //
-         bottom_right (int): //
-         top_left (int): //
+         absc_bottom_left (int): //
+         ordo_bottom_left (int): //
+         absc_bottom_right (int): //
+         ordo_top_left (int): //
 
     """
 
@@ -151,7 +152,7 @@ class Room:
 
         On agrandit le premier rectangle pour empêcher les pièces d'être côte à côte
 
-        self.cases.isdisjoint(room2.cases) ne prend pas en compte les pièces
+        self.inner_cases.isdisjoint(room2.cases) ne prend pas en compte les pièces
         côte à côte
 
         Parameters:
@@ -231,8 +232,11 @@ class Map:
 
         # tableau
         self.board = np.zeros(shape=(self.width, self.height))
+        self.cases = set(product(range(self.width), range(self.height)))
         # ensemble des possibilités de génération (on exclut la limite du plateau)
-        self.cases = set(product(range(1, self.width - 1), range(1, self.height - 1)))
+        self.inner_cases = set(
+            product(range(1, self.width - 1), range(1, self.height - 1))
+        )
 
         self.set_regions_parameters()
 
@@ -242,6 +246,7 @@ class Map:
         # variables modifiables
         self.localisation_player = self.start
         self.discovered = set()
+        self.visibility = 5
 
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
@@ -359,10 +364,10 @@ class Map:
         return rooms
 
     def get_voisins(self):
-        """Renvoie les voisins de toutes les cases de la carte."""
+        """Renvoie les voisins de toutes les cases de la carte (avec les bords)"""
         return {
-            position: self.check_on_board(positions_voisines(position))
-            for position in self.cases
+            position: positions_voisines(position).intersection(self.cases)
+            for position in self.inner_cases
         }
 
     def fill_maze(self):
@@ -377,7 +382,7 @@ class Map:
 
         """
         self.logger.info("Remplissage de la carte par des labyrinthes.")
-        for position in self.cases:
+        for position in self.inner_cases:
             voisins = self.all_voisins[position]
             # autorisé si on peut construire un labyrinthe à partir de position
             allowed = self.check_empty_voisins(
@@ -449,23 +454,10 @@ class Map:
         voisins.remove(position)
         voisins.add(next_case)
 
-        correct_voisins = self.check_on_board(voisins)
+        correct_voisins = voisins.intersection(self.inner_cases)
         if not correct_voisins:
             return False
         return self.check_empty_voisins(correct_voisins)
-
-    def check_on_board(self, cases):
-        """Renvoie les valeurs de table qui sont sur la carte.
-
-        Parameters:
-            cases (set): cases du plateau sur lesquelles on peut construire/
-                        se déplacer
-
-        Returns:
-            (set): intersection de cases avec les cases du plateau
-
-        """
-        return cases.intersection(self.cases)
 
     def gen_maze(self, position):
         """Génère un labyrinthe à partir de la position fournie.
@@ -512,7 +504,7 @@ class Map:
         # TODO: min_entrance de 2 ?
 
         Parameters:
-            self.cases (set): cases du plateau autorisées
+            self.inner_cases (set): cases du plateau autorisées
 
         Returns:
             self.connecteurs (list): liste des connecteurs possibles
@@ -520,7 +512,7 @@ class Map:
         """
         self.logger.debug(f"Getting possible connectors.")
         Connecteur = namedtuple("Connecteur", "position regions_voisines")
-        for position in self.cases:
+        for position in self.inner_cases:
             regions_voisines = self.check_connecteur(position)
             # si plus de deux régions touchent position
             if len(regions_voisines) > 1:
@@ -609,7 +601,7 @@ class Map:
         done = False
         while not done:
             done = True
-            for position in self.cases:
+            for position in self.inner_cases:
                 # on ne traite pas les murs
                 if self.board[position] == EMPTY:
                     continue
@@ -637,8 +629,8 @@ class Map:
             self.board (np.ndarray): tableau 2D avec tile_type sur position
 
         """
-        absc, ordo = position
-        self.board[absc][ordo] = tile_type
+        ligne, colonne = position
+        self.board[ligne][colonne] = tile_type
 
     def move_entity(self, entity, position, previous_position):
         """Déplace le joueur sur la position.
@@ -664,28 +656,38 @@ class Map:
             (bool): True si le mouvement n'emmène pas sur une pièce ou un couloir
 
         """
-        absc, ordo = movements[direction]
-        return not self.board[absc][ordo] in WALKABLE + [VISITED]
+        ligne, colonne = movements[direction]
+        return not self.board[ligne][colonne] in WALKABLE + [VISITED]
 
-    def visibility(self):
+    @property
+    def visibiles_cases(self):
+        """Renvoie les cases visibles.
 
-        portee = 5
+        Parameters:
+            self.board (np.ndarray): //
+            self.localisation_player (tuple): //
+            self.all_voisins (dict): //
+
+        Returns:
+            visibles (set): cases visibles depuis la position du joueur
+
+        """
         voisins = self.all_voisins[self.localisation_player]
         # Initialisation des cases visibles
         visibles = set()
         visibles.update(voisins)
-        #while voisins:
-        for _ in range(portee):
-            new_voisins = voisins
+        # while voisins:
+        # ajoute les voisins des voisins dans les cases visibles
+        for _ in range(self.visibility):
+            new_voisins = voisins.copy()
             for case in voisins:
-                if self.board[case] == EMPTY:
-                    pass
-                else:
-                    new_voisins.add(self.all_voisins[case])
+                if self.board[case] not in [EMPTY, CONNECTOR]:
+                    new_voisins.update(self.all_voisins[case])
                 visibles.add(case)
             new_voisins.symmetric_difference(voisins)
             voisins = new_voisins
 
+        return visibles
 
 
 class OutOfWalkableError(Exception):
@@ -724,7 +726,7 @@ def get_direction(possible_direction, last_direction):
     return last_direction if choose_last_direction else choice(possible_direction)
 
 
-def draw_board(board, affichage):
+def draw_board(board, affichage, cases_visibles):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
@@ -734,12 +736,13 @@ def draw_board(board, affichage):
         affichage (dict): dictionnaire contenant les caractères affichés
 
     """
-    # self.localisation_player[0] - portee, self.localisation_player[0] + portee
-    # self.localisation_player[1] - portee, self.localisation_player[1] + portee
-    for ordo in range(board.shape[1]):
-        for absc in range(board.shape[0]):
-            tile = board[absc][ordo]
-            print(affichage[tile], end=" ")
+    for colonne in range(board.shape[1]):
+        for ligne in range(board.shape[0]):
+            tile = board[ligne][colonne]
+            if (ligne, colonne) in cases_visibles:
+                print(affichage[tile], end=" ")
+            else:
+                print(" ", end=" ")
         print()
 
 
@@ -747,7 +750,7 @@ def clear():
     """Modifie l'affichage."""
     LOGGER.debug("Clear terminal")
     subprocess.Popen("cls" if platform.system() == "Windows" else "clear", shell=True)
-    time.sleep(0.1)
+    time.sleep(0.01)
 
 
 def while_true(func):
@@ -756,6 +759,7 @@ def while_true(func):
     Erreurs personnalisées OutOfWalkableError
 
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         while True:
@@ -812,12 +816,12 @@ def get_movements(current_localisation):
         current_localisation (tuple): //
 
     """
-    absc, ordo = current_localisation
+    ligne, colonne = current_localisation
     return {
-        AVANCER: (absc, ordo - 1),
-        RECULER: (absc, ordo + 1),
-        GAUCHE: (absc - 1, ordo),
-        DROITE: (absc + 1, ordo),
+        AVANCER: (ligne, colonne - 1),
+        RECULER: (ligne, colonne + 1),
+        GAUCHE: (ligne - 1, colonne),
+        DROITE: (ligne + 1, colonne),
     }
 
 
@@ -826,7 +830,7 @@ def main():
     carte = Map(60, 60)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, AFFICHAGE)
+        draw_board(carte.board, AFFICHAGE, carte.visibiles_cases)
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
@@ -838,12 +842,6 @@ def main():
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
     # carte = Map(60, 60)
     # carte.gen_board()
-=======
-    # main()
-    carte = Map(200, 200)
-    carte.gen_board()
->>>>>>> c561173e2d66ec0da4a93e65c278373a7ac07293
