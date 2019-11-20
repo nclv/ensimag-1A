@@ -8,4 +8,3 @@ elif [ "$1" -lt "$2" ]; then
 else
     echo "Le nombre $1 est egal au nombre $2"
 fi
-
