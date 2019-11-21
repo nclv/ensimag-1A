@@ -827,6 +827,7 @@ def get_movements(current_localisation):
 
 def main():
     """main function."""
+    # lignes, colonnes = subprocess.check_output(['stty', 'size']).decode().split()
     carte = Map(60, 60)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
