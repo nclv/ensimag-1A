@@ -125,6 +125,14 @@ class Room:
 
     """
 
+    __slots__ = (
+        "logger",
+        "absc_bottom_left",
+        "ordo_bottom_left",
+        "absc_bottom_right",
+        "ordo_top_left",
+    )
+
     def __init__(self, abscisse, ordonnee, width, height):
         """Constructeur de la classe Room.
 
@@ -216,7 +224,7 @@ class Map:
     MIN_ROOM_SIZE = 3
     MAX_ROOM_SIZE = 7
 
-    def __init__(self, width, height):
+    def __init__(self, height, width):
         """Initialise la carte.
 
         Parameters:
@@ -730,6 +738,7 @@ def draw_board(board, affichage, cases_visibles):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
+    Pour le mode debug: AFFICHAGE_DEBUG et carte.cases
 
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
@@ -825,13 +834,24 @@ def get_movements(current_localisation):
     }
 
 
+def get_terminal_size():
+    """Renvoie la taille du terminal.
+
+    Returns:
+        rows, columns (tuple): //
+
+    """
+    return map(int, subprocess.check_output(['stty', 'size']).decode().split())
+
+
 def main():
     """main function."""
-    # lignes, colonnes = subprocess.check_output(['stty', 'size']).decode().split()
-    carte = Map(60, 60)
+    height, width = get_terminal_size()
+    # on laisse un espace entre les colonnes mais pas entre les lignes
+    carte = Map(height - 1, width // 2)
     carte.gen_board()
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, AFFICHAGE, carte.visibiles_cases)
+        draw_board(carte.board, AFFICHAGE_DEBUG, carte.cases)
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
