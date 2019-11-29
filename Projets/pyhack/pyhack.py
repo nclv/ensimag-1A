@@ -12,6 +12,9 @@ Room représente une pièce sur la carte
 On place les pièces. On crée ensuite un labyrinthe entre les pièces.
 Finalement, on relie le tout et on supprime les couloirs inutiles
 
+python3.6 -m cProfile -o perf.prof pyhack.py
+python3.6 -m snakeviz perf.prof
+
 """
 
 
@@ -54,7 +57,7 @@ LOGGER.info("Setting up main logger.")
 # TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
 # Différents mouvements possibles
-# touches diretcionnelles: ^[[A^[[B^[[D^[[C
+# touches directionnelles: ^[[A^[[B^[[D^[[C
 AVANCER = "z"
 RECULER = "s"
 GAUCHE = "q"
@@ -220,9 +223,28 @@ class Map:
 
     # pylint: disable=too-many-instance-attributes
 
+    __slots__ = (
+        "logger",
+        "width",
+        "height",
+        "board",
+        "cases",
+        "inner_cases",
+        "start",
+        "goal",
+        "localisation_player",
+        "discovered",
+        "rooms_positions",
+        "mazes_positions",
+        "all_voisins",
+        "connecteurs",
+        "connected",
+    )
+
     MAX_ROOMS = 100
     MIN_ROOM_SIZE = 3
     MAX_ROOM_SIZE = 7
+    VISIBILITY = 5
 
     def __init__(self, height, width):
         """Initialise la carte.
@@ -254,7 +276,6 @@ class Map:
         # variables modifiables
         self.localisation_player = self.start
         self.discovered = set()
-        self.visibility = 5
 
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
@@ -686,7 +707,7 @@ class Map:
         visibles.update(voisins)
         # while voisins:
         # ajoute les voisins des voisins dans les cases visibles
-        for _ in range(self.visibility):
+        for _ in range(VISIBILITY):
             new_voisins = voisins.copy()
             for case in voisins:
                 if self.board[case] not in [EMPTY, CONNECTOR]:
@@ -841,7 +862,7 @@ def get_terminal_size():
         rows, columns (tuple): //
 
     """
-    return map(int, subprocess.check_output(['stty', 'size']).decode().split())
+    return map(int, subprocess.check_output(["stty", "size"]).decode().split())
 
 
 def main():
@@ -863,6 +884,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # carte = Map(60, 60)
-    # carte.gen_board()
+    # main()
+    carte = Map(200, 200)
+    carte.gen_board()
