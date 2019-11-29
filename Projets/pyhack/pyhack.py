@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python3
 
+__version__ = "1.0.0"
+__author__ = "VINCENT Nicolas" + "Alan Dione"
+
 """
 Nicolas VINCENT / Alan Dione
 Projet pyhack (voir pyhack.pdf)
@@ -98,6 +101,8 @@ AFFICHAGE = {
     CONNECTOR: "#",
     ENTRANCE: ".",
 }
+
+DEFAULT_SIZE = (60, 60)
 
 # TODO: réorganiser les classes avec SOLID
 
@@ -689,7 +694,7 @@ class Map:
         return not self.board[ligne][colonne] in WALKABLE + [VISITED]
 
     @property
-    def visibiles_cases(self):
+    def visibles_cases(self):
         """Renvoie les cases visibles.
 
         Parameters:
@@ -707,7 +712,7 @@ class Map:
         visibles.update(voisins)
         # while voisins:
         # ajoute les voisins des voisins dans les cases visibles
-        for _ in range(VISIBILITY):
+        for _ in range(Map.VISIBILITY):
             new_voisins = voisins.copy()
             for case in voisins:
                 if self.board[case] not in [EMPTY, CONNECTOR]:
@@ -862,17 +867,59 @@ def get_terminal_size():
         rows, columns (tuple): //
 
     """
-    return map(int, subprocess.check_output(["stty", "size"]).decode().split())
+    LOGGER.debug("Getting terminal size.")
+    return (
+        DEFAULT_SIZE
+        if platform.system() == "Windows"
+        else map(int, subprocess.check_output(["stty", "size"]).decode().split())
+    )
+
+
+def get_parser():
+    """Création du parser et de tous ses arguments.
+
+    Returns:
+        args (class instance): Argument entrés en ligne de commande.
+        parser (class instance): Parser de la ligne de commande.
+
+    Raises:
+        parser.error: Erreurs des inputs sur le cmd.
+
+    """
+    LOGGER.debug("Création du parser.")
+    import argparse
+
+    # Initialisation du parser
+    parser = argparse.ArgumentParser(
+        prog="pyhack.py",
+        description="Jeu pyhack",
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {__version__}"
+    )
+
+    parser.add_argument("-d", "--debug", action="store_true", help="enable debug mode")
+
+    args = parser.parse_args()
+    return args, parser
 
 
 def main():
     """main function."""
+    args, parser = get_parser()
     height, width = get_terminal_size()
     # on laisse un espace entre les colonnes mais pas entre les lignes
     carte = Map(height - 1, width // 2)
     carte.gen_board()
+    # check debug mode
+    affichage, cases_affichees = AFFICHAGE, carte.visibles_cases
+    if args.debug:
+        LOGGER.debug("Debug mode turned on.")
+        affichage, cases_affichees = AFFICHAGE_DEBUG, carte.cases
+    # main loop
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, AFFICHAGE_DEBUG, carte.cases)
+        draw_board(carte.board, affichage, cases_affichees)
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
@@ -884,6 +931,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    carte = Map(200, 200)
-    carte.gen_board()
+    main()
+    # carte = Map(200, 200)
+    # carte.gen_board()
