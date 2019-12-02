@@ -26,6 +26,100 @@ class Cellule:
         self.nextcellule = suivante
 
 
+from exceptions import Empty
+
+
+class DoublyLinkedList:
+    class _Node:
+        __slots__ = "_data", "_previous", "_next"
+
+        def __init__(self, data, prev, suivant):
+            self._data = data
+            self._previous = prev
+            self._next = suivant
+
+    def __init__(self):
+        self._head = self._Node(None, None, None)
+        self._tail = self._Node(None, None, None)
+        self._head._next = self._tail
+        self._tail._previous = self._head
+        self._size = 0
+
+    def __len__(self):
+        return self._size
+
+    def is_empty(self):
+        return self._size == 0
+
+    def _insert_between(self, element, precedent, suivant):
+        new_node = self._Node(element, precedent, suivant)
+        precedent._next = new_node
+        suivant._previous = new_node
+        self._size += 1
+        return new_node
+
+    def _delete_node(self, node):
+        precedent = node._previous
+        suivant = node._next
+        precedent._next = suivant
+        suivant._previous = precedent
+        self._size -= 1
+        element = node._data
+        node._previous = node._next = node._data = None
+        return element
+
+    def insert_first(self, element):
+        self._insert_between(element, self._head, self._head._next)
+
+    def insert_last(self, element):
+        self._insert_between(element, self._tail._previous, self._tail)
+
+    def delete_first(self):
+        if self.is_empty():
+            raise Empty("Deque is  empty")
+        return self._delete_node(self._head._next)
+
+    def delete_last(self):
+        if self.is_empty():
+            raise Empty("Deque is  empty")
+        return self._delete_node(self._tail._previous)
+
+    def cells(self):
+        """Yield les cellules de la liste chaînée."""
+        actualcellule = self._head
+        size = self._size
+        while size:
+            suivant = actualcellule._next
+            yield actualcellule
+            actualcellule = suivant
+            size -= 1
+
+    def removeDuplicateNode(self):
+        # Checks whether list is empty
+        if self.is_empty():
+            return
+        else:
+            # Initially, current will point to head node
+            actualcellule = self._head
+            while actualcellule is not None:
+                # index will point to node next to actualcellule
+                nextactualcellule = actualcellule._next
+                while nextactualcellule is not None:
+                    if actualcellule._data == nextactualcellule._data:
+                        # Store the duplicate node in temp
+                        tmp = nextactualcellule
+                        # nextactualcellule's previous node will point to node next to nextactualcellule thus, removes the duplicate node
+                        nextactualcellule.previous._next = nextactualcellule._next
+                        if nextactualcellule.next is not None:
+                            nextactualcellule._next._previous = (
+                                nextactualcellule._previous
+                            )
+                        # Delete duplicate node by making tmp to None
+                        tmp = None
+                    nextactualcellule = nextactualcellule._next
+                actualcellule = actualcellule._next
+
+
 class LinkedList:
 
     """Classe représentant une liste chaînée

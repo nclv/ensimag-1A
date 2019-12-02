@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python3
 
+__version__ = "1.0.0"
+__author__ = "VINCENT Nicolas" + "Alan Dione"
+
 """
 Nicolas VINCENT / Alan Dione
 Projet pyhack (voir pyhack.pdf)
@@ -11,6 +14,9 @@ Room représente une pièce sur la carte
 
 On place les pièces. On crée ensuite un labyrinthe entre les pièces.
 Finalement, on relie le tout et on supprime les couloirs inutiles
+
+python3.6 -m cProfile -o perf.prof pyhack.py
+python3.6 -m snakeviz perf.prof
 
 """
 
@@ -54,7 +60,7 @@ LOGGER.info("Setting up main logger.")
 # TODO:  déplacer ce qui est au dessus dans le fichier main.py
 
 # Différents mouvements possibles
-# touches diretcionnelles: ^[[A^[[B^[[D^[[C
+# touches directionnelles: ^[[A^[[B^[[D^[[C
 AVANCER = "z"
 RECULER = "s"
 GAUCHE = "q"
@@ -96,6 +102,8 @@ AFFICHAGE = {
     ENTRANCE: ".",
 }
 
+DEFAULT_SIZE = (60, 60)
+
 # TODO: réorganiser les classes avec SOLID
 
 
@@ -124,6 +132,14 @@ class Room:
          ordo_top_left (int): //
 
     """
+
+    __slots__ = (
+        "logger",
+        "absc_bottom_left",
+        "ordo_bottom_left",
+        "absc_bottom_right",
+        "ordo_top_left",
+    )
 
     def __init__(self, abscisse, ordonnee, width, height):
         """Constructeur de la classe Room.
@@ -212,11 +228,30 @@ class Map:
 
     # pylint: disable=too-many-instance-attributes
 
+    __slots__ = (
+        "logger",
+        "width",
+        "height",
+        "board",
+        "cases",
+        "inner_cases",
+        "start",
+        "goal",
+        "localisation_player",
+        "discovered",
+        "rooms_positions",
+        "mazes_positions",
+        "all_voisins",
+        "connecteurs",
+        "connected",
+    )
+
     MAX_ROOMS = 100
     MIN_ROOM_SIZE = 3
     MAX_ROOM_SIZE = 7
+    VISIBILITY = 5
 
-    def __init__(self, width, height):
+    def __init__(self, height, width):
         """Initialise la carte.
 
         Parameters:
@@ -246,7 +281,6 @@ class Map:
         # variables modifiables
         self.localisation_player = self.start
         self.discovered = set()
-        self.visibility = 5
 
     def set_regions_parameters(self):
         """Paramètres par défauts des pièces de la carte."""
@@ -660,7 +694,7 @@ class Map:
         return not self.board[ligne][colonne] in WALKABLE + [VISITED]
 
     @property
-    def visibiles_cases(self):
+    def visibles_cases(self):
         """Renvoie les cases visibles.
 
         Parameters:
@@ -678,7 +712,7 @@ class Map:
         visibles.update(voisins)
         # while voisins:
         # ajoute les voisins des voisins dans les cases visibles
-        for _ in range(self.visibility):
+        for _ in range(Map.VISIBILITY):
             new_voisins = voisins.copy()
             for case in voisins:
                 if self.board[case] not in [EMPTY, CONNECTOR]:
@@ -730,6 +764,7 @@ def draw_board(board, affichage, cases_visibles):
     """Affiche le dongeon sur le terminal.
 
     # TODO: sauvegarder plusieurs plateaux de debug
+    Pour le mode debug: AFFICHAGE_DEBUG et carte.cases
 
     Parameters:
         self.board (np.ndarray): tableau 2D représentant le plateau
@@ -825,13 +860,66 @@ def get_movements(current_localisation):
     }
 
 
+def get_terminal_size():
+    """Renvoie la taille du terminal.
+
+    Returns:
+        rows, columns (tuple): //
+
+    """
+    LOGGER.debug("Getting terminal size.")
+    return (
+        DEFAULT_SIZE
+        if platform.system() == "Windows"
+        else map(int, subprocess.check_output(["stty", "size"]).decode().split())
+    )
+
+
+def get_parser():
+    """Création du parser et de tous ses arguments.
+
+    Returns:
+        args (class instance): Argument entrés en ligne de commande.
+        parser (class instance): Parser de la ligne de commande.
+
+    Raises:
+        parser.error: Erreurs des inputs sur le cmd.
+
+    """
+    LOGGER.debug("Création du parser.")
+    import argparse
+
+    # Initialisation du parser
+    parser = argparse.ArgumentParser(
+        prog="pyhack.py",
+        description="Jeu pyhack",
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {__version__}"
+    )
+
+    parser.add_argument("-d", "--debug", action="store_true", help="enable debug mode")
+
+    args = parser.parse_args()
+    return args, parser
+
+
 def main():
     """main function."""
-    # lignes, colonnes = subprocess.check_output(['stty', 'size']).decode().split()
-    carte = Map(60, 60)
+    args, parser = get_parser()
+    height, width = get_terminal_size()
+    # on laisse un espace entre les colonnes mais pas entre les lignes
+    carte = Map(height - 1, width // 2)
     carte.gen_board()
+    # check debug mode
+    affichage, cases_affichees = AFFICHAGE, carte.visibles_cases
+    if args.debug:
+        LOGGER.debug("Debug mode turned on.")
+        affichage, cases_affichees = AFFICHAGE_DEBUG, carte.cases
+    # main loop
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, AFFICHAGE, carte.visibiles_cases)
+        draw_board(carte.board, affichage, cases_affichees)
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
@@ -844,5 +932,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # carte = Map(60, 60)
+    # carte = Map(200, 200)
     # carte.gen_board()
