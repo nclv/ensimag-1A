@@ -45,10 +45,10 @@ $$
 
 Soit $N$ le nombre de records battus après $n$ épreuves.
 On note $Y_n$ la variable de Bernoulli indiquant si $n$ est un record.
-$$ N = \sum_{i=1}^{n}Y_i = \sum_{i=1}^{n}\mathbb{1}_{\max\limits_{i<m}^{} X_i \leq X_m}$$ puis par linéarité de l'espérance, $$E[N] = E[\sum_{i=1}^{n}Y_i] = \sum_{i=1}^{n}E[Y_i] = \sum_{i=1}^{n}\frac{1}{i} \simeq log(n) + \gamma $$
-Ou on aurait pu simplement faire $$ E[N] = \sum_{i=1}^{n} P(\max\limits_{i<m}^{} X_i \leq X_m)$$, ce qui donne le même résultat.
+$$ N = \sum_{i=1}^{n}Y_i = \sum_{i=1}^{n}\mathbb{1}_{\max\limits_{i<m}^{} X_i \leq X_m}$$ puis par linéarité de l'espérance, $$\rm E[N] = \rm E[\sum_{i=1}^{n}Y_i] = \sum_{i=1}^{n}E[Y_i] = \sum_{i=1}^{n}\frac{1}{i} \simeq log(n) + \gamma $$
+Ou on aurait pu simplement faire $$ \rm E[N] = \sum_{i=1}^{n} P(\max\limits_{i<m}^{} X_i \leq X_m)$$, ce qui donne le même résultat.
 Pour $n=27$,
-$$E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
+$$\rm E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
 
 ** **
 
@@ -56,8 +56,26 @@ $$E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
 
 * Calculer ${\rm E}[Y_n]$.
 
-
 ###### Réponse :
+
+$$
+\begin{aligned}
+P(U_1 \leq U_2) &= \int_{\mathrm{R}} P(U_1 \leq U_2 | U_2 = x) f_{U_2}(x) dx \\
+&= \int_{\mathrm{R}} P(U_1 \leq x) \mathbb{1}_{[0, 1]}(x)dx \\
+&= \int_{0}^{1} x dx \\
+&= \bigg[ \frac{x^2}{2} \bigg] _{0}^{1} = \frac{1}{2} \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+P(U_1 \leq U_2 \leq U_3) &= \int_{\mathrm{R}} P(U_1 \leq x)(1 - P(U_3 \leq x)) \mathbb{1}_{[0, 1]}(x)dx \\
+&= \int_{0}^{1} (x - x^2) dx \\
+&= \frac{1}{2} - \frac{1}{3} = \frac{1}{6} \\
+\end{aligned}
+$$
+
+$$\rm E[Y_n] = \sum_{i=1}^{n-1} \rm E[X_i] = \sum_{i=1}^{n-1} \rm E[\mathrm{1}_{(U_i < U_{i+1})}] = \sum_{i=1}^{n-1} P(U_i < U_{i+1}) = \frac{1}{2^n}$$
 
 ** **
 
@@ -66,6 +84,8 @@ $$E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
 * Calculer la valeur de la variance Var$[Y_3]$.
 
 ###### Réponse :
+
+
 
 ** **
 
