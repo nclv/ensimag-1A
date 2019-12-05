@@ -60,18 +60,18 @@ $$\rm E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
 
 $$
 \begin{aligned}
-P(U_1 \leq U_2) &= \int_{\mathrm{R}} P(U_1 \leq U_2 | U_2 = x) f_{U_2}(x) dx \\
-&= \int_{\mathrm{R}} P(U_1 \leq x) \mathbb{1}_{[0, 1]}(x)dx \\
+P(U_1 < U_2) &= \int_{\mathrm{R}} P(U_1 < U_2 | U_2 = x) f_{U_2}(x) dx \\
+&= \int_{\mathrm{R}} P(U_1 < x) \mathbb{1}_{[0, 1]}(x)dx \\
 &= \int_{0}^{1} x dx \\
 &= \bigg[ \frac{x^2}{2} \bigg] _{0}^{1} = \frac{1}{2} \\
 \end{aligned}
 $$
 
-Les $U_i$ sont indépendantes.
+Les $U_i$ sont indépendantes. Les $X_i$ sont des variables de Bernoulli. Donc $Var[X_i] = pq$ et $\rm E[X_i] = P(X_i = 1)$.
 
 $$
 \begin{aligned}
-P(U_1 \leq U_2 \leq U_3) &= \int_{\mathrm{R}} P(U_1 \leq x)(1 - P(U_3 \leq x)) \mathbb{1}_{[0, 1]}(x)dx \\
+P(U_1 < U_2 < U_3) &= \int_{\mathrm{R}} P(U_1 < x)(1 - P(U_3 < x)) \mathbb{1}_{[0, 1]}(x)dx \\
 &= \int_{0}^{1} (x - x^2) dx \\
 &= \frac{1}{2} - \frac{1}{3} = \frac{1}{6} \\
 \end{aligned}
@@ -85,11 +85,26 @@ $$\rm E[Y_n] = \sum_{i=1}^{n-1} \rm E[X_i] = \sum_{i=1}^{n-1} \rm E[\mathrm{1}_{
 
 * Calculer la valeur de la variance Var$[Y_3]$.
 
-$$Var[X_1] = \rm E[X_1^2] - (\rm E[X_1])^2 = P(U_1 < U_{2})^2$$
-
 ###### Réponse :
 
+$$
+\begin{aligned}
+Var[X_1] &= \rm E[X_1^2] - (\rm E[X_1])^2 \\
+&= P(U_1 < U_2)(1 - P(U_1 < U_2)) \\
+&= \frac{1}{4}
+\end{aligned}
+$$
+$Z = X_1X_2$ est une variable de Bernoulli.
+$$
+\begin{aligned}
+Cov[X_1, X_2] &= \rm E[X_1X_2] - \rm E[X_1]\rm E[X_2] \\
+&= P(X_1X_2 = 1) - P(U_1 < U_2)P(U_2 < U_3) \\
+&= P(U_1 < U_2 < U_3) - \frac{1}{4} \\
+&= -\frac{1}{12}
+\end{aligned}
+$$
 
+$$Var[Y_3] = Var[X_1] + Var[X_2] = \frac{1}{2} $$
 
 ** **
 
@@ -98,6 +113,13 @@ $$Var[X_1] = \rm E[X_1^2] - (\rm E[X_1])^2 = P(U_1 < U_{2})^2$$
 * Calculer Var$[Y_n]$ pour tout $n \geq 2$.
 
 ###### Réponse :
+
+Soit $n \geq 2$. Les $X_i$ ne sont pas indépendantes donc
+$${\rm Var}[Y_n]  = \sum_{i = 1}^{n-1} {\rm Var}[X_i] + 2 \sum_{i = 1}^{n-2} {\rm Cov}[X_i, X_{i+1}]$$
+
+En effet, $$V(X+Y)=Cov(X+Y, X+Y)=Cov(X,X)+Cov(Y,Y)+2Cov(X,Y)=V(X)+V(Y)+2Cov(X,Y)$$ puis on obtient le résultat par combinaison linéaire.
+
+$$Var[Y_n] = n\frac{1}{4} - 2(n-1)\frac{1}{12} = \frac{n+2}{12}$$ 
 
 ** **
 
