@@ -15,6 +15,7 @@ Room représente une pièce sur la carte
 On place les pièces. On crée ensuite un labyrinthe entre les pièces.
 Finalement, on relie le tout et on supprime les couloirs inutiles
 
+Profiling :
 python3.6 -m cProfile -o perf.prof pyhack.py
 python3.6 -m snakeviz perf.prof
 
@@ -31,6 +32,7 @@ import time
 import sys
 import logging
 import functools
+import argparse
 
 import log
 
@@ -445,8 +447,6 @@ class Map:
     def check_empty_voisins(self, voisins):
         """Vérifie que les positions du set voisins sont vides.
 
-        TODO: OPTIMISER
-
         Parameters:
             voisins (set): //
 
@@ -472,8 +472,6 @@ class Map:
         """Renvoie si l'on peut aller dans cette direction.
 
          - on ne doit pas toucher de pièce ou d'autre couloir
-
-        TODO: OPTIMISER
 
         Parameters:
             position (tuple): //
@@ -532,7 +530,7 @@ class Map:
     def set_connecteurs(self):
         """Trouve toutes les cases pouvant servir de connecteurs.
 
-        Optionnels
+        (Optionnels)
         # TODO: on ne veut pas plus de max_entrance entrée pour chaque pièce,
         on choisit donc seulement max_entrances connecteurs par pièce
         # TODO: min_entrance de 2 ?
@@ -597,22 +595,20 @@ class Map:
         self.logger.info("Connection des régions.")
         regions = self.rooms_positions + self.mazes_positions
 
-        # ISSUE: Room conneted to itself apart from the game
-
+        # ISSUE: Room connected to itself apart from the game
         while regions:
             connecteur = choice(self.connecteurs)
             self.board[connecteur.position] = ENTRANCE
             # décrémente les régions qui restent à traiter
-            regions = [
-                region
-                for region in regions
-                if region not in connecteur.regions_voisines
-            ]
-            # TODO: coder à part la suppression des connecteurs adjacents
-            # TODO: remove tous les connecteurs du même mur de la pièce ?
-            # remove connecteur et les autres connecteurs juste à côté de lui
+            # les sets plus rapide qu'une compréhension de liste
+            regions = list(
+                set(map(frozenset, regions))
+                - set(map(frozenset, connecteur.regions_voisines))
+            )
+
             voisins = self.all_voisins[connecteur.position]
             voisins.add(connecteur.position)
+
             self.connecteurs = [
                 connecteur
                 for connecteur in self.connecteurs
@@ -887,7 +883,6 @@ def get_parser():
 
     """
     LOGGER.debug("Création du parser.")
-    import argparse
 
     # Initialisation du parser
     parser = argparse.ArgumentParser(
@@ -898,7 +893,6 @@ def get_parser():
     parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"
     )
-
     parser.add_argument("-d", "--debug", action="store_true", help="enable debug mode")
 
     args = parser.parse_args()
@@ -907,19 +901,22 @@ def get_parser():
 
 def main():
     """main function."""
-    args, parser = get_parser()
+    args, _ = get_parser()
     height, width = get_terminal_size()
     # on laisse un espace entre les colonnes mais pas entre les lignes
     carte = Map(height - 1, width // 2)
     carte.gen_board()
     # check debug mode
-    affichage, cases_affichees = AFFICHAGE, carte.visibles_cases
+    affichage = AFFICHAGE
     if args.debug:
         LOGGER.debug("Debug mode turned on.")
-        affichage, cases_affichees = AFFICHAGE_DEBUG, carte.cases
+        affichage = AFFICHAGE_DEBUG
     # main loop
     while carte.localisation_player != carte.goal:
-        draw_board(carte.board, affichage, cases_affichees)
+        # Affichage
+        draw_board(
+            carte.board, affichage, carte.cases if args.debug else carte.visibles_cases
+        )
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
             break
@@ -931,6 +928,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # carte = Map(200, 200)
-    # carte.gen_board()
+    # main()
+    carte = Map(200, 200)
+    carte.gen_board()
