@@ -45,8 +45,8 @@ $$
 
 Soit $N$ le nombre de records battus après $n$ épreuves.
 On note $Y_n$ la variable de Bernoulli indiquant si $n$ est un record.
-$$ N = \sum_{i=1}^{n}Y_i = \sum_{i=1}^{n}\mathbb{1}_{\max\limits_{i<m}^{} X_i \leq X_m}$$ puis par linéarité de l'espérance, $$\rm E[N] = \rm E[\sum_{i=1}^{n}Y_i] = \sum_{i=1}^{n}E[Y_i] = \sum_{i=1}^{n}\frac{1}{i} \simeq log(n) + \gamma $$
-Ou on aurait pu simplement faire $$ \rm E[N] = \sum_{i=1}^{n} P(\max\limits_{i<m}^{} X_i \leq X_m)$$, ce qui donne le même résultat.
+$$ N = \sum_{i=1}^{n}Y_i = \sum_{m=1}^{n}\mathbb{1}_{\max\limits_{i<m}^{} X_i \leq X_m}$$ puis par linéarité de l'espérance, $$\rm E[N] = \rm E[\sum_{i=1}^{n}Y_i] = \sum_{i=1}^{n}E[Y_i] = \sum_{i=1}^{n}\frac{1}{i} \simeq log(n) + \gamma $$
+Ou on aurait pu simplement faire $$ \rm E[N] = \sum_{m=1}^{n} P(\max\limits_{i<m}^{} X_i \leq X_m)$$, ce qui donne le même résultat.
 Pour $n=27$,
 $$\rm E[N] = \frac{312536252003}{80313433200} \simeq 3.89$$
 
@@ -67,6 +67,8 @@ P(U_1 \leq U_2) &= \int_{\mathrm{R}} P(U_1 \leq U_2 | U_2 = x) f_{U_2}(x) dx \\
 \end{aligned}
 $$
 
+Les $U_i$ sont indépendantes.
+
 $$
 \begin{aligned}
 P(U_1 \leq U_2 \leq U_3) &= \int_{\mathrm{R}} P(U_1 \leq x)(1 - P(U_3 \leq x)) \mathbb{1}_{[0, 1]}(x)dx \\
@@ -82,6 +84,8 @@ $$\rm E[Y_n] = \sum_{i=1}^{n-1} \rm E[X_i] = \sum_{i=1}^{n-1} \rm E[\mathrm{1}_{
 ##### Question 4
 
 * Calculer la valeur de la variance Var$[Y_3]$.
+
+$$Var[X_1] = \rm E[X_1^2] - (\rm E[X_1])^2 = P(U_1 < U_{2})^2$$
 
 ###### Réponse :
 
