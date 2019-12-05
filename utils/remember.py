@@ -4,7 +4,25 @@
 
 """
 Patterns
+https://www.toptal.com/python/python-design-patterns
 """
+
+#Instead of doing this: inheritance
+
+class User(DbObject):
+    pass
+
+#We can do something like this: composition
+
+class User:
+    _persist_methods = ['get', 'save', 'delete']
+
+    def __init__(self, persister):
+        self._persister = persister
+
+    def __getattr__(self, attribute):
+        if attribute in self._persist_methods:
+            return getattr(self._persister, attribute)
 
 failed = False
 for other_room in rooms:
