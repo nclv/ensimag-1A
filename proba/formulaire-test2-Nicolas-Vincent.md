@@ -77,7 +77,7 @@ P(U_1 < U_2 < U_3) &= \int_{\mathrm{R}} P(U_1 < x)(1 - P(U_3 < x)) \mathbb{1}_{[
 \end{aligned}
 $$
 
-$$\rm E[Y_n] = \sum_{i=1}^{n-1} \rm E[X_i] = \sum_{i=1}^{n-1} \rm E[\mathrm{1}_{(U_i < U_{i+1})}] = \sum_{i=1}^{n-1} P(U_i < U_{i+1}) = \frac{1}{2^n}$$
+$$\rm E[Y_n] = \sum_{i=1}^{n-1} \rm E[X_i] = \sum_{i=1}^{n-1} \rm E[\mathrm{1}_{(U_i < U_{i+1})}] = \sum_{i=1}^{n-1} P(U_i < U_{i+1}) = \frac{n-1}{2}$$
 
 ** **
 
@@ -119,7 +119,7 @@ $${\rm Var}[Y_n]  = \sum_{i = 1}^{n-1} {\rm Var}[X_i] + 2 \sum_{i = 1}^{n-2} {\r
 
 En effet, $$V(X+Y)=Cov(X+Y, X+Y)=Cov(X,X)+Cov(Y,Y)+2Cov(X,Y)=V(X)+V(Y)+2Cov(X,Y)$$ puis on obtient le résultat par combinaison linéaire.
 
-$$Var[Y_n] = n\frac{1}{4} - 2(n-1)\frac{1}{12} = \frac{n+2}{12}$$ 
+$$Var[Y_n] = (n - 1)\frac{1}{4} - 2(n-2)\frac{1}{12} = \frac{n+1}{12}$$
 
 ** **
 
@@ -131,6 +131,14 @@ $$Var[Y_n] = n\frac{1}{4} - 2(n-1)\frac{1}{12} = \frac{n+2}{12}$$
 ###### Réponse :
 
 ** **
+
+On utilise l'inégalité de Bienaymé-Tchebychev. On cherche
+$$
+\begin{aligned}
+P\left(\left|A_{n-1}-\frac{1}{2}\right |\geq 10^{-2} \right)\leq\frac {n+1}{12(n-1)^2(10^{-2})^2} \leq 0.01
+\end{aligned}
+$$
+Soit $n \geq 83337$.
 
 
 ##### Question 7
