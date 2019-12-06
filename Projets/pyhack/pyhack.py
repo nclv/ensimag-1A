@@ -78,7 +78,7 @@ GOAL = 5
 CONNECTOR = 6
 ENTRANCE = 7
 
-WALKABLE = [ROOM, CORRIDOR, ENTRANCE, GOAL]
+WALKABLE = {ROOM, CORRIDOR, ENTRANCE, GOAL}
 DIRECTIONS = set([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
 # Gestion de l'affichage
@@ -687,7 +687,7 @@ class Map:
 
         """
         ligne, colonne = movements[direction]
-        return not self.board[ligne][colonne] in WALKABLE + [VISITED]
+        return not self.board[ligne][colonne] in WALKABLE | {VISITED}
 
     @property
     def visibles_cases(self):
@@ -928,6 +928,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    carte = Map(200, 200)
-    carte.gen_board()
+    main()
+    # carte = Map(200, 200)
+    # carte.gen_board()
