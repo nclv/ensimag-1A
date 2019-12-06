@@ -130,8 +130,6 @@ $$Var[Y_n] = (n - 1)\frac{1}{4} - 2(n-2)\frac{1}{12} = \frac{n+1}{12}$$
 
 ###### Réponse :
 
-** **
-
 On utilise l'inégalité de Bienaymé-Tchebychev. On cherche
 $$
 \begin{aligned}
@@ -140,14 +138,19 @@ P\left(\left|A_{n-1}-\frac{1}{2}\right |\geq 10^{-2} \right)\leq\frac {n+1}{12(n
 $$
 Soit $n \geq 83337$.
 
+** **
 
 ##### Question 7
 
 * Déterminer la valeur de $c$.
 
-
-
 ###### Réponse :
+
+$$
+\begin{aligned}
+\int_{\mathbb{R}}\int_{\mathbb{R}}f(x, y)dxdy = \int_0^1\int_0^y cxy^2dxdy = 1 \implies c = 10
+\end{aligned}
+$$
 
 ** **
 
@@ -158,8 +161,9 @@ Soit $n \geq 83337$.
 
 ###### Réponse :
 
-** **
+$$\frac{\partial F}{\partial x\partial y} = f$$
 
+** **
 
 ##### Question 9
 
