@@ -3,6 +3,9 @@
 
 """
 Nicolas VINCENT
+
+écrire liste1 = 2p1 + q1 et effectuer les opérations
+
 """
 
 
@@ -74,5 +77,22 @@ def ajout(liste1, liste2):
     # propagation de la retenue
     if addition_bits == 2:
         bits_forts = successeur(bits_forts)
+
+    return Cellule(bit_faible, bits_forts)
+
+
+def moins(liste1, liste2):
+    """Renvoie liste1 - liste2."""
+
+    if liste2 is None:
+        return liste1
+    assert liste1 is not None, "résultat négatif"
+
+    bit_faible = liste1.bit - liste2.bit
+    if bit_faible == -1:
+        bit_faible = 1
+        bits_forts = moins(liste1.suivant, successeur(liste2.suivant))
+    else:
+        bits_forts = moins(liste1.suivant, liste2.suivant)
 
     return Cellule(bit_faible, bits_forts)
