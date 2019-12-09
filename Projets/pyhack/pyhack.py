@@ -587,9 +587,9 @@ class Map:
         """
         self.logger.debug(f"Getting possible connectors.")
         Connecteur = namedtuple("Connecteur", "position regions_voisines")
-        possibles_connecteurs = self.mazes_positions + list(
-            map(lambda room: room.connecteurs, self.rooms_positions)
-        )
+        # possibles_connecteurs = self.mazes_positions + list(
+        #     map(lambda room: room.connecteurs, self.rooms_positions)
+        # )
         for position in self.inner_cases:
             regions_voisines = self.check_connecteur(position)
             # si plus de deux régions touchent position
