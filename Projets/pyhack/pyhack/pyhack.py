@@ -15,10 +15,6 @@ Room représente une pièce sur la carte
 On place les pièces. On crée ensuite un labyrinthe entre les pièces.
 Finalement, on relie le tout et on supprime les couloirs inutiles
 
-Profiling :
-python3.6 -m cProfile -o perf.prof pyhack.py
-python3.6 -m snakeviz perf.prof
-
 """
 
 
