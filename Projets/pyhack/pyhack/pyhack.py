@@ -103,6 +103,7 @@ AFFICHAGE = {
 DEFAULT_SIZE = (60, 60)
 
 # TODO: réorganiser les classes avec SOLID
+# TODO: move room test outside main class
 
 
 def add_tuple(tuple1, tuple2):
@@ -116,6 +117,21 @@ def add_tuple(tuple1, tuple2):
 
     """
     return tuple(map(add, tuple1, tuple2))
+
+
+def get_cases(absc_bottom_left, absc_bottom_right, ordo_bottom_left, ordo_top_left):
+    """Renvoie les cases dans la zone délimitées par les coordonnées.
+
+    Returns:
+        (set): //
+
+    """
+    return set(
+        product(
+            range(absc_bottom_left, absc_bottom_right),
+            range(ordo_bottom_left, ordo_top_left),
+        )
+    )
 
 
 class Room:
@@ -154,6 +170,8 @@ class Room:
         self.absc_bottom_right = abscisse + width
         self.ordo_top_left = ordonnee + height
 
+        # Test
+        assert len(self.cases) == self.nombre_de_cases
         self.logger.debug(f"La pièce comporte {self.nombre_de_cases} cases.")
 
     def intersect(self, room2):
@@ -185,17 +203,17 @@ class Room:
 
     @property
     def cases(self):
-        """Retourne les cases d'une pièce.
+        """Retourne toutes les cases d'une pièce.
 
         Returns:
             (set): cases
 
         """
-        return set(
-            product(
-                range(self.absc_bottom_left, self.absc_bottom_right + 1),
-                range(self.ordo_bottom_left, self.ordo_top_left + 1),
-            )
+        return get_cases(
+            self.absc_bottom_left,
+            self.absc_bottom_right + 1,
+            self.ordo_bottom_left,
+            self.ordo_top_left + 1,
         )
 
     @property
@@ -212,7 +230,23 @@ class Room:
             self.ordo_top_left - self.ordo_bottom_left + 1
         )
 
-    # TODO: room.get_connecteurs ?
+    @property
+    def connecteurs(self):
+        """Renvoie les cases de la limite extérieure de la pièce.
+
+        Returns:
+            (set): connecteurs possibles de la pièce.
+
+        """
+        return self.cases.difference(
+            get_cases(
+                self.absc_bottom_left - 1,
+                self.absc_bottom_right,
+                self.ordo_bottom_left - 1,
+                self.ordo_top_left,
+            )
+        )
+
     # TODO: room.get_count_entrance ?
 
 
@@ -265,11 +299,11 @@ class Map:
 
         # tableau
         self.board = np.zeros(shape=(self.width, self.height))
-        self.cases = set(product(range(self.width), range(self.height)))
+
+        # TODO: faire une fonction pour le set des cases
+        self.cases = get_cases(0, self.width, 0, self.height)
         # ensemble des possibilités de génération (on exclut la limite du plateau)
-        self.inner_cases = set(
-            product(range(1, self.width - 1), range(1, self.height - 1))
-        )
+        self.inner_cases = get_cases(1, self.width - 1, 1, self.height - 1)
 
         self.set_regions_parameters()
 
@@ -284,7 +318,8 @@ class Map:
         """Paramètres par défauts des pièces de la carte."""
         self.logger.info("Attribution des paramètres des pièces.")
 
-        # [room1, room2, ...] où room1 est le set des cases (tuple) de room1
+        # [room1, room2, ...] où room1 est une instance de Room
+        # TODO: remplacer rooms_positions par rooms
         self.rooms_positions = []
         self.mazes_positions = []
 
@@ -396,7 +431,15 @@ class Map:
         return rooms
 
     def get_voisins(self):
-        """Renvoie les voisins de toutes les cases de la carte (avec les bords)"""
+        """Renvoie les voisins de toutes les cases de la carte.
+
+        Parameters:
+            self.inner_cases (set): cases du plateau sans la limite extérieure
+
+        Returns:
+            (dict): dictionnaires position::voisins
+
+        """
         return {
             position: positions_voisines(position).intersection(self.cases)
             for position in self.inner_cases
@@ -540,6 +583,9 @@ class Map:
         """
         self.logger.debug(f"Getting possible connectors.")
         Connecteur = namedtuple("Connecteur", "position regions_voisines")
+        possibles_connecteurs = self.mazes_positions + list(
+            map(lambda room: room.connecteurs, self.rooms_positions)
+        )
         for position in self.inner_cases:
             regions_voisines = self.check_connecteur(position)
             # si plus de deux régions touchent position
@@ -605,11 +651,9 @@ class Map:
             voisins = self.all_voisins[connecteur.position]
             voisins.add(connecteur.position)
 
-            self.connecteurs = [
-                connecteur
-                for connecteur in self.connecteurs
-                if connecteur.position not in voisins
-            ]
+            self.connecteurs = list(
+                filter(lambda c: c.position not in voisins, self.connecteurs)
+            )
             # add connected regions to connected
             self.connected.add(connecteur.position)
             for region in connecteur.regions_voisines:
@@ -627,8 +671,8 @@ class Map:
         done = False
         while not done:
             done = True
-            for position in self.inner_cases:
-                # on ne traite pas les murs
+            for position in self.connected:
+                # on ne traite pas les cases modifiées en mur
                 if self.board[position] == EMPTY:
                     continue
                 # s'il n'y a qu'une sortie, c'est une case inutile

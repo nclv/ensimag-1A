@@ -161,7 +161,16 @@ $$
 
 ###### Réponse :
 
-$$\frac{\partial F}{\partial x\partial y} = f$$
+$$f_Y(y) = \int_{x \in \mathrm{R}} f(x, y)dx = 10y^2\mathrm{1}_{D}(x, y)$$ et $$F_Y(y) = F_{(X,Y)}(\infty, y) = \int_{-\infty}^y f_Y(t)dt  = 10\int_{-\infty}^y t^2\mathrm{1}_{D}(x, t)dt=
+\left\{
+    \begin{array}{ll}
+        0 & \text{si } y \leq 0 \\
+        \frac{10}{3}y^3 & \text{si } 0 < y < 1 \\
+        \frac{10}{3} & \text{sinon.}
+    \end{array}
+\right.$$
+
+$$F_Y\bigg(\frac{2}{3}\bigg) = \frac{80}{81}$$
 
 ** **
 
