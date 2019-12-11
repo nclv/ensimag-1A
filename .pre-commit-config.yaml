@@ -1,4 +1,5 @@
 # See https://pre-commit.com/ for usage and config
+exclude: '^(?!Projets/pyhack/)'
 repos:
 - repo: local
   hooks:
