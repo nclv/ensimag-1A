@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "847a5c87871ed95a6d21e44846db023721458151a705b9765d42a24407e39a4d"
+            "sha256": "c4a82f037da045471b4adefbb5e594df6cbf3acd06ed99bc4f0ef616784d95ca"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,6 +42,9 @@
             ],
             "index": "pypi",
             "version": "==1.17.4"
+        },
+        "pyhack": {
+            "path": "."
         }
     },
     "develop": {

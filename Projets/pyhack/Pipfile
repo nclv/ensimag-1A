@@ -8,6 +8,7 @@ python_version = "3.6"
 
 [packages]
 numpy = "*"
+pyhack = {path = "."}
 
 [dev-packages]
 black = "==19.3b0"

@@ -30,7 +30,7 @@ from itertools import product
 from operator import add
 from random import choice, randrange
 
-import log
+from pyhack import log
 
 # Vérification de la version de l'installation
 try:
