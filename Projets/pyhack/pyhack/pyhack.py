@@ -1,8 +1,8 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# !/usr/bin/env python3
 
-__version__ = "1.0.0"
-__author__ = "VINCENT Nicolas" + "Alan Dione"
+# __version__ = "1.0.0"
+# __author__ = "VINCENT Nicolas" + "Alan Dione"
 
 """
 Nicolas VINCENT / Alan Dione
@@ -45,7 +45,7 @@ except AssertionError:
 try:
     import numpy as np
 except ImportError:
-    subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
+    subprocess.run(["pip", "install", "-r", "../requirements.txt"], check=True)
     raise SystemExit()
 
 # pylint: disable=logging-format-interpolation
@@ -84,7 +84,7 @@ AFFICHAGE_DEBUG = {
     ROOM: "r",
     CORRIDOR: "c",
     GOAL: "!",
-    CONNECTOR: "f",
+    CONNECTOR: "#",
     ENTRANCE: "e",
 }
 
@@ -582,9 +582,9 @@ class Map:
         """
         self.logger.debug(f"Getting possible connectors.")
         Connecteur = namedtuple("Connecteur", "position regions_voisines")
-        possibles_connecteurs = self.mazes_positions + list(
-            map(lambda room: room.connecteurs, self.rooms_positions)
-        )
+        # possibles_connecteurs = self.mazes_positions + list(
+        #     map(lambda room: room.connecteurs, self.rooms_positions)
+        # )
         for position in self.inner_cases:
             regions_voisines = self.check_connecteur(position)
             # si plus de deux régions touchent position
@@ -933,6 +933,9 @@ def get_parser():
         "--version", action="version", version=f"%(prog)s {__version__}"
     )
     parser.add_argument("-d", "--debug", action="store_true", help="enable debug mode")
+    parser.add_argument(
+        "-m", "--show-all-map", action="store_true", help="disable field of view"
+    )
 
     args = parser.parse_args()
     return args, parser
@@ -945,8 +948,10 @@ def main():
     # on laisse un espace entre les colonnes mais pas entre les lignes
     carte = Map(height - 1, width // 2)
     carte.gen_board()
-    # check debug mode
+    # check debug mode and field of view
     affichage = AFFICHAGE
+    if args.show_all_map:
+        LOGGER.debug("Field of view turned of.")
     if args.debug:
         LOGGER.debug("Debug mode turned on.")
         affichage = AFFICHAGE_DEBUG
@@ -954,7 +959,9 @@ def main():
     while carte.localisation_player != carte.goal:
         # Affichage
         draw_board(
-            carte.board, affichage, carte.cases if args.debug else carte.visibles_cases
+            carte.board,
+            affichage,
+            carte.cases if args.show_all_map else carte.visibles_cases,
         )
         direction, movements = get_input_direction(carte)
         if direction in ["quit", "exit"]:
