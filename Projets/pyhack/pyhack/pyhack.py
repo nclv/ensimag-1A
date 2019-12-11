@@ -18,20 +18,19 @@ Finalement, on relie le tout et on supprime les couloirs inutiles
 """
 
 
-from random import randrange, choice
-from operator import add
-from itertools import product
-from collections import namedtuple
-import subprocess
-import platform
-import time
-import sys
-import logging
-import functools
 import argparse
+import functools
+import logging
+import platform
+import subprocess
+import sys
+import time
+from collections import namedtuple
+from itertools import product
+from operator import add
+from random import choice, randrange
 
 import log
-
 
 # Vérification de la version de l'installation
 try:
