@@ -1,0 +1,99 @@
+% Alice - Bob
+%
+%   1. A -> B: {Na,A}_Kb
+%   2. B -> A: {Na,Nb}_Ka
+%   3. A -> B: {Nb}_Kb
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%HLPSL:
+role alice (A, B: agent,             
+            Ka, Kb: public_key,      
+            SND, RCV: channel (dy)) 
+played_by A def=
+
+  local State : nat, 
+        Na, Nb: text
+
+  init State := 0
+
+  transition  
+   
+    0.  State  = 0 /\ RCV(start) =|> 
+	State':= 2 /\ Na' := new() /\ SND({Na'.A}_Kb)
+		   /\ secret(Na', secret_na,{A,B}) 
+		   /\ witness(A,B,bob_alice_na,Na')
+
+    2.  State  = 2 /\ RCV({Na.Nb'}_Ka) =|> 
+	State':= 4 /\ SND({Nb'}_Kb) 
+		   /\ request(A,B,alice_bob_nb,Nb')
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+role bob(A, B: agent,      
+         Ka, Kb: public_key,      
+         SND, RCV: channel (dy)) 
+played_by B def=
+
+  local State : nat, 
+	Na, Nb: text
+
+  init State := 1
+
+  transition 
+
+    1.  State  = 1 /\ RCV({Na'.A}_Kb) =|> 
+	State':= 3 /\ Nb' := new() /\ SND({Na'.Nb'}_Ka)
+		   /\ secret(Nb', secret_nb,{A,B}) 
+		   /\ witness(B,A,alice_bob_nb,Nb')
+
+    3.  State  = 3 /\ RCV({Nb}_Kb) =|> 
+	State':= 5 /\ request(B,A,bob_alice_na,Na)
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+role session(A, B: agent, Ka, Kb: public_key) def=
+
+  local SA, RA, SB, RB: channel (dy)
+
+  composition 
+
+	alice(A,B,Ka,Kb,SA,RA)
+     /\ bob  (A,B,Ka,Kb,SB,RB)
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+role environment() def=
+
+    const a, b	       : agent,
+	  ka, kb, ki   : public_key,
+	  secret_na, secret_nb,
+	  alice_bob_nb,
+	  bob_alice_na : protocol_id
+
+    intruder_knowledge = {a, b, ka, kb, ki, inv(ki)}
+
+    composition
+
+	session(a,b,ka,kb)
+
+
+end role
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+goal
+
+  secrecy_of secret_na, secret_nb
+  authentication_on alice_bob_nb
+  authentication_on bob_alice_na
+
+end goal
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+environment()

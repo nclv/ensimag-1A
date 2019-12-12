@@ -1,0 +1,104 @@
+%NSPKxor Protocol
+
+%
+%   1. A -> B: {Na.A}_Kb
+%   2. B -> A: {Nb, Na xor B}_Ka
+%   3. A -> B: {Nb}_Kb
+
+ 
+role alice (A,B     : agent, 
+            Ka,Kb   : public_key,  
+            Snd,Rcv : channel (dy)) played_by A def=
+
+  local 
+     State  : nat, 
+     Na    : message, 
+     Nb     : text
+	
+  init 
+     State:=0
+
+  transition 
+    1. State=0 /\ Rcv(start) =|>
+          State':=1
+       /\ Na':=new()
+       /\ Snd({Na'.A}_Kb)
+       /\ secret(Na',secret_na,{A,B})
+
+
+    2. State=1 /\ Rcv({Nb'.xor(Na,B)}_Ka) =|>
+          State':=2
+       /\ Snd({Nb'}_Kb)
+
+end role
+
+
+ 
+role bob (B,A     : agent,  
+          Kb,Ka   : public_key,  
+          Snd,Rcv : channel (dy)) played_by B def=
+
+  local 
+     State : nat, 
+     Na    : message, 
+     Nb    : text
+
+  init 
+     State:=0
+ 
+  transition 
+    1. State=0 /\ Rcv({Na'.A}_Kb) =|> 
+          State':=1 
+       /\ Nb':=new()
+       /\ Snd({Nb'.xor(Na',B)}_Ka)
+  
+
+
+    2. State=1 /\ Rcv({Nb}_Kb) =|> 
+          State':=2 
+      
+
+end role
+
+
+
+role session (A,B: agent,
+              Ka, Kb: public_key, 
+              SND, RCV: channel(dy) ) def=
+
+  composition
+    alice(A,B,Ka,Kb,SND,RCV) /\ 
+    bob(B,A,Kb,Ka,SND,RCV)
+
+end role
+
+
+
+role environment() def=
+
+  local
+     Snd, Rcv: channel(dy)
+  const
+     a, b, i: agent,
+     ka, kb, ki: public_key,
+     secret_na : protocol_id
+
+  intruder_knowledge = {a,b,i,ka,kb,ki,inv(ki)}
+
+  composition
+    session(a,b,ka,kb,Snd,Rcv) /\
+    session(a,i,ka,ki,Snd,Rcv)  
+  
+end role
+
+
+goal 
+     secrecy_of secret_na
+
+end goal
+
+
+
+environment()
+
+

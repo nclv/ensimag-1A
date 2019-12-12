@@ -1,0 +1,125 @@
+
+%
+%   1. A -> B: A,{Na}_Kb
+%   2. B -> A: B,{Nb}_Ka
+%   3. A -> B: {zero,Msg}_(Na,Nb)
+%   4. B -> A: {one,Msg}_(Na,Nb)
+ 
+
+%Haykal Tej, Siemens CT IC 3, 2003 and
+%Luca Compagna et al, AI-Lab DIST University of Genova, November 2004
+
+ 
+
+
+
+
+
+role share_Init ( A, B     : agent, 
+                  Ka, Kb   : public_key,
+                  Snd, Rcv : channel(dy)) played_by A def=
+
+  local  State   : nat,
+         Na, Msg : text,
+         Nb      : text,
+         K       : message % text.text
+
+  init   State := 0
+  accept State = 3
+
+  transition
+
+   1. State  = 0 /\ Rcv(start) =|> 
+      State':= 1 /\ Na':= new()
+                 /\ Snd(A.{Na'}_Kb)
+
+   2. State  = 1 /\ Rcv(B.{Nb'}_Ka) =|> 
+      State':= 2 /\ K':= Na.Nb'
+                 /\ secret(Na.Nb',nanb,{A,B})
+		 /\ Msg':= new()
+                 /\ Snd({zero.Msg'}_(Na.Nb')) 
+
+
+
+   3. State  = 2 /\ Rcv({one.Msg}_K) =|> 
+      State':= 3 
+
+
+end role
+
+
+
+role share_Resp (B, A     : agent,
+                 Kb, Ka   : public_key,
+                 Snd, Rcv : channel (dy)) played_by B def=
+
+  local State   : nat,
+        Nb      : text,
+        Msg, Na : text,
+        K       : message % text.text
+
+  init   State := 0
+  accept State = 2 
+
+  transition
+
+   1. State  = 0 /\ Rcv(A.{Na'}_Kb) =|> 
+      State':= 1 /\ Nb':= new()
+                 /\ Snd(B.{Nb'}_Ka)
+                 /\ K':= Na'.Nb'
+                 /\ secret(Na'.Nb',nanb,{A,B})
+
+
+   2. State  = 1 /\ Rcv({zero.Msg'}_K) =|> 
+      State':= 2 /\ Snd({one.Msg'}_K)
+
+
+
+
+end role
+
+
+
+role session(A, B           : agent,
+             Ka, Kb         : public_key) def=
+
+  local  SA, RA, SB, RB : channel (dy)
+
+  composition
+    share_Init(A,B,Ka,Kb,SA,RA) /\
+    share_Resp(B,A,Kb,Ka,SB,RB)
+
+end role
+
+
+
+role environment() def=
+ 
+ const zero, one    : text,
+       a, b, i      : agent,
+       ka, kb, ki   : public_key,
+       k1, k2, msg, nanb : protocol_id
+
+ intruder_knowledge = {a,b,ka,kb,ki,i,inv(ki),zero,one}
+
+ composition
+
+        session(a,b,ka,kb) 
+    /\  session(a,i,ka,ki) 
+    /\  session(i,b,ki,kb)
+    /\  session(i,a,ki,ka) 
+end role
+
+
+
+goal
+
+
+    secrecy_of nanb
+
+
+end goal
+
+
+
+environment()
