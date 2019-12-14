@@ -161,16 +161,16 @@ $$
 
 ###### Réponse :
 
-$$\forall y \in R, \quad f_Y(y) = \int_{x \in \mathrm{R}} f(x, y)dx = 5y^2\mathrm{1}_{D}(x, y)$$ et $$F_Y(y) = F_{(X,Y)}(\infty, y) = \int_{-\infty}^y f_Y(t)dt  = 5\int_{-\infty}^y t^2\mathrm{1}_{D}(x, t)dt=
+$$\forall y \in R, \quad f_Y(y) = \int_{x \in \mathrm{R}} f(x, y)dx = \int_{x=0}^{x=y} 10xy^2dx = 5y^4\mathrm{1}_{]0,1[}(y)$$ et $$F_Y(y) = F_{(X,Y)}(\infty, y) = \int_{-\infty}^y f_Y(t)dt  = 5\int_{-\infty}^y t^4\mathrm{1}_{]0,1[}(t)dt=
 \left\{
     \begin{array}{ll}
         0 & \text{si } y \leq 0 \\
-        \frac{5}{3}y^3 & \text{si } 0 < y < 1 \\
-        \frac{5}{3} & \text{sinon.}
+        y^5 & \text{si } 0 < y < 1 \\
+        1 & \text{sinon.}
     \end{array}
 \right.$$
 
-$$F_Y\bigg(\frac{2}{3}\bigg) = \frac{40}{81}$$
+$$F_Y\bigg(\frac{2}{3}\bigg) = \frac{32}{243}$$
 
 ** **
 
@@ -183,6 +183,12 @@ $$F_Y\bigg(\frac{2}{3}\bigg) = \frac{40}{81}$$
 
 On cherchera à simuler tout d’abord $Y$ selon la loi marginale de densite $f_Y$. Ensuite, sachant $Y = y$, on cherchera à simuler la loi conditionnelle de densité $f^{Y = y}_X$.
 
+$$\forall x \in R, \quad f^{Y = y}_X(x) = \frac{f(x,y)}{\int_{t \in \mathrm{R}} f(t, y)dt} = \frac{10xy^2\mathrm{1}_{D}(x,y)}{5y^4\mathrm{1}_{]0,1[}(y)} = \frac{2x}{y^2}\mathrm{1}_{]0, y[}(x)$$
+
+Ce qui donne par la méthode d'inversion :
+$Y := \bigg(\frac{ALEA}{5}\bigg)^{\frac{1}{4}}$
+$X := Y\bigg(\frac{ALEA}{2}\bigg)^{\frac{1}{2}}$
+
 ** **
 
 ##### Question 10
@@ -191,6 +197,10 @@ On cherchera à simuler tout d’abord $Y$ selon la loi marginale de densite $f_
 * On pose $Z =  X Y$. Déterminer la densité de la loi de la variable $Z$.
 
 ###### Réponse :
+
+Pour $ 0 < z < 1$, et $Y > 0$, la condition $XY \leq z$ équivant à $X \leq \frac{z}{Y}$.
+$$P(XY \leq z) = \int_0^1 \int_0^{z/y}10xy^2dxdy = \int_0^1 5z^2 dy = 5z^2$$
+Donc, $f_Z(z) = 10z$.
 
 
 ** **
