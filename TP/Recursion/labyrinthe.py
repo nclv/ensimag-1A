@@ -34,7 +34,7 @@ def make_maze(width=8, height=5):
             --> on modifie (max(y, next_y), x)
         On reste sur l'horizontale:
             Quand on va vers la gauche on modifie la case actuelle
-            Quand on va vers la doite on modifie la case de droite
+            Quand on va vers la droite on modifie la case de droite
             --> on modifie (y, max(x, next_x))
 
         """
