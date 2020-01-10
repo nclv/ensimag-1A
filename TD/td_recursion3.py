@@ -77,10 +77,10 @@ def combinaisons_valides(nombre_des, des, fonction_validation):
         compteur = 0
         for resultat in range(1, 7):
             des[nombre_des - 1] = resultat
-            compteur += lancers_somme_contrainte(nombre_des - 1, des, fonction_validation)
+            compteur += combinaisons_valides(nombre_des - 1, des, fonction_validation)
         return compteur
     else:
-        return bool(fonction_validation(des))
+        return int(fonction_validation(des))
 
 
 def main():
