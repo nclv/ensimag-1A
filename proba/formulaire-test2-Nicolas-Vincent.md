@@ -201,6 +201,7 @@ $X := Y\bigg(\frac{ALEA}{2}\bigg)^{\frac{1}{2}}$
 Pour $ 0 < z < 1$, et $Y > 0$, la condition $XY \leq z$ équivant à $X \leq \frac{z}{Y}$.
 $$P(XY \leq z) = \int_0^1 \int_0^{z/y}10xy^2dxdy = \int_0^1 5z^2 dy = 5z^2$$
 Donc, $f_Z(z) = 10z$.
+(le résultat est faux mais je n'ai pas trouvé mon erreur...)
 
 
 ** **
