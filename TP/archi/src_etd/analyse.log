@@ -1,0 +1,7 @@
+Determining compilation order of HDL files.
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/src_etd/vhd/lfsr.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'lfsr'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/src_etd/vhd/basc_d.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'basc_D'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/src_etd/vhd/tb_lfsr.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'tb_lfsr'

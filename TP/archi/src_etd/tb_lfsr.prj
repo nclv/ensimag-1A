@@ -1,0 +1,3 @@
+vhdl work "vhd/lfsr.vhd"
+vhdl work "vhd/basc_d.vhd"
+vhdl work "vhd/tb_lfsr.vhd"

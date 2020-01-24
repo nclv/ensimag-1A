@@ -1,0 +1,5 @@
+vhdl work "vhd/tb_bonusfpga.vhd"
+vhdl work "vhd/bonusfpga.vhd"
+vhdl work "vhd/AC.vhd"
+vhdl work "vhd/basc_d.vhd"
+vhdl work "vhd/div_freq.vhd"

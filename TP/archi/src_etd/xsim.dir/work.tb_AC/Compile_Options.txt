@@ -1,0 +1,1 @@
+"work.tb_AC" -nolog -debug "typical" 

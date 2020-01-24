@@ -1,0 +1,1 @@
+"work.tb_lfsr" -nolog -debug "typical" 

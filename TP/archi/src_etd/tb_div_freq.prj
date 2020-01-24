@@ -1,0 +1,3 @@
+vhdl work "vhd/div_freq.vhd"
+vhdl work "vhd/basc_d.vhd"
+vhdl work "vhd/tb_div_freq.vhd"
