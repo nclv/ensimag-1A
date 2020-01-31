@@ -15,14 +15,14 @@ architecture behavioral of tb_compteur4 is
     end component;
 
     signal clk:     std_logic := '0';
-    constant clk_period : time := 8 ns;
+    constant clk_period : time := 8 ns; -- 8 ns par clk
     signal reset:   std_logic;
 
     signal cpt :  unsigned (3 downto 0);
 
 
 begin
-
+    -- compteur en hexadecimal
     C_compteur4: compteur4
     port map (  clk     => clk,
                 reset   => reset,
@@ -30,7 +30,7 @@ begin
 
     process
     begin
-        wait for clk_period/2 ;
+        wait for clk_period/2 ; -- on change clk toutes les moitiés de clk_period, clk_period porte bien son nom
         clk <= not clk;
         wait for clk_period/2 ;
         clk <= not clk;
@@ -40,12 +40,11 @@ begin
     begin
         reset <= '1';
         wait for clk_period ;
-        reset <= '0';
-        wait for 10*clk_period ;
+        reset <= '0'; -- premier reset
+        wait for 10*clk_period ; -- au bout de 10 on reset le compteur (on ajoute 1 à chaque clk_period, mise à 1 de reset)
         reset <= '1';
-        wait for clk_period ;
+        wait for clk_period ; -- on mets tout de suite reset à 0 pour ne pas bloquer le compteur à 1
         reset <= '0';
-        wait;
+        wait; -- on continue d'incrémenter le compteur jusqu'à la fin des 8ns
     end process;
 end behavioral;
-

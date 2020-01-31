@@ -9,7 +9,7 @@ entity compteur4 is
     clk :    in  std_logic; -- entrée d'horloge de ce circuit
     reset :  in  std_logic; -- entrée de remise à zéro du circuit
     cpt:     out unsigned (3 downto 0) -- la sortie cpt est un vecteur de 4 bits interprétable comme un entier non signé.
-    -- cpt prend donc des valeurs entre 0 et 15 et on peut lui appliquer des opérateurs arithmétiques +, -, *, etc. 
+    -- cpt prend donc des valeurs entre 0 et 15 et on peut lui appliquer des opérateurs arithmétiques +, -, *, etc.
     -- ainsi que des comparaisons <, >, <=, >=, =, /=
   );
 end compteur4 ;
@@ -32,5 +32,13 @@ architecture mixte of compteur4 is
 
 begin
 
+  REG0: reg4b
+  port map (  d => dd,
+              clk => clk,
+              rst => reset,
+              q => curval
+              );
+  dd <= curval + 1;
+  cpt <= curval;
   -- Instanciez un registre 4 bits pour alimenter le signal curval et affectez une valeur à dd et à cpt
 end mixte;
