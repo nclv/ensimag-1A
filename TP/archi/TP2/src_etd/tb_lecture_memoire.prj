@@ -1,0 +1,4 @@
+vhdl work "vhd/lecture_memoire.vhd"
+vhdl work "vhd/Compteur.vhd"
+vhdl work "vhd/RAM_Video.vhd"
+vhdl work "vhd/tb_lecture_memoire.vhd"

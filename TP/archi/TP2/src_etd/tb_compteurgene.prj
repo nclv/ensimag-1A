@@ -1,0 +1,3 @@
+vhdl work "vhd/reggene.vhd"
+vhdl work "vhd/compteurgene.vhd"
+vhdl work "vhd/tb_compteurgene.vhd"
