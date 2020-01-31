@@ -1,0 +1,1 @@
+"work.tb_VGA" -nolog -debug "typical" 

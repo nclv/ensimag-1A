@@ -11,7 +11,7 @@ end lecture_memoire;
 architecture mixte of lecture_memoire is
 
   component Compteur is
-	generic (n: positive := 17);
+	generic (n: positive := 15);
 	port (cpt : out unsigned(n-1 downto 0);
 	      max : in unsigned(n-1 downto 0);
 	      clk : in std_logic;
@@ -22,13 +22,14 @@ architecture mixte of lecture_memoire is
     port (
       clk  : in    std_logic; -- horloge
       addr : in    unsigned(14 downto 0); -- bus d'adresse
-      do   : out   unsigned(31 downto 0); -- bus de données 
+      do   : out   unsigned(31 downto 0); -- bus de données
       we   : in    std_logic -- sélecteur lecture (0) /écriture (1)
       );
   end component;
 
   -- Ajouter ici les signaux internes nécessaires
   -- Utiliser les mêmes types de signaux en interne que vu en externe
+  signal curval : unsigned(14 downto 0);
 
 begin
 -- Quelques indices sur la représentation des constantes :
@@ -42,5 +43,21 @@ begin
 -- Par exemple, "00"&x"0D" sera sur 10 bits.
 -- Rappelons aussi que la structure (others => Une_valeur_binaire ) peut être utilisée pour fixer tous les bits d'un vecteur à la même valeur.
 -- A COMPLETER
+  COMPT: Compteur
+    generic map (n => 15)
+    port map (clk => clk,
+              rst => rst,
+              max => (others => '1'),
+              cpt => curval
+              );
+
+  RAM: RAM_Video
+    port map (
+      clk => clk,
+      addr => curval,
+      do => data,
+      we => '0'
+      );
+
 
 end mixte;

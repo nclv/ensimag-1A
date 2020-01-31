@@ -1,0 +1,322 @@
+
+****** Vivado v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source synthese.vivado.tcl
+# set DEVICE         [lindex $argv 0]
+# set TOP            [lindex $argv 1]
+# set TOP_ENTITY     [lindex $argv 2]
+# source read_prj.vivado.tcl
+## proc read_prj {filename} {
+## 	puts "Read $filename"
+## 
+## 	set fp [open $filename r]
+## 	set file_data [read $fp]
+## 	set lines [split $file_data "\n"]
+## 
+## 	foreach line $lines {
+## 		if {[regexp {(\w+)\s+(\w+)\s+\"(.+)\"}  ${line}  matched  fmt lib src]} {
+## 			puts "Read: $fmt $lib $src"
+## 			if {$fmt=="vhdl"} {
+## 				read_vhdl -library $lib $src
+## 			}
+## 		}
+## 	}
+## 
+## 	close $fp
+## }
+# read_prj ${TOP}.prj
+Read compteurgene.prj
+Read: vhdl work vhd/reggene.vhd
+Read: vhdl work vhd/compteurgene.vhd
+# if [file exists "${TOP}_${DEVICE}.xdc"] {
+# 	read_xdc ${TOP}_${DEVICE}.xdc
+# } else {
+# # horloge clk à 125MHz
+# 	read_xdc clock.xdc
+# }
+# auto_detect_xpm
+# synth_design -top ${TOP_ENTITY} -part ${DEVICE}
+Command: synth_design -top compteurgene -part xc7z010-clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Device 21-403] Loading part xc7z010clg400-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 24534 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1777.789 ; gain = 150.715 ; free physical = 24923 ; free virtual = 60683
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'compteurgene' [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/compteurgene.vhd:16]
+	Parameter n bound to: 8 - type: integer 
+	Parameter n bound to: 8 - type: integer 
+INFO: [Synth 8-3491] module 'reggene' declared at '/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/reggene.vhd:5' bound to instance 'CPTgene' of component 'reggene' [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/compteurgene.vhd:34]
+INFO: [Synth 8-638] synthesizing module 'reggene' [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/reggene.vhd:15]
+	Parameter n bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'reggene' (1#1) [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/reggene.vhd:15]
+INFO: [Synth 8-256] done synthesizing module 'compteurgene' (2#1) [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/compteurgene.vhd:16]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 1832.551 ; gain = 205.477 ; free physical = 24950 ; free virtual = 60708
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:07 . Memory (MB): peak = 1835.512 ; gain = 208.438 ; free physical = 24948 ; free virtual = 60706
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:07 . Memory (MB): peak = 1835.512 ; gain = 208.438 ; free physical = 24948 ; free virtual = 60706
+---------------------------------------------------------------------------------
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/compteurgene_xc7z010-clg400-1.xdc]
+Finished Parsing XDC File [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/compteurgene_xc7z010-clg400-1.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1939.242 ; gain = 0.000 ; free physical = 24848 ; free virtual = 60606
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1939.242 ; gain = 0.000 ; free physical = 24848 ; free virtual = 60606
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:08 ; elapsed = 00:00:14 . Memory (MB): peak = 1939.246 ; gain = 312.172 ; free physical = 24929 ; free virtual = 60686
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z010clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:08 ; elapsed = 00:00:14 . Memory (MB): peak = 1939.246 ; gain = 312.172 ; free physical = 24929 ; free virtual = 60686
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:08 ; elapsed = 00:00:14 . Memory (MB): peak = 1939.246 ; gain = 312.172 ; free physical = 24928 ; free virtual = 60686
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:14 . Memory (MB): peak = 1939.254 ; gain = 312.180 ; free physical = 24928 ; free virtual = 60686
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
++---Registers : 
+	                8 Bit    Registers := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module compteurgene 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
+Module reggene 
+Detailed RTL Component Info : 
++---Registers : 
+	                8 Bit    Registers := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 80 (col length:40)
+BRAMs: 120 (col length: RAMB18 40 RAMB36 20)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:15 . Memory (MB): peak = 1939.254 ; gain = 312.180 ; free physical = 24915 ; free virtual = 60676
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:20 . Memory (MB): peak = 1939.254 ; gain = 312.180 ; free physical = 24790 ; free virtual = 60551
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:20 . Memory (MB): peak = 1939.254 ; gain = 312.180 ; free physical = 24790 ; free virtual = 60551
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:13 ; elapsed = 00:00:20 . Memory (MB): peak = 1939.254 ; gain = 312.180 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24789 ; free virtual = 60550
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     1|
+|2     |CARRY4 |     2|
+|3     |LUT1   |     1|
+|4     |FDRE   |     8|
+|5     |IBUF   |     2|
+|6     |OBUF   |     8|
++------+-------+------+
+
+Report Instance Areas: 
++------+----------+--------+------+
+|      |Instance  |Module  |Cells |
++------+----------+--------+------+
+|1     |top       |        |    22|
+|2     |  CPTgene |reggene |    11|
++------+----------+--------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.180 ; gain = 320.105 ; free physical = 24788 ; free virtual = 60549
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:13 ; elapsed = 00:00:19 . Memory (MB): peak = 1947.180 ; gain = 216.375 ; free physical = 24846 ; free virtual = 60607
+Synthesis Optimization Complete : Time (s): cpu = 00:00:15 ; elapsed = 00:00:21 . Memory (MB): peak = 1947.184 ; gain = 320.105 ; free physical = 24860 ; free virtual = 60621
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 2 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/compteurgene_xc7z010-clg400-1.xdc]
+Finished Parsing XDC File [/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/compteurgene_xc7z010-clg400-1.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.992 ; gain = 0.000 ; free physical = 24783 ; free virtual = 60544
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+16 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:19 ; elapsed = 00:00:26 . Memory (MB): peak = 1969.992 ; gain = 438.328 ; free physical = 24873 ; free virtual = 60634
+# report_utilization -file ${TOP}_utilization.rpt
+# report_timing_summary -file ${TOP}_timing.rpt
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+# get_ports *
+# set filename "${TOP}_summary.rpt"
+# set fileId [open $filename "w"]
+# if { [get_clocks] != "" } {
+# 	puts -nonewline $fileId "Clock  | " 
+# 	puts $fileId [get_property -min PERIOD [get_clocks]];
+# 	puts -nonewline $fileId "Slack  | "
+# 	puts $fileId [get_property SLACK [get_timing_paths]];
+# }
+# close $fileId
+# exit
+INFO: [Common 17-206] Exiting Vivado at Fri Jan 31 15:13:26 2020...

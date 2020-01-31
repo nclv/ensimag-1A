@@ -1,7 +1,11 @@
 Determining compilation order of HDL files.
-INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/reg4b.vhd" into library work
-INFO: [VRFC 10-3107] analyzing entity 'reg4b'
-INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/compteur4.vhd" into library work
-INFO: [VRFC 10-3107] analyzing entity 'compteur4'
-INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/tb_compteur4.vhd" into library work
-INFO: [VRFC 10-3107] analyzing entity 'tb_compteur4'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/GeneSync.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'GeneSync'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/GeneRGB_bitmap.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'GeneRGB'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/RAM_Video.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'RAM_Video'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/VGA_bitmap.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'VGA'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/vhd/tb_VGA.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'tb_VGA'

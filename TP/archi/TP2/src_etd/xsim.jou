@@ -2,14 +2,14 @@
 # xsim v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Fri Jan 31 14:47:48 2020
-# Process ID: 20395
+# Start of session at: Fri Jan 31 16:44:59 2020
+# Process ID: 7840
 # Current directory: /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd
-# Command line: xsim -nolog -source {xsim.dir/work.tb_compteur4/xsim_script.tcl}
+# Command line: xsim -nolog -source {xsim.dir/work.tb_VGA/xsim_script.tcl}
 # Log file: 
 # Journal file: /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP2/src_etd/xsim.jou
 #-----------------------------------------------------------
 start_gui
-source xsim.dir/work.tb_compteur4/xsim_script.tcl
+source xsim.dir/work.tb_VGA/xsim_script.tcl
 source ./run.tcl
 close_sim

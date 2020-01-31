@@ -34,10 +34,15 @@ begin
   CPTgene: reggene
     -- completer pour choisir une taille pour cette instance de reggene :
     generic map (
+      n => n
       )
     -- completer pour decrire le branchement des ports :
-    port map (
-      );
+    port map (clk => clk,
+              rst => reset,
+              d => dd,
+              q => curval);
+  cpt <= curval ;
+  dd <= curval + 1;
 
 -- Equations :
 end mixte;
