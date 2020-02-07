@@ -1,0 +1,2 @@
+vhdl work "vhd/auto_unparmin.vhd"
+vhdl work "vhd/tb_auto.vhd"

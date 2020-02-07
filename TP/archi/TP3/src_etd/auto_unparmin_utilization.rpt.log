@@ -1,0 +1,61 @@
+
+****** Vivado v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source synthese.vivado.tcl
+# set DEVICE         [lindex $argv 0]
+# set TOP            [lindex $argv 1]
+# set TOP_ENTITY     [lindex $argv 2]
+# source read_prj.vivado.tcl
+## proc read_prj {filename} {
+## 	puts "Read $filename"
+## 
+## 	set fp [open $filename r]
+## 	set file_data [read $fp]
+## 	set lines [split $file_data "\n"]
+## 
+## 	foreach line $lines {
+## 		if {[regexp {(\w+)\s+(\w+)\s+\"(.+)\"}  ${line}  matched  fmt lib src]} {
+## 			puts "Read: $fmt $lib $src"
+## 			if {$fmt=="vhdl"} {
+## 				read_vhdl -library $lib $src
+## 			}
+## 		}
+## 	}
+## 
+## 	close $fp
+## }
+# read_prj ${TOP}.prj
+Read auto_unparmin.prj
+Read: vhdl work vhd/auto_unparmin.vhd
+Read: vhdl work vhd/tb_auto.vhd
+# if [file exists "${TOP}_${DEVICE}.xdc"] {
+# 	read_xdc ${TOP}_${DEVICE}.xdc
+# } else {
+# # horloge clk à 125MHz
+# 	read_xdc clock.xdc
+# }
+# auto_detect_xpm
+# synth_design -top ${TOP_ENTITY} -part ${DEVICE}
+Command: synth_design -top auto_unparmin -part xc7z010-clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z010'
+INFO: [Device 21-403] Loading part xc7z010clg400-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 20934 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1777.590 ; gain = 153.715 ; free physical = 9106 ; free virtual = 44584
+---------------------------------------------------------------------------------
+ERROR: [Synth 8-439] module 'auto_unparmin' not found
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:07 . Memory (MB): peak = 1832.340 ; gain = 208.465 ; free physical = 9132 ; free virtual = 44610
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+3 Infos, 0 Warnings, 0 Critical Warnings and 2 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Fri Feb  7 15:49:52 2020...
