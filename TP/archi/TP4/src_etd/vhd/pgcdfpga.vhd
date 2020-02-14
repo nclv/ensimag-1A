@@ -12,7 +12,7 @@ entity PGCDFPGA is
 end PGCDFPGA;
 
 architecture mixte of PGCDFPGA is
-        component PGCD 
+        component PGCD
         port ( clk   :    in  std_logic;
                reset :  in  std_logic;
                start : in  std_logic;
@@ -24,10 +24,10 @@ architecture mixte of PGCDFPGA is
         end component;
 
    component FD8CE
-      port ( C   : in    std_logic; 
-             CE  : in    std_logic; 
-             CLR : in    std_logic; 
-             D   : in    unsigned (7 downto 0); 
+      port ( C   : in    std_logic;
+             CE  : in    std_logic;
+             CLR : in    std_logic;
+             D   : in    unsigned (7 downto 0);
              Q   : out   unsigned (7 downto 0));
    end component;
 
@@ -35,7 +35,7 @@ architecture mixte of PGCDFPGA is
     signal s_A0, s_B0, s_pgcd, s_aff:  unsigned (7 downto 0);
 
 begin
-        
+
     i_PGCD: pgcd
     port map (  clk     => clk,
                 reset   => reset,
@@ -53,7 +53,7 @@ begin
                     d     => s_pgcd,
                     q     => s_aff);
 
-        s_A0 <= X"3C";
+        s_A0 <= X"3C"; -- X (hexadécimal) 60
         s_B0 <= "00"&B;
         aff <= s_aff(3 downto 0) when B(5)='0' else s_aff(7 downto 4);
 end mixte;

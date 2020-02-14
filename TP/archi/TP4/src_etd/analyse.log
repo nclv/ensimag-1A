@@ -1,0 +1,19 @@
+Determining compilation order of HDL files.
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/BDS.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'BDS'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/BDC.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'BDC'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/fd8ce.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'FD8CE'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/compm8.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'COMPM8'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/adsu8.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'ADSU8'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/PO.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'PO'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/PC.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'PC'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/pgcd.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'PGCD'
+INFO: [VRFC 10-163] Analyzing VHDL file "/user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/vhd/tb_pgcd.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'tb_pgcd'

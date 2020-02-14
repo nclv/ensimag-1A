@@ -1,0 +1,4 @@
+vhdl work "vhd/fd8ce.vhd"
+vhdl work "vhd/compm8.vhd"
+vhdl work "vhd/adsu8.vhd"
+vhdl work "vhd/PO.vhd"

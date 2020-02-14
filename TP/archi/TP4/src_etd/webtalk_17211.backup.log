@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Webtalk v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Fri Feb 14 14:30:00 2020
+# Process ID: 17211
+# Current directory: /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd
+# Command line: wbtcv -mode batch -source /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/xsim.dir/work.tb_PO/webtalk/xsim_webtalk.tcl -notrace
+# Log file: /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/webtalk.log
+# Journal file: /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/webtalk.jou
+#-----------------------------------------------------------
+source /user/6/.base/vincentn/home/Documents/Ensimag-TP/TP/archi/TP4/src_etd/xsim.dir/work.tb_PO/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Feb 14 14:30:00 2020...
