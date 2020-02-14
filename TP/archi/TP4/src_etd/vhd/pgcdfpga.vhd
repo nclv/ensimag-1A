@@ -54,6 +54,6 @@ begin
                     q     => s_aff);
 
         s_A0 <= X"3C"; -- X (hexadécimal) 60
-        s_B0 <= "00"&B;
+        s_B0 <= "00"&B; -- deux bits de poids fort de B à 0
         aff <= s_aff(3 downto 0) when B(5)='0' else s_aff(7 downto 4);
 end mixte;
