@@ -1,0 +1,8 @@
+vhdl work "vhd/CPU_pkg.vhd"
+vhdl work "vhd/prog_data.vhd"
+vhdl work "vhd/RAM8.vhd"
+vhdl work "vhd/periph.vhd"
+vhdl work "vhd/po.vhd"
+vhdl work "vhd/pc.vhd"
+vhdl work "vhd/system.vhd"
+vhdl work "vhd/tb_system.vhd"
