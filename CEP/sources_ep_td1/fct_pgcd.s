@@ -21,13 +21,6 @@ uint32_t pgcd_as(void)
   retour : a0
 */
     .text
-
-/* 
-Par défaut, toutes les étiquettes (ou symboles) déclarées dans un programme assembleur
-sont privées et invisibles à l’extérieur du fichier. Or la fonction pgcd_as doit être visible
-pour pouvoir être appelée par le programme principal. C’est le but de la directive .globl 
-qui rend l’étiquette pgcd_as publique.
-*/
     .globl pgcd_as
 pgcd_as:
 /* Contexte: on propose de mettre les variables i et j, respectivement dans les

@@ -1,0 +1,454 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[USenglish]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsthm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{ENSIMAG 1A 2020}
+\fancyhead[R]{M\'ethodes Num\'eriques}
+\newtheorem{lemma}{Lemme}[section]
+\newtheorem{remark}{Remarque}[section]
+\newtheorem{definition}{D\'efinition}[section]
+\newtheorem{corollary}{Corollaire}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{theorem}{Th\'eor\`eme}[section]
+\newtheorem{question}{Question}
+
+\usepackage{hologo} 
+%%\usepackage[dvips]{hyperref}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\renewcommand{\algorithmicrequire}{\textbf{Entr\'ees:}}
+\renewcommand{\algorithmicensure}{\textbf{Sorties:}}
+
+\begin{document}
+ \begin{center}
+  \begin{LARGE}
+  \textbf{TP M\'ethodes Num\'eriques~:}\\
+  \textit{Mod\'elisation du nuage ionique autour d'un polym\`ere charg\'e}
+  \end{LARGE}
+ \end{center}
+ 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.2]{actine.jpeg}
+\caption{
+Repr\'esentation sch\'ematique de la structure d'un filament d'actine (A) et du potentiel 
+\'electrostatique \`a sa surface (B). Un mod\`ele cylindrique de l'actine entour\'ee d'un nuage de
+contre-ions est repr\'esent\'e en C.}
+\label{actine}
+\end{center}
+
+\end{figure} 
+
+Ce TP constitue une introduction \`a la r\'esolution d'\'equations non lin\'eaires
+\`a travers la simulation d'un mod\`ele physique 
+de la distribution de charges ioniques autour d'un polym\`ere. 
+Il vous permettra de vous familiariser avec l'impl\'ementation et l'utilisation de certaines m\'ethodes
+it\'eratives pour les syst\`emes non lin\'eaires
+ainsi qu'avec la factorisation $L\, U$
+pour la r\'esolution de syst\`emes lin\'eaires.
+ 
+% \begin{center}
+ %\textbf{Informations Pratiques}
+% \end{center}
+\begin{itemize}
+\item 
+\textbf{Contacts~:}
+guillaume.james@univ-grenoble-alpes.fr,
+fatima.karbou@meteo.fr
+\item R\'ediger un \textbf{compte-rendu} dactylographi\'e (fichier pdf).
+Vous devez expliciter les m\'ethodes employ\'ees, pr\'esenter et commenter avec soin les r\'esultats obtenus.
+Nous conseillons d'utiliser le logiciel \hologo{LaTeX}.
+Pour un \'editeur en ligne adapt\'e au travail collaboratif~:
+\verb+https://fr.overleaf.com/+.
+\item \textbf{Travail en bin\^ome}. Il n'y a qu'un seul rapport \`a rendre par bin\^ome.
+\item \textbf{Remise du rapport:} le TP est \`a rendre au plus tard le \textbf{11 Mai 2020}.
+\item Programmes de calcul dans un langage au choix~: \textbf{Python}, \textbf{Matlab}, \textbf{Scilab} ou \textbf{C}. 
+Le code source n'est pas demand\'e, mais le rapport d\'ecrira les programmes 
+sous forme de pseudo-code, comme dans l'exemple suivant~:
+\begin{algorithm}[h]
+\caption{\label{cnl}Sch\'ema d'Euler pour $x^\prime = \sin{x}$}
+\begin{algorithmic}
+\REQUIRE condition initiale $x(0)$, pas de temps $h$
+\ENSURE $(x_k)_{0\leq k \leq k_{\mathrm{max}}}$ avec $x_k \approx x (k\, h)$
+\STATE $x_0 \leftarrow x(0)$
+\FOR{$k=0, \ldots ,  k_{\mathrm{max}}-1$}
+\STATE $x_{k+1} \leftarrow x_{k} + h\, \sin{x_k}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\end{itemize}
+
+\newpage
+\section{Introduction}
+
+\subsection{Mod\`eles et contenu du TP}
+La mod\'elisation du comportement \'electrique des polym\`eres en solution constitue un probl\`eme important, notamment
+en ce qui concerne les polym\`eres biologiques qui interviennent dans le fonctionnement de nos cellules
+(mouvement cellulaire, signaux ioniques,...). 
+Dans ce TP, nous allons \'etudier un mod\`ele simple d\'ecrivant le potentiel \'electrique et la distribution de charges
+autour d'un polym\`ere poss\'edant des charges de surface, plac\'e dans une solution ionique typique d'un milieu biologique.
+Un exemple est donn\'e par un filament d'actine repr\'esent\'e dans la figure \ref{actine}. Ce polym\`ere biologique
+est charg\'e n\'egativement en surface et entour\'e d'un nuage d'ions maintenus dans son voisinage
+par les interactions \'electrostatiques.
+
+Un mod\`ele classique d\'ecrivant le potentiel \'electrostatique $\phi$ autour d'un polym\`ere charg\'e dans une solution ionique
+est l'\'equation de Poisson-Boltzmann (PB)~:
+\begin{equation}
+\label{pb}
+\frac{d^2 \phi}{dr^2} + \frac{1}{r}\, \frac{d\phi}{dr} = \frac{2\, e\, n_0}{\epsilon}\, \mathrm{sh}\left(\frac{e\, \phi}{k_B\, T} \right), \quad r > R,
+\end{equation} 
+avec les conditions aux limites~:
+\begin{equation}
+\label{cl}
+\phi^\prime (R)=-\frac{\sigma}{\epsilon}, \quad
+\lim_{r\rightarrow +\infty}{\phi(r)}=0.
+\end{equation} 
+Le polym\`ere est assimil\'e \`a un cylindre infini de rayon $R$ et de densit\'e de charge surfacique $\sigma$, 
+autour duquel se trouve un solvent constitu\'e d'ions monovalents
+(par exemple $\mathrm{K}^+$ et $\mathrm{Cl}^-$). La concentration de ces ions \`a l'infini est not\'ee $n_0$, $e$ d\'esigne la 
+charge positive \'el\'ementaire, $\epsilon$ la permittivit\'e di\'electrique du solvent, $k_B$ la constante de Boltzmann, 
+$T$ la temp\'erature. 
+
+A partir de calcul de $\phi$, on obtient le champ \'electrique $E=-\nabla\, \phi$
+autour du polym\`ere et les concentrations de charges positives et n\'egatives $n_{\pm}$ 
+dans le nuage ionique, donn\'ees par la distribution de Boltzmann~:
+\begin{equation}
+\label{bdis}
+n_{\pm}=n_0\, \mathrm{exp}\left( \mp \frac{e\, \phi}{k_B\, T} \right).
+\end{equation}
+
+En posant $u(x)=-\frac{e}{k_B\, T}\, \phi (R\, x)$, on se ram\`ene \`a une version 
+adimensionn\'ee du mod\`ele PB~:
+\begin{equation}
+\label{pbr}
+\frac{d^2 u}{dx^2} + \frac{1}{x}\, \frac{du}{dx} = k^2\, 
+\mathrm{sh}\left( u \right), \quad x > 1,
+\end{equation} 
+\begin{equation}
+\label{clr}
+u^\prime (1)=-\mu , \quad
+\lim_{x\rightarrow +\infty}{u(x)}=0,
+\end{equation} 
+o\`u les param\`etres sans dimension $k$ et $\mu$ sont fonction des constantes et param\`etres physiques list\'es plus haut.
+On peut montrer que le probl\`eme (\ref{pbr})-(\ref{clr}) admet une solution $u$ unique.
+Dans ce TP, on fixera $k=1$ et on calculera la solution $u$ pour diff\'erentes valeurs de $\mu$, en utilisant
+un sch\'ema aux diff\'erences finies et 
+des m\'ethodes it\'eratives non-lin\'eaires (m\'ethode des approximations successives et m\'ethode de Newton).
+La connaissance de $u$ et donc de $\phi$ fournit ensuite la distribution de charges ioniques 
+autour du polym\`ere par la formule (\ref{bdis}).
+
+On \'etudiera \'egalement le mod\`ele de Debye-H\"uckel plus simple~:
+\begin{equation}
+\label{pbl}
+\frac{d^2 u}{dx^2} + \frac{1}{x}\, \frac{du}{dx} = k^2\, u, 
+\quad x > 1,
+\end{equation} 
+qui correspond \`a l'approximation lin\'eaire $\mathrm{sh}\left( u \right) \approx u$. Pour cela, on utilisera
+un sch\'ema aux diff\'erences finies et on r\'esoudra le syst\`eme lin\'eaire correspondant par
+factorisation $L\, U$.
+
+\subsection{\label{df}Sch\'ema aux diff\'erences finies}
+
+Nous allons d\'ecrire un sch\'ema aux diff\'erences finies du second ordre permettant d'approcher les solutions
+de (\ref{pbr})-(\ref{clr}) et de (\ref{clr})-(\ref{pbl}). Dans ce qui suit, on pose $f(u)=\mathrm{sh}\left( u \right)$
+dans le cas de l'\'equation (\ref{pbr}) et $f(u)=u$ pour l'\'equation (\ref{pbl}).
+
+Pour les calculs num\'eriques, on suppose $x \in [1,1+ \ell ]$ avec $k^{-1} \ll \ell $. 
+Les points de discr\'etisation sont $x_i = 1+i\, h$ avec un pas de discr\'etisation
+$h=\frac{\ell}{n} \ll k^{-1}$
+(dans les applications num\'eriques, on fixera $k=1$ et $\ell = 10$).
+On note $u_i$ une approximation num\'erique de $u(x_i )$.
+
+On remplace la condition aux limites $\lim_{x\rightarrow +\infty}{u(x)}=0$ par 
+$u(1+\ell )=0$, correspondant \`a $u_{n}=0$. 
+Pour approcher la condition aux limites $u^\prime (1)=-\mu$, on remarque que la solution v\'erifie
+$$
+u(1+h)=u(1)+h\, u^\prime (1) + \frac{h^2}{2}\, \left( \, k^2 f(u(1)) - u^\prime (1)   \, \right) + O(h^3)
+$$
+en effectuant un d\'eveloppement de Taylor et en \'evaluant $u^{\prime\prime}(1)$ avec (\ref{pbr}) ou (\ref{pbl}).
+La condition $u^\prime (1)=-\mu$ \'equivaut donc \`a
+$$
+-\mu (2-h) = \frac{2}{h}\, (u(1+h)-u(1)) - h \, k^2\, f(u(1)) +O(h^2).
+$$
+En n\'egligeant le reste d'ordre $2$, on obtient
+\begin{equation}
+\label{eqdf1}
+2\, (u_1 -u_0) - h^2 \, k^2\, f(u_0)
+= \mu \, h\, (h-2) 
+.
+\end{equation}
+Par ailleurs, en approchant les d\'eriv\'ees de l'\'equation (\ref{pbr}) ou (\ref{pbl}) par des diff\'erences
+finies centr\'ees, on obtient pour $i=1 , \ldots , n-1$~:
+$$
+\frac{u(x_{i+1})-2u(x_i)+u(x_{i-1})}{h^2}+ \frac{1}{x_i}\, \frac{u(x_{i+1})-u(x_{i-1})}{2h}= k^2\, f(u(x_i)) +O(h^2).
+$$ 
+En n\'egligeant le reste d'ordre $2$, on obtient
+\begin{equation}
+\label{eqdf}
+u_{i+1}-2u_i+u_{i-1}+ \frac{h}{2\, x_i}\, (u_{i+1}-u_{i-1})- k^2\, h^2\, f(u_i) =0, \quad 1 \leq i \leq n-1 .
+\end{equation}
+Le sch\'ema aux diff\'erences finies pour l'\'equation (\ref{pbr}) ou (\ref{pbl})
+correspond au syst\`eme des $n$ \'equations (\ref{eqdf1})-(\ref{eqdf}) \`a $n$ inconnues
+$u_0 , u_1 , \ldots , u_{n-1}$ (on rappelle que $u_n =0$).
+
+\section{Questions}
+
+\subsection{\label{factlu}Factorisation $L\, U$ des matrices tridiagonales}
+
+\noindent
+{\bf 1.} On consid\`ere une matrice $A \in M_n (\mathbb{R})$ tridiagonale admettant une factorisation $A = L\, U$.
+On note $a \in \mathbb{R}^n$ la diagonale de $A$, $b \in \mathbb{R}^{n-1}$ la sous-diagonale et
+$c \in \mathbb{R}^{n-1}$ la sur-diagonale. On rappelle que $L$ et $U$ sont bidiagonales, et on note
+$l \in \mathbb{R}^{n-1}$ la sous-diagonale de $L$ (de diagonale unit\'e)
+et $v \in \mathbb{R}^n$ la diagonale de $U$ (de sur-diagonale $c$). 
+Rappeler les formules de r\'ecurrence qui d\'eterminent $l$ et $v$ et
+\'ecrire une fonction correspondante \verb+[l,v]=lutri(a,b,c)+. 
+Donner un exemple de votre choix pour tester cette fonction.
+
+\vspace{1ex}
+
+On d\'ecompose la r\'esolution d'un syst\`eme tridiagonal $A\, x=z \in \mathbb{R}^n$ en une \'etape de factorisation 
+$A = L\, U$, suivie de la r\'esolution de $L\, y=z$ (\'etape de descente) et $U\, x=y$ (\'etape de remont\'ee).
+
+\vspace{1ex}
+
+\noindent
+{\bf 2.} 
+Rappeler les formules de r\'ecurrence qui d\'eterminent $y$ et
+\'ecrire une fonction correspondante \verb+y=descente(l,z)+. 
+Donner un exemple de votre choix pour tester cette fonction.
+
+\vspace{1ex}
+
+\noindent
+{\bf 3.} 
+Rappeler les formules de r\'ecurrence qui d\'eterminent $x$ et
+\'ecrire une fonction correspondante \verb+x=remonte(v,c,y)+. 
+Donner un exemple de votre choix pour tester cette fonction.
+
+\subsection{\label{mod1}R\'esolution de l'\'equation de Debye-H\"uckel}
+
+On consid\`ere le cas $f(u)=u$, $k=1$ et $h=10/n$
+dans (\ref{eqdf1})-(\ref{eqdf}), qui conduit au syst\`eme lin\'eaire~:
+\begin{eqnarray}
+\label{lin1}
+-(2+h^2)\, u_0 + 2\, u_1 
+&=&  \mu\, h\, (h-2) , \\
+\label{lin2}
+%\forall i=1,\ldots , n-2, \quad
+(1- \frac{h}{2\, x_i})\, u_{i-1}
+-(2+h^2)\, u_i
++ (1+\frac{h}{2\, x_i})\, u_{i+1}&=&0, 
+\quad 1 \leq i \leq n-2 ,
+\\
+\label{lin3}
+(1- \frac{h}{2\, x_{n-1}})\, u_{n-2}
+-(2+h^2)\, u_{n-1}
+&=&0.
+\end{eqnarray}
+On note $A \in M_n (\mathbb{R})$ la matrice tridiagonale du syst\`eme lin\'eaire
+(\ref{lin1})-(\ref{lin2})-(\ref{lin3}).
+
+\vspace{1ex}
+
+\noindent
+{\bf 4.} Montrer que $A$ est inversible et admet une factorisation $A = L\, U$.
+
+\vspace{1ex}
+
+\noindent
+{\bf 5.} On fixe $\mu = 1$.
+En utilisant les questions {\bf 1} \`a {\bf 3}, 
+calculer $(u_0 , u_1 , \ldots , u_{n-1})$ pour $n=1000$, c'est \`a dire
+$h=10^{-2}$.
+Tracer le graphe de $u_i$ en fonction de $x_i$.
+
+\vspace{1ex}
+
+\noindent
+{\bf 6.} 
+Toujours pour $\mu = 1$, 
+r\'esoudre le syst\`eme (\ref{lin1})-(\ref{lin2})-(\ref{lin3}) pour diff\'erentes valeurs de $n$ et
+tracer le graphe de $u_0$ en fonction de $h$. Commenter les r\'esultats.
+
+\subsection{\label{mod2}M\'ethode des approximations successives pour l'\'equation~PB}
+On consid\`ere le cas $f(u)=\mathrm{sh}(u)$, $k=1$ et $h=10/n$
+dans (\ref{eqdf1})-(\ref{eqdf}), qui conduit au syst\`eme non lin\'eaire~:
+\begin{eqnarray}
+\label{nonlin1}
+-(2+h^2)\, u_0 + 2\, u_1 
+&=&  
+h^2\, g(u_0)
++\mu\, h\, (h-2) , \quad \quad\\
+\label{nonlin2}
+%\forall i=1,\ldots , n-2, \quad
+(1- \frac{h}{2\, x_i})\, u_{i-1}
+-(2+h^2)\, u_i
++ (1+\frac{h}{2\, x_i})\, u_{i+1}&=&h^2\, g(u_i), \\
+\nonumber
+ & &
+%\quad 
+1 \leq i \leq n-2 ,
+\\
+\label{nonlin3}
+(1- \frac{h}{2\, x_{n-1}})\, u_{n-2}
+-(2+h^2)\, u_{n-1}
+&=&h^2\, g(u_{n-1}),
+\end{eqnarray}
+o\`u on note $g(u)=\mathrm{sh}(u) - u$.
+
+Pour r\'esoudre le syst\`eme (\ref{nonlin1})-(\ref{nonlin2})-(\ref{nonlin3}), on 
+calcule la suite d'approximations successives $u^{(k)}=(u_0^{(k)} , u_1^{(k)} , \ldots , u_{n-1}^{(k)})$
+d\'efinies par r\'ecurrence~:
+\begin{eqnarray}
+\label{nonlin1iter}
+-(2+h^2)\, u_0^{(k+1)} + 2\, u_1^{(k+1)} 
+&=&  
+h^2\, g(u_0^{(k)})
++\mu\, h\, (h-2) , \quad \quad\\
+\label{nonlin2iter}
+%\forall i=1,\ldots , n-2, \quad
+(1- \frac{h}{2\, x_i})\, u_{i-1}^{(k+1)}
+-(2+h^2)\, u_i^{(k+1)}
++ (1+\frac{h}{2\, x_i})\, u_{i+1}^{(k+1)}&=&h^2\, g(u_i^{(k)}), \\
+\nonumber
+ & &
+%\quad 
+1 \leq i \leq n-2 ,
+\\
+\label{nonlin3iter}
+(1- \frac{h}{2\, x_{n-1}})\, u_{n-2}^{(k+1)}
+-(2+h^2)\, u_{n-1}^{(k+1)}
+&=&h^2\, g(u_{n-1}^{(k)}),
+\end{eqnarray}
+avec $u^{(0)}\in \mathbb{R}^n$ solution du syst\`eme (\ref{lin1})-(\ref{lin2})-(\ref{lin3}).
+
+Le sch\'ema it\'eratif (\ref{nonlin1iter})-(\ref{nonlin2iter})-(\ref{nonlin3iter}) s'\'ecrit
+$A\, u^{(k+1)} = G(u^{(k)})$, o\`u $G\, : \, \mathbb{R}^n \rightarrow \mathbb{R}^n$ est l'application 
+d\'efinie par le membre de droite de (\ref{nonlin1iter})-(\ref{nonlin2iter})-(\ref{nonlin3iter}).
+
+\vspace{1ex}
+
+Pour les applications num\'eriques, on fixera $n=1000$, c'est \`a dire
+$h=10^{-2}$.
+
+\vspace{1ex}
+
+\noindent
+{\bf 7.} Ecrire une fonction qui calcule $u^{(k+1)}$ en fonction de $u^{(k)}$ en utilisant les questions {\bf 1} \`a {\bf 3}.
+
+\vspace{1ex}
+
+\noindent
+{\bf 8.} Ecrire un programme qui calcule les termes $u^{(k)}$ pour $k=0,1,\ldots , k_0$, jusqu'\`a ce qu'on ait soit $k_0 > 200$ 
+(nombre d'it\'erations trop grand, signe de non-convergence), soit (tol\'erance d'erreur atteinte, signe de convergence)~:
+$$
+\| A\, u^{(k_0)} - G(u^{(k_0)})  \|_\infty < \eta_1
+ \mbox{~et~} \| u^{(k_0)} - u^{(k_0 -1)} \|_\infty < \eta_2
+$$
+avec $\eta_1 = 10^{-12}$, $\eta_2 = 10^{-9}$.
+Dans ce dernier cas, $u^{(k_0)}$ est consid\'er\'e comme la solution num\'erique de (\ref{nonlin1})-(\ref{nonlin2})-(\ref{nonlin3}).
+Calculer cette solution pour $\mu =1$ et $\mu =4$.
+On tracera dans chaque cas le graphe de $u_i$ en fonction de $x_i$
+et on indiquera la valeur de $k_0$. 
+Sur les m\^emes graphes, comparer
+la solution de (\ref{nonlin1})-(\ref{nonlin2})-(\ref{nonlin3}) \`a celle du mod\`ele lin\'eaire 
+(\ref{lin1})-(\ref{lin2})-(\ref{lin3}). Conclusion ?
+
+\vspace{1ex}
+
+\noindent
+{\bf 9.} Etudier num\'eriquement si la m\'ethode it\'erative converge ou diverge lorsque $\mu$ varie dans l'intervalle $[0,7]$.
+
+\subsection{\label{mod2N}M\'ethode de Newton pour l'\'equation~PB}
+
+On consid\`ere le cas $f(u)=\mathrm{sh}(u)$, $k=1$ et $h=10/n$ dans (\ref{eqdf1})-(\ref{eqdf}).
+Le syst\`eme non lin\'eaire s'\'ecrit sous la forme~:
+\begin{eqnarray}
+\label{nonlineq1}
+F_0 (u_0 , u_1 )&=&0,\\
+\label{nonlineq2}
+F_i (u_{i-1} , u_i , u_{i+1} )&=&0, \quad 1\leq i \leq n-2 , \\ 
+\label{nonlineq3}
+F_{n-1} (u_{n-2} , u_{n-1} )&=&0,
+\end{eqnarray}
+o\`u les fonctions $F_i $ sont d\'efinies par~:
+\begin{eqnarray}
+\label{nonlinzero1}
+F_0 (u_0 , u_1 )&=&
+-2 \, u_0 - h^2 \, \mathrm{sh}(u_0) + 2\, u_1 +\mu\, h\, (2-h)
+, \quad \quad\\
+\label{nonlinzero2}
+F_i (u_{i-1} , u_i , u_{i+1} )&=&
+(1- \frac{h}{2\, x_i})\, u_{i-1}
+-2 \, u_i -h^2 \, \mathrm{sh}(u_i )
++ (1+\frac{h}{2\, x_i})\, u_{i+1}, \quad\quad\\
+\nonumber
+ & &
+%\quad 
+1 \leq i \leq n-2 ,
+\\
+\label{nonlinzero3}
+F_{n-1} (u_{n-2} , u_{n-1} )&=&
+(1- \frac{h}{2\, x_{n-1}})\, u_{n-2}
+-2 \, u_{n-1}-h^2 \, \mathrm{sh}(u_{n-1} ) .
+\end{eqnarray}
+Pour r\'esoudre le syst\`eme (\ref{nonlineq1})-(\ref{nonlineq2})-(\ref{nonlineq3}) par
+la m\'ethode de Newton, on calcule une suite $u^{(k)}=(u_0^{(k)} , u_1^{(k)} , \ldots , u_{n-1}^{(k)})^T$
+($(.)^T$ d\'esigne la transposition)
+d\'efinie par r\'ecurrence de la mani\`ere suivante~:
+\begin{equation}
+\label{newtonscheme}
+J_k \, (u^{(k+1)}-u^{(k)})= - F(u^{(k)}),
+\end{equation}
+avec $u^{(0)}\in \mathbb{R}^n$ solution du syst\`eme (\ref{lin1})-(\ref{lin2})-(\ref{lin3}).
+La fonction $F\, : \mathbb{R}^n \rightarrow \mathbb{R}^n$ est d\'efinie par $F=(F_0 , F_1 , \ldots , F_{n-1})^T$
+et $J_k = DF(u^{(k)}) \in M_{n}(\mathbb{R})$ d\'esigne la matrice jacobienne de $F$ (dans le cas pr\'esent tridiagonale), 
+dont le coefficient $(i,j)$ est $\frac{\partial F_i}{\partial u_j}$ pour $0\leq i,j \leq n-1$.
+
+\vspace{1ex}
+
+Pour les applications num\'eriques, on fixera $n=1000$, c'est \`a dire
+$h=10^{-2}$.
+
+\vspace{1ex}
+
+\noindent
+{\bf 10.} Expliciter la matrice $J_k$ en fonction de $u^{(k)}$ et montrer que cette matrice est inversible.
+
+\vspace{1ex}
+
+\noindent
+{\bf 11.} Ecrire un programme qui calcule les termes $u^{(k)}$ pour $k=0,1,\ldots , k_0$, jusqu'\`a ce qu'on ait soit $k_0 > 50$ 
+(nombre d'it\'erations trop grand, signe de non-convergence), soit (tol\'erance d'erreur atteinte, signe de convergence)~:
+$$
+\| F(u^{(k_0)})   \|_\infty < \eta_1
+ \mbox{~et~} \| u^{(k_0)} - u^{(k_0 -1)} \|_\infty < \eta_2
+$$
+avec $\eta_1 = 10^{-12}$, $\eta_2 = 10^{-9}$.
+Dans ce dernier cas, $u^{(k_0)}$ est consid\'er\'e comme la solution num\'erique de (\ref{nonlineq1})-(\ref{nonlineq2})-(\ref{nonlineq3}).
+Calculer cette solution pour $\mu =1$ et $\mu =4$.
+On tracera dans chaque cas le graphe de $u_i$ en fonction de $x_i$
+et on indiquera la valeur de $k_0$. 
+Comparer les solutions obtenues par la m\'ethode de Newton \`a celles obtenues
+pr\'ec\'edemment par la m\'ethode des approximations successives (question {\bf 8}).
+Conclusion ?
+
+\vspace{1ex}
+
+\noindent
+{\bf 12.} Etudier num\'eriquement si la m\'ethode de Newton converge ou diverge lorsque $\mu$ varie dans l'intervalle $[0,7]$.
+\end{document}
