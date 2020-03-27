@@ -27,7 +27,7 @@ def test_lexer(space_lexemes=(), final_space='', error=None):
     """ run a test on the lexer
     - 'space_lexemes' a list of string pairs (spaces, lexeme)
     - 'final_space' a string of spaces
-    - 'error' either None or (n, exc) where 'n' is the number of token read 
+    - 'error' either None or (n, exc) where 'n' is the number of token read
               and 'exc' is the excepted exception"""
     # build the input of the test
     stream = io.StringIO()
@@ -70,7 +70,7 @@ def test_lexer(space_lexemes=(), final_space='', error=None):
         raise e
     print("@ => OK")
     print()
-        
+
 def single(lexeme, spaces=""):
     return ((spaces, lexeme),)
 
@@ -80,11 +80,15 @@ test_lexer(single("7"))
 test_lexer(single("12345678900","  000"))
 test_lexer(single("0","  000"))
 test_lexer(((" "*3, "+"), ("\n"*3, '-'), (" \n  ", '*'), ("",'/'), ("","123"), (" ", "406"), ("", "#789"), ("", "#0"), (" ","0"), ("","?")), "  \n ")
+
+# TEST OPAR / CPAR
+#test_lexer()
+
 if TEST_EXT1:
     test_lexer(((" "*3, ":"), ("",'p'), (" \n  ", 'g')))
     test_lexer(((" "*3, "+"), ("\n"*3, '-'), (" \n  ", '*'), ("",'/'), ("","123"), (" ", "406"), ("", "#"), (" ", "#0"), (" ","0"), ("","?")))
     test_lexer(((" "*3, "+"), ("\n"*3, '-'), (" \n  ", '*'), ("",'/'), ("","123"), (" ", "406"), ("", "#"), ("", "#0"), (" ","0"), ("","?")))
-    
+
 
 if TEST_LEXICAL_ERRORS:
     exc1 = lexer.unknown_token_error('$')
