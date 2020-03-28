@@ -1,0 +1,96 @@
+SIMULATEURS DE MACHINES DE TURING
+=================================
+
+Auteur : Xavier Nicollin (Grenoble INP - Ensimag), 2018 - 2020
+
+
+PROGRAMMES
+----------
+
+Deux programmes principaux :
+
+accepte.py fichier_MT mot [ T | P]
+    Simule l'exécution de la MT m définie dans fichier_MT sur le mot mot.
+    Trois cas : 
+       (1) arrêt en état final :
+            mot est accepté par m (mot est dans L(m))
+       (2) arrêt en état non final :
+            mot n'est pas dans L(m)
+       (3) pas d'arrêt :
+            mot pas dans L(m), mais on ne le saura jamais
+            il faudra bien faire ^C un jour ou l'autre !
+
+calcule.py fichier_MT donnee [ T | P]
+    Comme accepte.py, mais ici la MT m est considérée comme calculant
+    une fonction f, et donnee est un mot encodant la donnée.
+
+    Dans les cas (2) et (3), donnee n'est pas dans le domaine de f.
+
+    Dans le cas (1), donnee est dans le domaine de f. Le résultat
+    (la valeur f(donnee)) est la portion de ruban entre le symbole sous la
+    tête de lecture (inclus) et le premier 'blanc' qui suit (exclu).
+
+    Il faut donc écrire la MT de telle sorte qu'à la fin la tête de lecture
+    soit au début du résultat et que celui-ci ne contienne pas de 'blanc'.
+
+
+Le programme simule.py (dont la fonction 'simule' est appelé par les deux
+précédents) s'occupe de la partie "exécution" ; on l'appelle par
+
+simule.py fichier_MT mot [ T | P]
+
+Pour les 3 programmes précédents, le troisième argument optionnel (qui ne
+peut valoir que 'T' ou 'P') permet d'avoir la trace de l'exécution
+(configurations et transitions prises), 'P' attendant un "enter/entrée" après
+chaque affichage de configuration. Par ailleurs, si mot/donnee sont
+epsilon, il suffit de mettre "".
+
+Le programme analyse.py (dont la fonction 'lire_mt' est appelée par la
+fonction 'simule') permet simplement d'analyser un fichier_MT.
+Si 'A' est ajouté en second argument, il affiche à la fin les 7 composantes
+de la MT.
+
+
+SYNTAXE DES MACHINES DE TURING
+------------------------------
+
+Les MT (dans les fichiers fichier_MT) correspondent à la définition du cours
+des Machines de Turing Déterministes.
+
+L'exécution se fait sur un unique ruban infini des deux côtés.
+
+Syntaxe informelle des MT :
+Les séparateurs sont : ' ' (espace), '\t' (tabulation), '\n' (fin de ligne)
+Les commentaires commencent par '//' et vont jusqu'à la fin de ligne
+
+Dans ce qui suit :
+
+- 'symb' est tout caractère excepté ' ', '\t', '\n'
+- 'etat' est toute séquence d'alphanumériques (lettres ou chiffres)
+- 'mouv' est l'un des trois caractères 'G', 'D', 'S'
+
+Dans l'ordre :
+
+(1) Redéfinition OPTIONNELLE du 'blanc' ('B' par défaut) :
+        # symb
+(2) Définition OBLIGATOIRE de Sigma (au moins un symbole):
+        & symb, symb, symb ...
+(3) Définition OBLIGATOIRE de l'unique état initial :
+        @ etat
+(4) Définition OPTIONNELLE d'un ensemble d'états finals (vide par défaut) :
+        $ etat, etat, etat ...
+(5) Séquence (EVENTUELLEMENT VIDE) de transitions ; chaque transition est de
+    la forme :
+        etat symb : etat symb mouv
+    avec la signification évidente :
+        q X : p Y M    -> delta(q, X) = (p, Y, M)
+
+Noter que :
+- Gamma est défini implicitement comme l'ensemble des symboles
+  apparaissant dans la définition de la MT (plus 'B' si le 'blanc' n'est pas
+  redéfini) ;
+- L'ensemble des états est défini implicitement comme :
+  l'état initial + les états finals + tous les états apparaissant dans les
+  transitions.
+
+Des fichiers d'exemple sont fournis dans le répertoire Exemples

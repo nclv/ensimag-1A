@@ -1,0 +1,90 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+# Fiche 4 - Exercice 1
+
+## Question 3
+
+
+### Estimation du biais des estimateurs. 
+
+On simule $m$ échantillons de taille $n$ de la loi $\exp(\lambda)$. Pour chaque échantillon, on calcule la valeur de l'EMV  $\hat{\lambda}_n$. On obtient donc un échantillon de taille $m$ de la loi de $\hat{\lambda}_n$.
+
+L'histogramme de cet échantillon donne une estimation de la densité de la loi de $\hat{\lambda}_n$.
+
+La moyenne empirique des valeurs obtenues est une estimation de l'espérance de cette loi. Si onlève $\lambda$ à cette moyenne, on obtient donc une estimation du biais de l'estimateur $E\left[\hat{\lambda}_n\right] - \lambda$.
+
+On fait la même chose avec l'ESBVM $\hat{\lambda}'_n$.
+
+
+```{r}
+BiaisExp<-function(m,n,lambda)
+{
+EMV<-rep(0,m)
+ESBVM<-rep(0,m)
+sim <- replicate(m,rexp(n,lambda))
+EMV<-n/colSums(sim)
+ESBVM<-(n-1)/colSums(sim)
+par(mfcol=c(1,2))
+hist(EMV,prob=T)
+lines(c(lambda,lambda),c(0,10),col="blue",lwd=4)
+lines(c(mean(EMV),mean(EMV)),c(0,10),col="red",lwd=4)
+hist(ESBVM,prob=T)
+lines(c(lambda,lambda),c(0,10),col="blue",lwd=4)
+lines(c(mean(ESBVM),mean(ESBVM)),c(0,10),col="green",lwd=4)
+cat("Moyenne des biais de l’EMV", mean(EMV-lambda),"\n")
+cat("Moyenne des biais de l’ESBVM", mean(ESBVM-lambda),"\n")
+}
+```
+
+```{r}
+BiaisExp(100,5,10)
+BiaisExp(100,10,10)
+BiaisExp(100,20,10)
+BiaisExp(100,50,10)
+BiaisExp(100,100,10)
+BiaisExp(100,500,10)
+```
+Sur les histogrammes, la vraie valeur de $\lambda$ est en bleu, l'espérance estimée de l'EMV est en rouge et l'espérance estimée de l'ESBVM est en vert. On constate que :
+
+- L'EMV sur-estime $\lambda$. Ce n'est pas le cas de l'ESBVM. C'est flagrant pour $n$ petit, de moins en moins quand $n$ grandit. Cela illustre que l'EMV est biaisé et l'ESBVM est sans biais. Attention, bien que l'ESBVM soit sans biais, il ne faut pas s'attendre à ce que le biais estimé soit nul, il doit simplement être proche de zéro (ce qui est le cas).
+
+- Le biais de l'EMV diminue quand $n$ grandit. Cela illustre que l'EMV est asymptotiquement sans biais.
+
+- Pour $n$ petit, les histogrammes des estimateurs ne sont pas du tout en forme de cloche symétrique. Quand $n$ grandit, leur forme se rapproche d'une cloche symétrique. Cela illustre que les 2 estimateurs sont asymptotiquement de loi normale (propriété 4 du poly).
+
+
+### Estimation de l'erreur quadratique moyenne des estimateurs
+
+```{r}
+EQMExp<-function(m,n,lambda)
+{
+EMV<-rep(0,m)
+ESBVM<-rep(0,m)
+sim <- replicate(m,rexp(n,lambda))
+EMV<-n/colSums(sim)
+ESBVM<-(n-1)/colSums(sim)
+cat("Moyenne des EQM de l’EMV", mean((EMV-lambda)^2),"\n")
+cat("Moyenne des EQM de l’ESBVM", mean((ESBVM-lambda)^2),"\n")
+}
+```
+
+```{r}
+EQMExp(100,5,10)
+EQMExp(100,10,10)
+EQMExp(100,20,10)
+EQMExp(100,50,10)
+EQMExp(100,100,10)
+EQMExp(100,500,10)
+```
+
+On constate que :
+
+- Pour les 2 estimateurs, l'EQM tend vers 0 quand $n$ grandit. Cela illustre que les 2 estimateurs sont convergents en moyenne quadratique.
+
+- Pour $n$ petit, l'EQM de l'EMV est bien plus grande que celle de l'ESBVM, à cause du biais. La différence s'estompe quand $n$ grandit.
+

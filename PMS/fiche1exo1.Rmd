@@ -3,20 +3,20 @@ output:
   html_document: default
   pdf_document: default
 ---
-# Principes et Méthodes Statistiques
+# Principes et M?thodes Statistiques
 # Fiche 1 - Exercice 1
 
-Soit $X$ une variable aléatoire de loi normale ${\cal N}(m,\sigma^2)$, $m \in R, \sigma \in R^{+*}$. $X$ est à valeurs dans $R$, son espérance est $E[X]=m$ et sa variance est $Var[X]=\sigma^2$.
+Soit $X$ une variable al?atoire de loi normale ${\cal N}(m,\sigma^2)$, $m \in R, \sigma \in R^{+*}$. $X$ est ? valeurs dans $R$, son esp?rance est $E[X]=m$ et sa variance est $Var[X]=\sigma^2$.
 
-La densité de la loi ${\cal N}(m,\sigma^2)$ est : 
+La densit? de la loi ${\cal N}(m,\sigma^2)$ est : 
 $$f_X(x) = {\displaystyle \frac{1}{\sigma \sqrt{2\pi}}} \, e^{  - \frac{(x - m)^2}{2\sigma^2}}$$ 
 
-Sa fonction de répartition n'a pas d'expression explicite :
+Sa fonction de r?partition n'a pas d'expression explicite :
 $$F_X(x) = \int_{-\infty}^x f_X(u) du = \int_{-\infty}^x {\displaystyle \frac{1}{\sigma \sqrt{2\pi}}} \, e^{- \frac{(u - m)^2}{2\sigma^2}} du$$ 
 
 ## Question 1
 
-Tracer les densités des lois ${\cal N}(2,1)$, ${\cal N}(-3,1)$ et ${\cal N}(-3,9)$.
+Tracer les densit?s des lois ${\cal N}(2,1)$, ${\cal N}(-3,1)$ et ${\cal N}(-3,9)$.
 
 ```{r}
 m<-2
@@ -31,11 +31,11 @@ curve(dnorm(x,m,sigma),add=T, col="green")
 
 ```
 
-On remarque que l'aire sous la densité est constante (elle vaut 1).
+On remarque que l'aire sous la densit? est constante (elle vaut 1).
 
 ## Question 2
 
-Tracer les fonctions de répartition de ces mêmes lois. Calculer $P(X \leq 0)$ dans les 3 cas.
+Tracer les fonctions de r?partition de ces m?mes lois. Calculer $P(X \leq 0)$ dans les 3 cas.
 
 ```{r}
 
@@ -55,9 +55,9 @@ pnorm(0,m,sigma)
 ```
 ## Question 3
 
-Soit $U$ une variable aléatoire de loi normale centrée-réduite ${\cal N}(0,1)$. Tracer la densité de $U$. On note $\phi$ sa fonction de répartition.
+Soit $U$ une variable al?atoire de loi normale centr?e-r?duite ${\cal N}(0,1)$. Tracer la densit? de $U$. On note $\phi$ sa fonction de r?partition.
 
-Calculer $P(U \leq 0)$, $P(U \leq 1.25)$, $P(U \leq 1)$ et $P(U \leq -1)$. Retrouver ces résultats à l'aide de la table 1 de la loi normale centrée-réduite en 8.2.1.
+Calculer $P(U \leq 0)$, $P(U \leq 1.25)$, $P(U \leq 1)$ et $P(U \leq -1)$. Retrouver ces r?sultats ? l'aide de la table 1 de la loi normale centr?e-r?duite en 8.2.1.
 
 ```{r}
 m<-0
@@ -77,7 +77,7 @@ pnorm(-1)
 ```
 ## Question 4
 
-Calculer $u_{0.05} = \phi^{-1}(1-0.05/2)$ et $u_{0.25} = \phi^{-1}(1-0.25/2)$. Retrouver ces résultats à l'aide de la la table 2 de la loi normale centrée-réduite en 8.2.2. 
+Calculer $u_{0.05} = \phi^{-1}(1-0.05/2)$ et $u_{0.25} = \phi^{-1}(1-0.25/2)$. Retrouver ces r?sultats ? l'aide de la la table 2 de la loi normale centr?e-r?duite en 8.2.2. 
 
 ```{r}
 qnorm(1-0.05/2)

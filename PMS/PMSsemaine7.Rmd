@@ -1,0 +1,167 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Principes et Méthodes Statistiques
+# Fiche 3 - fin de l'exercice 2
+
+On a montré que l'estimateur de maximum de vraisemblance $\hat{\lambda}_n = 1/\bar{X}_n$ était un estimateur biaisé et que $\hat{\lambda}'_n = (n-1)\hat{\lambda}_n/n  = (n-1)/\sum_{i=1}^n X_i$ était un estimateur sans biais de $\lambda$, convergent en moyenne quadratique, asymptotiquement efficace mais pas efficace. $\hat{\lambda}'_n$ est en fait l'ESBVM de $\lambda$ mais on ne peut pas le prouver avec les outils de ce cours.
+
+Une fonction pivotale pour $\lambda$ est une fonction de $\lambda$ et des observations $X_1,\ldots,X_n$ dont la loi de probabilité ne dépend pas de $\lambda$.
+
+En utilisant les propriétés des lois exponentielle, gamma et chi-deux page 101 du poly, on obtient que $\sum_{i=1}^n X_i$ est de loi gamma $G(n, \lambda)$, puis que  $2 \lambda \sum_{i=1}^n X_i$ est de loi $G(n, 1/2) = \chi^2_{2n}$. Donc $2 \lambda \sum_{i=1}^n X_i$ est une fonction pivotale pour $\lambda$.
+
+On utilise alors exactement la même procédure que pour l'intervalle de confiance pour la variance de la loi normale. Pour $0 < a < b$, on a 
+$$P(a < 2 \lambda \sum_{i=1}^n X_i < b) = F_{\chi_{2n}^2}(b)-F_{\chi_{2n}^2}(a) = P(\frac{a}{2\sum_{i=1}^n X_i} < \lambda < \frac{b}{ 2\sum_{i=1}^n X_i})$$
+
+On veut que cette probabilité soit égale à $1-\alpha$. En équilibrant les risques, on prend $a= F_{\chi_{2n}^2}^{-1}(\alpha/2) = z_{2n,1-\alpha/2}$ et 
+$b = F_{\chi_{2n}^2}^{-1}(1-\alpha/2) = z_{2n,\alpha/2}$.
+
+On obtient qu'un intervalle de confiance bilatéral de seuil $\alpha$ pour $\lambda$ est
+$$\left[ \frac{z_{2n,1-\frac{\alpha}{2}}}{2 \sum_{i=1}^n X_i}; \frac{z_{2n,\frac{\alpha}{2}}}{2 \sum_{i=1}^n X_i}\right]$$
+
+Pour les intervalles de confiance unilatéraux, il suffit de prendre respectivement $a=0$ et $b=+\infty$. On obtient
+
+$$\left[ 0 ;\frac{z_{2n,\alpha}}{2 \sum_{i=1}^n X_i}\right]$$
+$$\left[ \frac{z_{2n,1-\alpha}}{2 \sum_{i=1}^n X_i}; + \infty \right[$$
+
+# Fiche 4 - Exercice 1
+
+## Question 1
+
+On crée le vecteur des données d'ampoules. On calcule l'EMV $\hat{\lambda}_n$ et l'ESBVM $\hat{\lambda}'_n$.
+
+```{r}
+
+ampoules<-c(91.6, 35.7,251.3, 24.3, 5.4, 67.3, 170.9, 9.5, 118.4, 57.1)
+n<-length(ampoules)
+
+# EMV de lambda
+
+lambdaMV<-1/mean(ampoules)
+lambdaMV
+
+# ESBVM de lambda
+
+lambdaest<-(n-1)/sum(ampoules)
+lambdaest
+```
+
+Intervalle de confiance (IC) bilatéral de seuil $\alpha$ pour $\lambda$ :
+
+```{r}
+
+alpha<-0.5
+binf<-qchisq(alpha/2,2*n)/(2*sum(ampoules))
+bsup<-qchisq(1-alpha/2,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf, bsup,"] \n" )
+
+alpha<-0.1
+binf<-qchisq(alpha/2,2*n)/(2*sum(ampoules))
+bsup<-qchisq(1-alpha/2,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf, bsup,"] \n" )
+
+alpha<-0.05
+binf<-qchisq(alpha/2,2*n)/(2*sum(ampoules))
+bsup<-qchisq(1-alpha/2,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf, bsup,"] \n" )
+
+alpha<-0.01
+binf<-qchisq(alpha/2,2*n)/(2*sum(ampoules))
+bsup<-qchisq(1-alpha/2,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf, bsup,"] \n" )
+```
+
+Intervalles de confiance unilatéraux de seuil $\alpha$ pour $\lambda$ :
+
+```{r}
+
+alpha<-0.5
+bsup<-qchisq(1-alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [ 0,", bsup,"] \n" )
+binf<-qchisq(alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf,", +infini[ \n" )
+
+alpha<-0.1
+bsup<-qchisq(1-alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [ 0,", bsup,"] \n" )
+binf<-qchisq(alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf,", +infini[ \n" )
+
+alpha<-0.05
+bsup<-qchisq(1-alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [ 0,", bsup,"] \n" )
+binf<-qchisq(alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf,", +infini[ \n" )
+
+alpha<-0.01
+bsup<-qchisq(1-alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [ 0,", bsup,"] \n" )
+binf<-qchisq(alpha,2*n)/(2*sum(ampoules))
+cat("IC de seuil ", alpha, ": [", binf,", +infini[ \n" )
+```
+
+On retrouve le fait que plus $\alpha$ est petit, plus l'IC est large. Les IC obtenus pour $\alpha=50\%$ sont donc les plus étroits mais ils n'ont aucune utilité car on ne peut pas avoir confiance dans un résultat pour lequel il y a une chance sur 2 de se tromper. 
+
+
+## Question 2
+
+On simule $m$ échantillons de taille $n$ de la loi loi $\exp(\lambda)$. On calcule le pourcentage de fois où l'intervalle de confiance bilatéral pour $\lambda$ contient la vraie valeur du paramètre $\lambda$.  
+
+
+```{r}
+
+# Version basique avec des boucles (à éviter en R)
+
+IntConfExp<-function(m,n,alpha,lambda)
+{
+prop<-0
+for (i in 1:m) 
+{
+ech<-rexp(n,lambda)
+if ((qchisq(alpha/2,2*n)/(2*sum(ech)) < lambda)
+ & (lambda < qchisq(1-alpha/2,2*n)/(2*sum(ech)))) prop<-prop+1
+}
+cat("Proportion d’intervalles contenant le paramètre :", prop/m,"\n")
+}
+
+# Deuxième version sans boucles (recommandé)
+
+IntConfExp2<-function(m,n,alpha,lambda)
+{
+# On crée une matrice à n lignes et m colonnes, chaque colonne est un échantillon de taille n de la loi exp(lambda).
+sim <- replicate(m,rexp(n,lambda))
+# colSums(sim) est un vecteur de taille m contenant la somme des observations pour chaque échantillon
+# binf et bsup sont des vecteurs de taille m contenant respectivement les bornes inférieure et supérieure des m intervalles de confiance
+binf <- qchisq(alpha/2,2*n)/(2*colSums(sim))
+bsup<- qchisq(1-alpha/2,2*n)/(2*colSums(sim))
+cat("Proportion d’intervalles contenant le paramètre :", mean(binf<lambda & lambda<bsup),"\n")
+}
+
+
+```
+
+
+On fait varier $n$, $m$ et $\alpha$.
+
+```{r}
+
+IntConfExp2(1000,1000,0.01,10)
+IntConfExp2(1000,1000,0.05,10)
+IntConfExp2(1000,1000,0.1,10)
+IntConfExp2(1000,1000,0.5,10)
+
+IntConfExp2(1000,10,0.01,10)
+IntConfExp2(1000,10,0.05,10)
+IntConfExp2(1000,10,0.1,10)
+IntConfExp2(1000,10,0.5,10)
+
+IntConfExp2(10,1000,0.01,10)
+IntConfExp2(10,1000,0.05,10)
+IntConfExp2(10,1000,0.1,10)
+IntConfExp2(10,1000,0.5,10)
+```
+
+Le pourcentage de fois où l'intervalle contient $\lambda$ est bien proche de $1 - \alpha$. Il est d'autant plus proche que $m$ est grand. Faire varier $n$ ne change rien.

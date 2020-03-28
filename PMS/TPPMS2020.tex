@@ -1,0 +1,302 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsfonts, amsmath, amssymb, amstext, latexsym}
+\usepackage{graphicx, epsfig}
+\usepackage[latin1]{inputenc}
+\usepackage[french]{babel}
+\usepackage{exscale}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{fancyhdr}
+
+\newcommand{\noi}{\noindent}
+\newcommand{\dsp}{\displaystyle}
+\newcommand{\ind}{{{\large 1} \hspace*{-1.6mm} {\large 1}}}
+
+
+\textheight 25cm
+\textwidth 16cm
+\oddsidemargin 0cm
+\evensidemargin 0cm
+\topmargin 0cm
+\hoffset -0mm
+\voffset -20mm
+
+
+\pagestyle{plain}
+
+\begin{document}
+
+\baselineskip7mm
+
+\noi ENSIMAG $1^{\footnotesize \mbox{ère}}$ année   \hfill Mars 2020
+
+
+\vspace{1cm}
+
+
+\begin{center}
+{\Large \bf Principes et Méthodes Statistiques 
+
+\vspace{3mm}
+
+TP 2020
+
+\vspace{3mm}
+
+
+Chars d'assaut allemands et iPhones 3G
+}
+\end{center}
+
+
+\vspace{1cm}
+
+\noi \rule[0.5ex]{\textwidth}{0.1mm}
+
+
+Le travail sera conduit par groupes de 2 ou 3 personnes, ces groupes étant constitués au hasard. 
+Le délivrable de ce TP est une archive contenant deux fichiers. Le premier sera le compte-rendu du TP au format Rmd, qui comprendra le code {\tt R} et vos réponses détaillées aux questions, selon les règles présentées ci-dessous. Le second sera le fichier pdf ou html résultant de la compilation (knit) du fichier Rmd. L'archive devra être déposée sur Teide avant le vendredi 17 avril 2020 à 22h. Tout retard sera pénalisé.
+
+Le compte-rendu Rmd comprendra, suivant la nature des questions posées, des calculs mathématiques et/ou des sorties numériques et graphiques de {\tt R}.
+Une grande importance sera accordée aux commentaires, visant à interpréter les résultats et mettre en valeur votre analyse du problème. Des conseils et des directives obligatoires pour la rédaction du compte-rendu sont disponibles sur Chamilo; les enseignants pourront y faire référence dans leur correction. 
+
+\noi \rule[0.5ex]{\textwidth}{0.1mm}
+
+
+
+\vspace{3mm}
+
+{\bf \Large Le problème des chars d'assaut allemands}
+
+\vspace{3mm}
+
+Voir {\tt https://en.wikipedia.org/wiki/German\_tank\_problem}.
+
+Le problème des chars d'assaut (ou tanks) allemands est un problème statistique consistant à estimer la valeur maximale d'une variable aléatoire de loi uniforme discrète. Son nom vient du fait qu'il a été utilisé par les alliés pendant la seconde guerre mondiale, dans le but d'estimer la production de tanks par la Wehrmacht. A l'issue de la guerre, les données de l'industrie d'armement allemande ont permis de montrer que les estimations obtenues par cette méthode étaient beaucoup plus proches de la réalité que celles déduites des informations fournies par les services de renseignement. 
+
+Chaque tank est identifié par un numéro de série. Une transformation permet de considérer que ces numéros de série sont des entiers allant de 1 jusqu'au nombre total de tanks produits. Ce nombre est un entier inconnu $\theta$, que l'on cherche à estimer. Les alliés ont relevé les numéros de série de tous les tanks capturés. Le principe de la méthode est de considérer que relever le numéro de série des tanks capturés revient à faire un tirage de variables aléatoires sur $\{1,\ldots,\theta\}$.
+
+Comme un tank n'est capturé qu'une seule fois, il s'agit d'un tirage dit {\it sans remise}. Mais pour commencer, on va traiter le problème plus simple de tirage dit {\it avec remise}. 
+
+\section{Tirage avec remise}
+
+Une autre façon de modéliser le problème est de considérer que l'on a un récipient contenant un nombre inconnu $\theta$ d'objets numérotés de 1 à $\theta$. On effectue $n$ tirages au hasard dans le récipient. Après chaque tirage, on note le numéro de l'objet obtenu et on remet celui-ci dans le récipient. Les numéros successifs des objets tirés sont notés $x_1, \ldots, x_n$. Les conditions de cette expérience font que ces données sont des réalisations de variables aléatoires $X_1, \ldots, X_n$ indépendantes et de même loi uniforme sur $\{1,\ldots,\theta\}$, ${\cal U}_{\{1,\ldots,\theta\}}$. L'objectif est d'estimer $\theta$ à partir de $x_1, \ldots, x_n$.
+
+
+Une variable aléatoire $X$ est de loi ${\cal U}_{\{1,\ldots,\theta\}}$ si elle est à valeurs dans $\{1, \ldots, \theta\}$ et que 
+$$P(X=k) = \frac{1}{\theta} \, \ind_{\{1, \ldots, \theta\}}(k).$$
+
+\begin{enumerate}
+
+\item Calculer l'espérance et la variance de $X$. 
+
+\vspace{2mm}
+
+\item Calculer l'estimateur des moments $\tilde{\theta}_n$ de $\theta$. Montrer que cet estimateur est sans biais et calculer sa variance.
+
+\vspace{2mm}
+
+\item Calculer la fonction de répartition de $X$. Calculer la médiane de la loi de $X$ et en déduire un estimateur $\tilde{\theta}'_n$ de $\theta$ basé sur la médiane empirique.
+
+
+\vspace{2mm}
+
+\item Soit $X_n^*$ le maximum des observations. Calculer la fonction de répartition de $X_n^*$ et les probabilités élémentaires $P(X_n^*=k)$, $\forall k \in \{1, \ldots, \theta\}$.
+
+\vspace{2mm}
+
+\item Montrer que l'estimateur de maximum de vraisemblance de $\theta$ est $\hat{\theta}_n=X_n^*$. Montrer qu'il est biaisé mais qu'on ne peut pas le débiaiser facilement.
+
+\vspace{2mm}
+
+\item Expliquer comment construire le graphe de probabilités pour la loi uniforme discrète. En déduire un estimateur graphique $\theta_g$ de $\theta$.
+
+\vspace{2mm}
+
+\noi On peut en fait montrer que l'estimateur sans biais et de variance minimale de $\theta$ est :
+$$\check{\theta}_n = \frac{{X_n^*}^{n+1} - (X_n^*-1)^{n+1}}{{X_n^*}^{n} - (X_n^*-1)^{n}}.$$
+
+\vspace{2mm}
+
+Dans la suite de cette première partie, on va comparer numériquement les 5 estimateurs $\tilde{\theta}_n, \tilde{\theta}'_n, \hat{\theta}_n$, $\theta_g$ et $\check{\theta}_n$ à l'aide de simulations en ${\tt R}$.
+
+\vspace{2mm}
+
+\item En {\tt R}, la simulation de la loi uniforme discrète se fait avec la commande {\tt sample}. {\tt sample(1:20,10,replace=T)} tire 10 nombres au hasard entre 1 et 20 avec remise, tandis que {\tt sample(1:20,10)} tire 10 nombres au hasard entre 1 et 20 sans remise.
+
+Simuler un échantillon de taille $n=20$ d'une loi ${\cal U}_{\{1,\ldots,\theta\}}$, avec $\theta=1000$. Tracer un histogramme et le graphe de probabilités pour la loi uniforme discrète. Calculez les 5 estimations de $\theta$. Commentez les résultats.
+
+\vspace{2mm}
+
+\item Simuler $m$ échantillons de taille $n$ d'une loi ${\cal U}_{\{1,\ldots,\theta\}}$, avec $\theta=1000$. Pour chaque échantillon, calculer les valeurs des 5 estimations de $\theta$. On obtient ainsi des échantillons de $m$ valeurs de chacun des 5 estimateurs. Evaluer le biais et l'erreur quadratique moyenne de ces estimateurs. Faites varier $m$ et $n$. Qu'en concluez-vous ?
+
+\vspace{2mm}
+
+\item Déterminer un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$, c'est-à-dire un intervalle aléatoire $I_n$ tel que 
+$$\lim_{n \rightarrow \infty} P(\theta \in I_n)=1-\alpha.$$
+
+\vspace{2mm}
+
+\item Simuler $m$ échantillons de taille $n$ d'une loi ${\cal U}_{\{1,\ldots,\theta\}}$. Calculer le pourcentage de fois où l'intervalle de confiance de seuil $\alpha$ pour $\theta$ contient la vraie valeur du paramètre $\theta$. Faire varier $n$, $m$ et $\alpha$, et conclure. 
+
+\end{enumerate}
+
+
+\section{Tirage sans remise}
+
+Dans le problème des chars allemands, un tank n'est capturé qu'une seule fois. Cela revient à considérer dans la modélisation précédente que l'objet tiré n'est pas remis dans le récipient. Par conséquent, les variables aléatoires $X_1, \ldots, X_n$ représentant les numéros successifs des objets tirés ne sont ni indépendantes ni de même loi.
+
+\begin{enumerate}
+
+\item Déterminer la loi de $X_1$, puis celle de $X_2$ sachant $[X_1 = x_1]$, puis celle de $X_3$ sachant $[X_1 = x_1, X_2=x_2]$, etc... Etant donné que la fonction de vraisemblance peut s'écrire 
+\begin{eqnarray*}
+{\cal L}(\theta ; x_1, \ldots, x_n) &=& P(X_1 = x_1, \ldots X_n=x_n ; \theta) \\
+&=& P(X_1 = x_1 ; \theta) \prod_{i=2}^n P(X_i = x_i | X_1 = x_1, \ldots X_{i-1}=x_{i-1} ; \theta),
+\end{eqnarray*}
+\noi montrer que l'estimateur de maximum de vraisemblance de $\theta$ est toujours $\hat{\theta}_n=X_n^*$.
+
+\vspace{2mm}
+
+\item Montrer que $\forall k \in \{n,\ldots,\theta\}$, $P(X_n^*=k) = {\dsp \frac{\left(_{n-1}^{k-1} \right)}{\left(_{n}^{\theta} \right)}}$. Calculer $E[X_n^*]$ et en déduire que $\hat{\theta}_n^{(1)}={\dsp \frac{n+1}{n}X_n^*-1}$ est un estimateur sans biais de $\theta$.
+
+\vspace{2mm}
+
+\item Une façon intuitive de construire un autre estimateur est la suivante. Pour des raisons de symétrie, il est logique de s'attendre à ce que le nombre de numéros inférieurs au minimum des numéros tirés soit proche du nombre de numéros supérieurs au maximum des numéros tirés. Autrement dit, $x_1^* -1 \approx \theta - x_n^*$. Cela amène à proposer un nouvel estimateur, $\hat{\theta}_n^{(2)}=X_n^*+X_1^*-1$.
+
+A l'aide de {\tt R}, faites des expérimentations numériques ayant pour objectif de comparer les estimateurs $\hat{\theta}_n$, $\hat{\theta}_n^{(1)}$ et $\hat{\theta}_n^{(2)}$, ainsi que l'estimateur $\tilde{\theta}_n$ calculé dans la question 1.2.
+
+\vspace{2mm}
+
+\item Pour estimer $\theta$, peut-on se contenter de considérer que le tirage est avec remise ?
+
+\end{enumerate}
+
+\vspace{3mm}
+
+
+\section{Estimation du nombre d'iPhones 3G produits}
+
+Le problème des chars d'assaut allemands a été réutilisé plus récemment dans un tout autre contexte. A l'occasion de la sortie de l'iPhone 3G en juillet 2008, des internautes ont voulu estimer par eux-mêmes le nombre d'unités produites. Pour cela, ils ont demandé aux possesseurs de ces mobiles de renseigner sur un fil consacré les deux numéros qui identifient un téléphone portable, le numéro IMEI et le code de production PC.
+
+\vspace{3mm}
+
+\begin{itemize}
+
+\item[$\bullet$] Le numéro IMEI (\textit{International Mobile Equipment Identity}) est délivré par une autorité indépendante. Il est constitué de 15 chiffres. 
+
+\begin{enumerate}
+
+\item Les 8 premiers constituent le TAC (\textit{Type Allocation Code}). 
+
+\begin{itemize}
+
+\item Les deux premiers chiffres désignent le code du pays où le mobile a été immatriculé. Par exemple, 01 désigne les Etats-Unis.
+
+\item Les 6 derniers chiffres fournissent un code permettant d'identifier un million de téléphones du même modèle. Par exemple, le code 161200 correspond au premier million de mobiles produits, le code 161300 correspond au deuxième million de mobiles produits, et ainsi de suite. Le code sera appelé {\it code TAC} et le numéro de million correspondant {\it numéro TAC}. La correspondance entre les deux est donnée dans la table 1.
+
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|cc|}
+\hline
+code TAC &numéro TAC\\
+\hline
+161200 &1\\
+161300 &2\\
+161400 &3\\
+171200 &4\\
+171300 &5\\
+171400 &6\\
+174200 &7\\
+174300 &8\\
+174400 &9\\
+177100 &10\\
+177300 &11\\
+177400 &12\\
+177500 &13\\
+177600 &14\\
+180900 &15\\
+\hline
+\end{tabular}
+\caption{IMEI : correspondance entre code TAC et numéro TAC}
+\end{center}
+\end{table}
+
+\end{itemize}
+
+\item Les 6 chiffres suivants désignent le {\it numéro SNR} de fabrication du mobile. 
+
+\item Le dernier chiffre est un chiffre de contrôle.
+
+\end{enumerate}
+
+L'IMEI permet de reconstruire un numéro de série NS identifant un mobile :
+$$NS = (\texttt{numéro TAC-1})\times 10^6 +SNR $$
+
+Par exemple, l'IMEI 011613006769038 = 01-161300-676903-8 donne comme numéro de série 
+$$NS = (\texttt{2-1})\times 10^6 +676903 =  1676903$$
+
+
+\vspace{3mm}
+
+\item[$\bullet$] Le {\it code de production PC} est propre au constructeur, ici Apple. Il est constitué de 6 chiffres. 
+
+\begin{enumerate}
+
+\item Les deux premiers chiffres désignent l'usine de fabrication. Si on a {\it 5K} à la place, il s'agit d'un produit reconditionné.
+
+\item Le troisième chiffre désigne l'année de production : 8 pour 2008, 9 pour 2009.
+
+\item Les quatrième et cinquième chiffres désignent la semaine de production.
+
+\item Le dernier chiffre est un chiffre de contrôle.
+
+\end{enumerate}
+
+Ainsi le code PC 878293=87-8-29-3 désigne un téléphone produit dans l'usine numéro 87, lors de la 29ème semaine de l'année 2008.
+
+\end{itemize}
+
+\vspace{3mm}
+
+Par souci d'anonymat, seuls les 13 premiers chiffres de l'IMEI et les 5 premiers du PC ont été recueillis. Dans les exemples cités plus haut, le possesseur du mobile ayant pour IMEI 011613006769038 et pour PC 878293 a fourni les codes 0116130067690XX et 87829X. Il n'est donc pas possible de reconstituer le numéro de série exact 1676903. On l'approche en remplaçant le dernier chiffre inconnu par 0. On obtient donc comme numéro de série approché $NS=1676900$.
+
+\vspace{3mm}
+
+Le fichier {\tt iPhones.csv} contient un extrait de cette enquête contenant 139 réponses obtenues entre juillet 2008 et février 2009. Charger ce tableau de données dans {\tt R} en utilisant les commandes :
+
+{\tt > iPhones<-read.table("iPhones.csv", sep=";", header=T)} 
+
+{\tt > names(iPhones)} 
+
+{\tt > attach(iPhones)}
+
+\vspace{3mm}
+
+\begin{enumerate}
+
+\item Reconstituer les numéros de série NS de tous ces mobiles. Pour manipuler les chaînes de caractères en {\tt R}, on pourra utiliser les commandes {\tt as.character, as.numeric} et {\tt substring}.
+
+\vspace{2mm}
+
+\item Estimer le nombre total d'iPhones produits durant la période concernée. 
+
+\vspace{2mm}
+
+\item On veut suivre plus finement la progression de la production d'iPhones tout au long de cette période. Pour cela, on regroupe les données par paquets de 4 semaines : le premier groupe comporte tous les appareils produits entre les 25ème et 28ème semaine de 2008, etc... et le dernier tous les appareils produits entre les 1ère et 4ème semaine de 2009. 
+
+Estimer le nombre d'iPhones produits sur chacune de ces sous-périodes. 
+
+\vspace{2mm}
+
+\item Ces estimations reposent sur l'hypothèse d'uniformité des numéros de série. Que pensez-vous de la validité de cette hypothèse, sur l'ensemble de la période et sur chacune des sous-périodes définies dans la question précédente ?
+
+\vspace{2mm}
+
+\item Quelles conclusions tirez-vous de cette étude ?
+
+\end{enumerate}
+
+
+\end{document}
