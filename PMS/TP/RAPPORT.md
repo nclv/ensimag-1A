@@ -22,7 +22,7 @@ $$Var(\tilde{\theta}_n) = 4Var(\overline{X}_n) = \frac{4n}{n^2}Var(X_1) = \frac{
 
 ## 3. Calculer la fonction de répartition de $X$. Calculer la médiane de la loi de $X$ et en déduire un estimateur $\tilde{\theta}'_n$ de $\theta$ basé sur la médiane empirique.
 
-La densité $f$ de $X$ vérifie $f(x) = \frac{1}{\theta - 1}$ si $1 \leq x \leq \theta$ et $0$ sinon. La fonction de répartition $F$ de $X$ vérifie donc $F(x) = \frac{x - 1}{\theta - 1}$ si $1 \leq x \leq \theta$, $0$ si $x < 1$ et $1$ si $x > \theta$.
+La fonction de masse $f$ de $X$ vérifie $f(x) = \frac{1}{\theta}$ si $1 \leq x \leq \theta$ et $0$ sinon. La fonction de répartition $F$ de $X$ vérifie donc $F(k) = \frac{k}{\theta}$ si $1 \leq k \leq \theta$, $0$ si $k < 1$ et $1$ si $k > \theta$.
 
 Notons $q_{\frac{1}{2}}$ la médiane de $X$. Elle vérifie $F(q_{\frac{1}{2}}) = \frac{1}{2}$. On a trivialement $q_{\frac{1}{2}} = \frac{1 + \theta}{2}$.
 
@@ -35,7 +35,7 @@ On considère donc $\tilde{\theta}'_n = 2\tilde{Q}_{n,\frac{1}{2}} - 1$ basé su
 > On peut noter ici que les calculs de la fonction de répartition et de la médiane sont inutiles.
 Nous sommes dans le cas d'une distribution symétrique (en effet, $f(x - \mu) = f(\mu - x)$). Ainsi qu'on prenne la moyenne ou la médiane comme estimateur, on estimera la même quantité car les deux paramètres sont identiques.
 
-> Est-ce qu’on devrait utiliserla moyenne ou la médiane de l’échantillon pour estimer notre paramètre de position $\theta$ ? Lorsque plusieurs estimateurs estiment la même quantité et que leur biais est négligeable ou nul, le choix se fait généralement sur la base de la variance de l’estimateur, une mesure de précision : on va préférer un estimateur qui a une plus petite variance puisque ça veut dire qu’en moyenne la distance (au carré) entre l’estimateur et le paramètre est moindre. Celle-ci dépend toutefois de la distribution de laquelle proviennent les données - qui en pratique nous reste inconnue.
+> Est-ce qu’on devrait utiliser la moyenne ou la médiane de l’échantillon pour estimer notre paramètre de position $\theta$ ? Lorsque plusieurs estimateurs estiment la même quantité et que leur biais est négligeable ou nul, le choix se fait généralement sur la base de la variance de l’estimateur, une mesure de précision : on va préférer un estimateur qui a une plus petite variance puisque ça veut dire qu’en moyenne la distance (au carré) entre l’estimateur et le paramètre est moindre. Celle-ci dépend toutefois de la distribution de laquelle proviennent les données - qui en pratique nous reste inconnue.
 
 ## 4. Soit $X_n^*$ le maximum des observations. Calculer la fonction de répartition de $X_n^*$ et les probabilités élémentaires $P(X_n^*=k)$, $\forall k \in \{1, \ldots, \theta\}$.
 
@@ -77,6 +77,17 @@ Cependant, l'estimateur est consistant. $P(X_n^* = k) \rightarrow 0$ lorsque $n 
 Cela n'a de sens ici que parce que l'on échantillonne avec remplacement. Avec un échantillonnement sans remplacement, nous manquerions de tanks.
 
 ## 6. Expliquer comment construire le graphe de probabilités pour la loi uniforme discrète. En déduire un estimateur graphique $\theta_g$ de $\theta$.
+
+Si $\theta$ est connu il est facile de tracer le graphe (voir Q7.) car toutes les entrées ont la probabilité $\frac{1}{\theta}$. On trace dans notre exemple le nuage de points $(x_i^*, \frac{i}{n}\theta)$ pour $i \in \{1, \ldots, n\}$. Si ces points sont approximativement alignés sur une droite de pente positive passant par l’origine, on pourra considérer que la loi uniforme discrète est un modèle probabiliste vraisemblable pour ces observations. L'inverse de la pente de la droite fournit alors une **estimation graphique $\theta_g$ de $\theta$**. Inversement, si ce n’est pas le cas, il est probable que les observations ne soient pas issues d’une loi uniforme discrète.
+
+
+On suppose ici que l'on ne connait pas $\theta$.
+
+On réalise $n$ tirages avec $n$ grand (par rapport à $\theta$, que l'on ne connait pas...)puis on observe la fréquence absolue d'apparition de chaque valeur observée. Pour chaque valeur observée, la fréquence d'apparition de cette valeur tend vers $\frac{1}{\theta}$ lorsque $n \rightarrow \infty$.
+
+On prend donc pour un échantillon quelconque $x$, 
+
+$$\theta_g = \frac{n}{\sum_{i=1}^n \mathbb{1}_{x_i=x}}$$
 
 ---
 
