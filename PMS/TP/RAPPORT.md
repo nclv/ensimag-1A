@@ -80,15 +80,6 @@ Cela n'a de sens ici que parce que l'on échantillonne avec remplacement. Avec u
 
 Si $\theta$ est connu il est facile de tracer le graphe (voir Q7.) car toutes les entrées ont la probabilité $\frac{1}{\theta}$. On trace dans notre exemple le nuage de points $(x_i^*, \frac{i}{n}\theta)$ pour $i \in \{1, \ldots, n\}$. Si ces points sont approximativement alignés sur une droite de pente positive passant par l’origine, on pourra considérer que la loi uniforme discrète est un modèle probabiliste vraisemblable pour ces observations. L'inverse de la pente de la droite fournit alors une **estimation graphique $\theta_g$ de $\theta$**. Inversement, si ce n’est pas le cas, il est probable que les observations ne soient pas issues d’une loi uniforme discrète.
 
-
-On suppose ici que l'on ne connait pas $\theta$.
-
-On réalise $n$ tirages avec $n$ grand (par rapport à $\theta$, que l'on ne connait pas...)puis on observe la fréquence absolue d'apparition de chaque valeur observée. Pour chaque valeur observée, la fréquence d'apparition de cette valeur tend vers $\frac{1}{\theta}$ lorsque $n \rightarrow \infty$.
-
-On prend donc pour un échantillon quelconque $x$, 
-
-$$\theta_g = \frac{n}{\sum_{i=1}^n \mathbb{1}_{x_i=x}}$$
-
 ---
 
 On peut en fait montrer que l'estimateur sans biais et de variance minimale de $\theta$ est :
