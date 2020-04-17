@@ -1,24 +1,24 @@
 # Partie 1
 
 Une variable aléatoire $X$ est de loi ${U}_{\{1,\ldots,\theta\}}$ si elle est à valeurs dans $\{1, \ldots, \theta\}$ et que 
-$$P(X=k) = \frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(k).$$
+$$\Bbb{P}(X=k) = \frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(k).$$
 
 ## 1. Calculer l'espérance et la variance de $X$. 
 
 Les deux résultats sont connus. Calculons la fonction génératrice des moments de $X$.
 
-$$M_X(t) = E[e^{tX}] = \int e^{tx}\frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(x)dx = \frac{1}{\theta}\int_1^\theta e^{tx}dx = \frac{1}{\theta}\bigg[\frac{1}{t}e^{tx}\bigg]_{x=1}^\theta = \frac{e^{t} - e^{\theta t}}{t(1 - \theta)}$$
+$$M_X(t) = \Bbb{E}[e^{tX}] = \int e^{tx}\frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(x)dx = \frac{1}{\theta}\int_1^\theta e^{tx}dx = \frac{1}{\theta}\bigg[\frac{1}{t}e^{tx}\bigg]_{x=1}^\theta = \frac{e^{t} - e^{\theta t}}{t(1 - \theta)}$$
 
-On a alors $E[X] = M_X'(0) = \frac{1 + \theta}{2}$ et $Var(X) = E[X^2] - E[X]^2 = M_X''(0) - [M_X'(0)]^2 = \frac{(\theta - 1)^2}{12}$.
+On a alors $\Bbb{E}[X] = M_X'(0) = \frac{1 + \theta}{2}$ et $\Bbb{Var}(X) = \Bbb{E}[X^2] - \Bbb{E}[X]^2 = M_X''(0) - [M_X'(0)]^2 = \frac{(\theta - 1)^2}{12}$.
 
 ## 2. Calculer l'estimateur des moments $\tilde{\theta}_n$ de $\theta$. Montrer que cet estimateur est sans biais et calculer sa variance.
 
-Pour tout $\theta$, $E_{\theta}[X_1] = \frac{1 + \theta}{2}$. On peut donc prendre par exemple $\Phi(\theta) = \frac{1 + \theta}{2}$ (application bien injective) et $f = Id : \mathbb{R} \rightarrow \mathbb{R}$. L'estimateur obtenu par la méthode des moments est alors $\tilde{\theta}_n = 2\overline{X}_n - 1$.
+Pour tout $\theta$, $\Bbb{E}_{\theta}[X_1] = \frac{1 + \theta}{2}$. On peut donc prendre par exemple $\Phi(\theta) = \frac{1 + \theta}{2}$ (application bien injective) et $f = Id : \mathbb{R} \rightarrow \mathbb{R}$. L'estimateur obtenu par la méthode des moments est alors $\tilde{\theta}_n = 2\overline{X}_n - 1$.
 
 Cet estimateur est sans biais et consistant.
-En effet, pour tout $\theta \in \mathbb{R}$, $E[\tilde{\theta}_n] = 2E[\overline{X}_n] - 1 = 2\frac{\theta + 1}{2} - 1= \theta$ et l'application $x \rightarrow 2x - 1$ est continue.
+En effet, pour tout $\theta \in \mathbb{R}$, $\Bbb{E}[\tilde{\theta}_n] = 2\Bbb{E}[\overline{X}_n] - 1 = 2\frac{\theta + 1}{2} - 1= \theta$ et l'application $x \rightarrow 2x - 1$ est continue.
 
-$$Var(\tilde{\theta}_n) = 4Var(\overline{X}_n) = \frac{4n}{n^2}Var(X_1) = \frac{4}{n}\frac{(\theta - 1)^2}{12} = \frac{(\theta - 1)^2}{3n}$$
+$$\Bbb{Var}(\tilde{\theta}_n) = 4\Bbb{Var}(\overline{X}_n) = \frac{4n}{n^2}\Bbb{Var}(X_1) = \frac{4}{n}\frac{(\theta - 1)^2}{12} = \frac{(\theta - 1)^2}{3n}$$
 
 ## 3. Calculer la fonction de répartition de $X$. Calculer la médiane de la loi de $X$ et en déduire un estimateur $\tilde{\theta}'_n$ de $\theta$ basé sur la médiane empirique.
 
@@ -39,17 +39,17 @@ Nous sommes dans le cas d'une distribution symétrique (en effet, $f(x - \mu) = 
 
 ## 4. Soit $X_n^*$ le maximum des observations. Calculer la fonction de répartition de $X_n^*$ et les probabilités élémentaires $P(X_n^*=k)$, $\forall k \in \{1, \ldots, \theta\}$.
 
-$P(X_n^* \leq k) = \big(\frac{k}{\theta}\big)^n$ par indépendance des observations.
+$\Bbb{P}(X_n^* \leq k) = \big(\frac{k}{\theta}\big)^n$ par indépendance des observations.
 
 L'évènement $(X_n^* = k)$ est le complémentaire de $(X_n^* < k) \cup (X_n^* > k)$.
 
-Ainsi $P(X_n^* = k) = 1 - \big(\big(\frac{k - 1}{\theta}\big)^n + \big(1 - \big(\frac{k}{\theta}\big)^n\big)\big) = \big(\frac{k}{\theta}\big)^n - \big(\frac{k - 1}{\theta}\big)^n$
+Ainsi $\Bbb{P}(X_n^* = k) = 1 - \big(\big(\frac{k - 1}{\theta}\big)^n + \big(1 - \big(\frac{k}{\theta}\big)^n\big)\big) = \big(\frac{k}{\theta}\big)^n - \big(\frac{k - 1}{\theta}\big)^n$
 
 ## 5. Montrer que l'estimateur de maximum de vraisemblance de $\theta$ est $\hat{\theta}_n=X_n^*$. Montrer qu'il est biaisé mais qu'on ne peut pas le débiaiser facilement.
 
 La fonction de masse de notre problème est $p_\theta(x) = \frac{1}{\theta}$ si $x \leq \theta$ et $0$ sinon.
 
-Ainsi, l'estimateur du maximum de vraisemblance pour un échantillon de $n$ tanks issus d'un échantillon aléatoire indépendant vaut :
+Ainsi, l'estimateur du maximum de vraisemblance pour un échantillon de $n$ tanks issus d'un échantillon aléatoire de variables indépendantes vaut :
 
 $$
 L(\theta, x_1, \ldots, x_n) = \left\{
@@ -63,18 +63,26 @@ $$
 Cette fonction est maximisée pour $\hat{\theta}_n = max_i (x_i) = X_n^*$.
 
 ---
-Si $n = 1$ et que le tank à le numéro de série $x$ alors $x$ est l'estimation du maximum de vraisemblance du nombre total de tanks.
+Si $n = 1$ et que le tank a le numéro de série $x$ alors $x$ est l'estimation du maximum de vraisemblance du nombre total de tanks.
 
 On note ici que le support, représenté par les valeurs de $x$ donnant une fonction de masse positive, dépend de $\theta$. Pour le calcul de la borne de Cramér-Rao on suppose que le support n'en dépend pas.
 
 ---
 
-$$E_{\theta}[\hat{\theta}_n] = \sum_{k=1}^{\theta} k\bigg(\bigg(\frac{k}{\theta}\bigg)^n - \bigg(\frac{k - 1}{\theta}\bigg)^n\bigg)$$
+$$
+\begin{aligned}
+    \Bbb{E}_{\theta}[\hat{\theta}_n] &= \sum_{k=1}^{\theta} k\bigg(\bigg(\frac{k}{\theta}\bigg)^n - \bigg(\frac{k - 1}{\theta}\bigg)^n\bigg) \\
+    &= \theta^{-n}.\bigg(\theta^{n+1} - \sum_{k=1}^{\theta - 1} k^n \bigg) \\
+    &= \theta - \sum_{k=1}^{\theta - 1} \bigg(\frac{k}{\theta}\bigg)^n \\
+\end{aligned}
+$$
 
-Sans prendre la peine de finir le calcul, on voit que l'on obtiendra pas $\theta$. En effet, prenons une seule observation, alors $n = 1$ et $E_{\theta}[\hat{\theta}_n] = \frac{\theta + 1}{2}$ ce qui donne un biais de $\frac{1 - \theta}{2}$.
+Sans prendre la peine de finir le calcul, on voit que l'on obtiendra pas $\theta$. En effet, prenons une seule observation, alors $n = 1$ et $\Bbb{E}_{\theta}[\hat{\theta}_n] = \frac{\theta + 1}{2}$ ce qui donne un biais de $\frac{1 - \theta}{2}$.
 
-Cependant, l'estimateur est consistant. $P(X_n^* = k) \rightarrow 0$ lorsque $n \rightarrow \infty$ pour $k < \theta$. Donc $P(X_n^* = n) \rightarrow 1$.
+Cependant, l'estimateur est consistant. $\Bbb{P}(X_n^* = k) \rightarrow 0$ lorsque $n \rightarrow \infty$ pour $k < \theta$. Donc $\Bbb{P}(X_n^* = n) \rightarrow 1$.
 Cela n'a de sens ici que parce que l'on échantillonne avec remplacement. Avec un échantillonnement sans remplacement, nous manquerions de tanks.
+
+Cet estimateur est difficile à débiaiser car la somme dépend de $\theta$.
 
 ## 6. Expliquer comment construire le graphe de probabilités pour la loi uniforme discrète. En déduire un estimateur graphique $\theta_g$ de $\theta$.
 
@@ -96,3 +104,69 @@ En ${\tt R}$, la simulation de la loi uniforme discrète se fait avec la command
 ## 9. Déterminer un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$, c'est-à-dire un intervalle aléatoire $I_n$ tel que $\lim_{n \rightarrow \infty} P(\theta \in I_n)=1-\alpha.$
 
 ## 10. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$. Calculer le pourcentage de fois où l'intervalle de confiance de seuil $\alpha$ pour $\theta$ contient la vraie valeur du paramètre $\theta$. Faire varier $n$, $m$ et $\alpha$, et conclure. 
+
+# Partie 2
+
+## 1.
+
+La loi de $X_1$ n'a pas changé.
+$$\Bbb{P}(X_1=x_1) = \frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(x_1).$$
+
+Prenons la première probabilité conditionnelle,
+$$\Bbb{P}(X_2 = x_2 | X_1=x_1) = \frac{\Bbb{P}(X_2 = x_2, X_1 = x_1)}{\Bbb{P}(X_2 = x_2)}$$
+
+Or le couple $(X_1, X_2)$ suit une loi uniforme sur $\{(x_1, x_2), x_1 \in \{1, \ldots, \theta\}, x_2 \in \{1, \ldots, \theta\}, x_1 \neq x_2 \}$ donc
+$$\Bbb{P}(X_2 = x_2, X_1=x_1) = \frac{1}{\theta(\theta - 1)}, x_1 \in \{1, \ldots, \theta\}, x_2 \in \{1, \ldots, \theta\}, x_1 \neq x_2$$
+
+Généralisons,
+$$
+\begin{aligned}
+    \Bbb{P}(X_k = x_k | X_1=x_1, \ldots, X_{k-1} = x_{k-1}) &= \frac{\Bbb{P}(\bigcap_{j=1}^{k} (X_j = x_j))}{\Bbb{P}(X_k = x_k)} \\
+    &= \theta.\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_k=x_k | \bigcap_{j=1}^{k-1} (X_j = x_j)) \\
+    &= \theta.\frac{1}{\theta}.\frac{1}{(\theta - 1)}.\frac{(\theta - 1)}{(\theta - 2)} \ldots \frac{(\theta - k)}{(\theta - k + 1)} \\
+    &= \frac{1}{(\theta - k + 1)}
+\end{aligned}
+$$
+Plus simplement la probabilité de tirer $x_k$ sachant que l'on a déjà fait $k - 1$ tirages sans remise dans un ensemble de $\theta$ éléments est $\frac{1}{(\theta - k + 1)}$ (avec bien sûr $x_k \leq \theta$). Mais quelques révisions calculatoires ne peuvent pas faire de mal...
+
+$$
+L(\theta, x_1, \ldots, x_n) = \left\{
+    \begin{array}{ll}
+        \frac{1}{\theta}.\frac{1}{(\theta - 1)} \ldots \frac{1}{(\theta - n + 1)} & \text{si } max_i (x_i) \leq \theta \\
+        0 & \text{sinon.}
+    \end{array}
+\right.
+$$
+
+Cette fonction est aussi maximisée pour $\hat{\theta}_n = max_i (x_i) = X_n^*$.
+
+## 2.
+
+Reformulons l'évènement recherché. On recherche en fait un probabilité conditionnelle.
+La probabilité que le numéro de série maximum observé soit égal à $k$ quand le nombre de tanks est connu égal à $\theta$ et que le nombre de tanks observés est égal à $n$.
+On cherche donc à répondre à la question : quelle est la probabilité qu'un nombre de série $k$ soit le maximum observé dans un échantillon de $n$ tanks lorsqu'il y en a $\theta$ au total ?
+
+La probabilité d'obtenir un échantillon de maximum $k$ est le nombre de façons de choisir un échantillon ayant un maximum $k$ divisé par le nombre d'échantillons.
+On a $k - 1$ parmi $n - 1$ ensembles distincts de $n$ numéros de série où le numéro de série maximal est $k$. 
+
+Ainsi, pour choisir un échantillon de maximum $k$, il faut choisir l'observation correspondant à $k$ ainsi que $n - 1$ autres observations de l'ensemble $\{1, \ldots k - 1\}$ de $k - 1$ parmi $n - 1$ façons. Donc
+
+$$\Bbb{P}(X_n^* = k) = \frac{\left(_{n-1}^{k-1} \right)}{\left(_{n}^{\theta} \right)}$$
+
+Notez qu'il faut $k$ telle que $n \leq k \leq \theta$ puisque le numéro de série maximum ne peut pas être supérieur au nombre total de tanks ou inférieur au nombre de tanks capturés.
+
+---
+
+$$
+\begin{aligned}
+    \Bbb{E}[X_n^*] &= \sum_{k=n}^{\theta}{k \frac{{k-1}\choose{n-1}}{{\theta}\choose{n}}} \\  
+    &= \frac{1}{(n-1)!{\theta \choose n}} \sum_{k=n}^{\theta}{\frac{k!}{(k-n)!}} \\ 
+    &= \frac{n!}{(n-1)!{\theta \choose n}} \sum_{k=n}^{\theta}{k \choose n} \\ 
+    &= n \frac{{\theta+1}\choose{n+1}}{\theta \choose n} \\ 
+    &= \frac{n}{n+1}(\theta+1) 
+\end{aligned}
+$$
+
+La valeur obtenue n'est égale à $\theta$ seulement quand $n = \theta$. $X_n^*$ est donc un estimateur biaisé de $\theta$.
+
+On en déduit que $\hat{\theta}_n^{(1)}=\frac{n+1}{n}X_n^*-1$ est un estimateur sans biais de $\theta$.
