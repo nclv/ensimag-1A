@@ -20,6 +20,8 @@ En effet, pour tout $\theta \in \mathbb{R}$, $\Bbb{E}[\tilde{\theta}_n] = 2\Bbb{
 
 $$\Bbb{Var}(\tilde{\theta}_n) = 4\Bbb{Var}(\overline{X}_n) = \frac{4n}{n^2}\Bbb{Var}(X_1) = \frac{4}{n}\frac{(\theta - 1)^2}{12} = \frac{(\theta - 1)^2}{3n}$$
 
+Le problème avec cet estimateur est que sa valeur peut être inférieure au maximum de l'échantillon.
+
 ## 3. Calculer la fonction de répartition de $X$. Calculer la médiane de la loi de $X$ et en déduire un estimateur $\tilde{\theta}'_n$ de $\theta$ basé sur la médiane empirique.
 
 La fonction de masse $f$ de $X$ vérifie $f(x) = \frac{1}{\theta}$ si $1 \leq x \leq \theta$ et $0$ sinon. La fonction de répartition $F$ de $X$ vérifie donc $F(k) = \frac{k}{\theta}$ si $1 \leq k \leq \theta$, $0$ si $k < 1$ et $1$ si $k > \theta$.
@@ -39,7 +41,8 @@ Nous sommes dans le cas d'une distribution symétrique (en effet, $f(x - \mu) = 
 
 ## 4. Soit $X_n^*$ le maximum des observations. Calculer la fonction de répartition de $X_n^*$ et les probabilités élémentaires $P(X_n^*=k)$, $\forall k \in \{1, \ldots, \theta\}$.
 
-$\Bbb{P}(X_n^* \leq k) = \big(\frac{k}{\theta}\big)^n$ par indépendance des observations.
+$\Bbb{P}(X_n^* \leq k) = \big(\frac{k}{\theta}\big)^n$ par indépendance des observations de même probabilité.
+Si $k > \theta$ cette probabilité vaut 1.
 
 L'évènement $(X_n^* = k)$ est le complémentaire de $(X_n^* < k) \cup (X_n^* > k)$.
 
@@ -78,11 +81,24 @@ $$
 $$
 
 Sans prendre la peine de finir le calcul, on voit que l'on obtiendra pas $\theta$. En effet, prenons une seule observation, alors $n = 1$ et $\Bbb{E}_{\theta}[\hat{\theta}_n] = \frac{\theta + 1}{2}$ ce qui donne un biais de $\frac{1 - \theta}{2}$.
+Cet estimateur est difficile à débiaiser car la somme dépend de $\theta$.
 
 Cependant, l'estimateur est consistant. $\Bbb{P}(X_n^* = k) \rightarrow 0$ lorsque $n \rightarrow \infty$ pour $k < \theta$. Donc $\Bbb{P}(X_n^* = n) \rightarrow 1$.
 Cela n'a de sens ici que parce que l'on échantillonne avec remplacement. Avec un échantillonnement sans remplacement, nous manquerions de tanks.
 
-Cet estimateur est difficile à débiaiser car la somme dépend de $\theta$.
+---
+
+On peut vérifier la consistance de cet estimateur par un calcul rapide
+En effet, soit $\epsilon > 0$
+
+$$
+\begin{aligned}
+    \Bbb{P}(|\hat{\theta}_n - \theta | \geq \epsilon) &= 1 - \Bbb{P}(\theta - \epsilon \leq \hat{\theta}_n \leq \theta + \epsilon) \\
+    &= 1 - (F_{\hat{\theta}_n}(\theta + \epsilon) - F_{\hat{\theta}_n}(\theta - \epsilon)) \\
+    &= \bigg(\frac{\theta - \epsilon}{\theta}\bigg)^n \\
+\end{aligned}
+$$
+Or $1 - \frac{\epsilon}{\theta} < 1$ donc la série de terme général $\Bbb{P}(|\hat{\theta}_n - \theta | \geq \epsilon)$ converge et on a $\hat{\theta}_n \rightarrow \theta$ presque sûrement.
 
 ## 6. Expliquer comment construire le graphe de probabilités pour la loi uniforme discrète. En déduire un estimateur graphique $\theta_g$ de $\theta$.
 
@@ -102,6 +118,24 @@ En ${\tt R}$, la simulation de la loi uniforme discrète se fait avec la command
 ## 8. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$, avec $\theta=1000$. Pour chaque échantillon, calculer les valeurs des 5 estimations de $\theta$. On obtient ainsi des échantillons de $m$ valeurs de chacun des 5 estimateurs. Evaluer le biais et l'erreur quadratique moyenne de ces estimateurs. Faites varier $m$ et $n$. Qu'en concluez-vous ?
 
 ## 9. Déterminer un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$, c'est-à-dire un intervalle aléatoire $I_n$ tel que $\lim_{n \rightarrow \infty} P(\theta \in I_n)=1-\alpha.$
+
+Posons $P = \frac{X_n^*}{\theta}$ notre fonction pivot. En effet, on a bien $\Bbb{P}(P \leq k) = k^n$ (indépendant de $\theta$) par indépendance des tirages de même probabilité.
+
+On remarque que $\Bbb{P}(P \leq \alpha^{\frac{1}{n}}) = \alpha$ et que $\Bbb{P}(P \leq 1) = 1$.
+Ainsi,
+
+$$ 1 - \alpha = \Bbb{P}(\alpha^{\frac{1}{n}} \leq P \leq 1) = \Bbb{P}(\alpha^{\frac{1}{n}} \leq \frac{X_n^*}{\theta} \leq 1) = \Bbb{P}(X_n^* \leq \theta \leq \frac{X_n^*}{\alpha^{\frac{1}{n}}})$$
+
+Donc $I_n = \bigg[X_n^*, \frac{X_n^*}{\alpha^{\frac{1}{n}}}\bigg]$ est un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$.
+
+---
+
+Pour trouver l'intervalle de confiance pour $\theta$ basé sur $n$ observations de valeur maximum $k$, on peut aussi résoudre les deux équations suivantes :
+
+$$ \Bbb{P}(X_n^* \leq k) = \bigg(\frac{k}{\theta}\bigg)^n = \frac{\alpha}{2}$$
+$$ \Bbb{P}(X_n^* \geq k) = 1 - \Bbb{P}(X_n^* \leq k - 1)  = 1 - \bigg(\frac{k - 1}{\theta}\bigg)^n = \frac{\alpha}{2}$$
+
+On obtient donc $\theta_{+} = \frac{k}{(\frac{\alpha}{2})^\frac{1}{n}}$ et $\theta_{-} = \frac{k}{(1 - \frac{\alpha}{2})^\frac{1}{n}}$.
 
 ## 10. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$. Calculer le pourcentage de fois où l'intervalle de confiance de seuil $\alpha$ pour $\theta$ contient la vraie valeur du paramètre $\theta$. Faire varier $n$, $m$ et $\alpha$, et conclure. 
 
@@ -140,6 +174,12 @@ $$
 
 Cette fonction est aussi maximisée pour $\hat{\theta}_n = max_i (x_i) = X_n^*$.
 
+---
+
+Calculons la variance de notre estimateur des moments.
+$$\Bbb{Var}(\tilde{\theta}_n) = 4\Bbb{Var}(\overline{X}_n) = 4\sum_{i=1}^n \frac{1}{n^2}\Bbb{Var}(X_i) = \frac{4}{n}\frac{(\theta - n)(\theta - 1)}{12} = \frac{(\theta - n)(\theta - 1)}{3n}$$
+
+
 ## 2.
 
 Reformulons l'évènement recherché. On recherche en fait un probabilité conditionnelle.
@@ -154,6 +194,11 @@ Ainsi, pour choisir un échantillon de maximum $k$, il faut choisir l'observatio
 $$\Bbb{P}(X_n^* = k) = \frac{\left(_{n-1}^{k-1} \right)}{\left(_{n}^{\theta} \right)}$$
 
 Notez qu'il faut $k$ telle que $n \leq k \leq \theta$ puisque le numéro de série maximum ne peut pas être supérieur au nombre total de tanks ou inférieur au nombre de tanks capturés.
+
+On peut maintenant calculer la fonction de répartition de $X_n^*$ et tracer la distribution.
+En effet, c'est l'intégrale de $\Bbb{P}(X_n^* = k)$ par rapport à la variable $k$. Ainsi,
+
+$$\Bbb{P}(X_n^* \leq k) = \frac{\left(_{n}^{k} \right)}{\left(_{n}^{\theta} \right)}$$
 
 ---
 
@@ -170,3 +215,34 @@ $$
 La valeur obtenue n'est égale à $\theta$ seulement quand $n = \theta$. $X_n^*$ est donc un estimateur biaisé de $\theta$.
 
 On en déduit que $\hat{\theta}_n^{(1)}=\frac{n+1}{n}X_n^*-1$ est un estimateur sans biais de $\theta$.
+
+---
+
+La variance de l'estimateur $\hat{\theta}_n^{(1)}$ est $\frac{1}{n}\frac{(\theta - n)(\theta  - 1)}{n + 2}$ après calculs.
+
+> On a $\Bbb{Var}(\hat{\theta}_n^{(1)}) = \frac{(n + 1)^2}{n^2}\Bbb{Var}(X_n^*)$. Le calcul de $\Bbb{E}[(X_n^*)^2]$ est ce qui pose problème.
+
+---
+
+On aurait pu construire cet estimateur à partir de celui proposé à la question suivante.
+On remplace l'écart $(x_1^* - 1)$ par la moyenne des écarts de notre échantillon. On obtient ainsi un écart moyen
+
+$$
+\begin{aligned}
+    E_{moy} &= \frac{1}{n}((x_1^* - 1) + (x_2^* - x_1^* - 1) + (x_3^* - x_2^* - 1) + \ldots + (x_n^* - x_{n - 1}^* - 1)) \\
+    &= \frac{1}{n}(x_n^* - n) \\
+    &= \frac{x_n^*}{n} - 1
+\end{aligned}
+$$
+
+On retrouve bien l'estimateur $\hat{\theta}_n^{(1)} = X_n^* + E_{moy} = X_n^* + \frac{X_n^*}{n} - 1$.
+
+# 3.
+
+Comment avons nous construit cet estimateur ? On estime que le nombre de tanks avec un numéro de série inférieur au minimum de l'échantillon (ils n'ont pas été observés) est environ égal au nombre de tanks avec un numéro de série supérieur au maximum de l'échantillon.
+Cela nous donne $\hat{\theta}_n^{(2)} = X_n^* + (X_1^* - 1)$.
+
+---
+
+La variance de l'estimateur $\hat{\theta}_n^{(2)} = X_n^* + X_1^* - 1$ est $\frac{2}{n + 1}\frac{(\theta - n)(\theta  - 1)}{n + 2}$ après calculs.
+
