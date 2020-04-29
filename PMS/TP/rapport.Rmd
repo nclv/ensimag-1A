@@ -1,0 +1,1056 @@
+---
+title: "Problème du char d'assaut allemand et application concrète sur la vente d'Iphones"
+author: "Nicolas VINCENT & Clément Pellicioli"
+date: "25/04/2020"
+output: 
+    html_document:
+        toc: true
+        theme: united
+        highlight: tango
+        df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+J'ai fait le choix de laisser l'affichage du code dans ce rapport pour que son lecteur puisse reproduire ce travail sans aller chercher le code dans le fichier RMarkdown.
+
+## Partie 1
+
+Une variable aléatoire $X$ est de loi ${U}_{\{1,\ldots,\theta\}}$ si elle est à valeurs dans $\{1, \ldots, \theta\}$ et que 
+$$\Bbb{P}(X=k) = \frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(k).$$
+
+### 1. Calculer l'espérance et la variance de $X$. 
+
+Les deux résultats sont connus. Calculons la fonction génératrice des moments de $X$.
+
+$$M_X(t) = \Bbb{E}[e^{tX}] = \int e^{tx}\frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(x)dx = \frac{1}{\theta}\int_1^\theta e^{tx}dx = \frac{1}{\theta}\bigg[\frac{1}{t}e^{tx}\bigg]_{x=1}^\theta = \frac{e^{t} - e^{\theta t}}{t(1 - \theta)}$$
+
+On a alors $\Bbb{E}[X] = M_X'(0) = \frac{1 + \theta}{2}$ et $\Bbb{Var}(X) = \Bbb{E}[X^2] - \Bbb{E}[X]^2 = M_X''(0) - [M_X'(0)]^2 = \frac{(\theta - 1)^2}{12}$.
+
+### 2. Calculer l'estimateur des moments $\tilde{\theta}_n$ de $\theta$. Montrer que cet estimateur est sans biais et calculer sa variance.
+
+Pour tout $\theta$, $\Bbb{E}_{\theta}[X_1] = \frac{1 + \theta}{2}$. On peut donc prendre par exemple $\Phi(\theta) = \frac{1 + \theta}{2}$ (application bien injective) et $f = Id : \mathbb{R} \rightarrow \mathbb{R}$. L'estimateur obtenu par la méthode des moments est alors $\tilde{\theta}_n = 2\overline{X}_n - 1$.
+
+Cet estimateur est **sans biais et consistant**.
+
+En effet, pour tout $\theta \in \mathbb{R}$, $\Bbb{E}[\tilde{\theta}_n] = 2\Bbb{E}[\overline{X}_n] - 1 = 2\frac{\theta + 1}{2} - 1= \theta$ et l'application $x \rightarrow 2x - 1$ est continue.
+
+---
+
+$$\Bbb{Var}(\tilde{\theta}_n) = 4\Bbb{Var}(\overline{X}_n) = \frac{4n}{n^2}\Bbb{Var}(X_1) = \frac{4}{n}\frac{(\theta - 1)^2}{12} = \frac{(\theta - 1)^2}{3n}$$
+
+---
+
+Le problème avec cet estimateur est que sa valeur peut être inférieure au maximum de l'échantillon.
+
+### 3. Calculer la fonction de répartition de $X$. Calculer la médiane de la loi de $X$ et en déduire un estimateur $\tilde{\theta}'_n$ de $\theta$ basé sur la médiane empirique.
+
+La fonction de masse $f$ de $X$ vérifie $f(x) = \frac{1}{\theta}$ si $1 \leq x \leq \theta$ et $0$ sinon. La fonction de répartition $F$ de $X$ vérifie donc $F(k) = \frac{k}{\theta}$ si $1 \leq k \leq \theta$, $0$ si $k < 1$ et $1$ si $k > \theta$.
+
+Notons $q_{\frac{1}{2}}$ la médiane de $X$. Elle vérifie $F(q_{\frac{1}{2}}) = \frac{1}{2}$. On a trivialement $q_{\frac{1}{2}} = \frac{1 + \theta}{2}$.
+
+On rappelle l'expression de la **médiane empirique** : $\tilde{Q}_{n,\frac{1}{2}} = \frac{X_{\frac{n}{2}}^* + X_{\frac{n}{2} + 1}^*}{2}$ si $\frac{n}{2}$ est entier et $X_{\left\lfloor\frac{n}{2}\right\rfloor + 1}^*$ sinon.
+
+On considère donc $\tilde{\theta}'_n = 2\tilde{Q}_{n,\frac{1}{2}} - 1$ basé sur la médiane empirique. Il est **sans biais et consistant**.
+
+---
+
+> On peut noter ici que les calculs de la fonction de répartition et de la médiane sont inutiles.
+Nous sommes dans le cas d'une distribution symétrique (en effet, $f(x - \mu) = f(\mu - x)$). Ainsi qu'on prenne la moyenne ou la médiane comme estimateur, on estimera la même quantité car les deux paramètres sont identiques.
+
+> Est-ce qu’on devrait utiliser la moyenne ou la médiane de l’échantillon pour estimer notre paramètre de position $\theta$ ? Lorsque plusieurs estimateurs estiment la même quantité et que leur biais est négligeable ou nul, le choix se fait généralement sur la base de la variance de l’estimateur, une mesure de précision : on va préférer un estimateur qui a une plus petite variance puisque ça veut dire qu’en moyenne la distance (au carré) entre l’estimateur et le paramètre est moindre. Celle-ci dépend toutefois de la distribution de laquelle proviennent les données - qui en pratique nous reste inconnue.
+
+### 4. Soit $X_n^*$ le maximum des observations. Calculer la fonction de répartition de $X_n^*$ et les probabilités élémentaires $P(X_n^*=k)$, $\forall k \in \{1, \ldots, \theta\}$.
+
+$\Bbb{P}(X_n^* \leq k) = \big(\frac{k}{\theta}\big)^n$ par indépendance des observations de même probabilité.
+Si $k > \theta$ cette probabilité vaut 1.
+
+L'évènement $(X_n^* = k)$ est le complémentaire de $(X_n^* < k) \cup (X_n^* > k)$.
+
+Ainsi $\Bbb{P}(X_n^* = k) = 1 - \big(\big(\frac{k - 1}{\theta}\big)^n + \big(1 - \big(\frac{k}{\theta}\big)^n\big)\big) = \big(\frac{k}{\theta}\big)^n - \big(\frac{k - 1}{\theta}\big)^n$
+
+### 5. Montrer que l'estimateur de maximum de vraisemblance de $\theta$ est $\hat{\theta}_n=X_n^*$. Montrer qu'il est biaisé mais qu'on ne peut pas le débiaiser facilement.
+
+La fonction de masse de notre problème est $p_\theta(x) = \frac{1}{\theta}$ si $x \leq \theta$ et $0$ sinon.
+
+Ainsi, **l'estimateur du maximum de vraisemblance** pour un échantillon de $n$ tanks issus d'un échantillon aléatoire de variables indépendantes vaut :
+
+$$
+L(\theta, x_1, \ldots, x_n) = \left\{
+    \begin{array}{ll}
+        \frac{1}{\theta^n} & \text{si } max_i (x_i) \leq \theta \\
+        0 & \text{sinon.}
+    \end{array}
+\right.
+$$
+
+Cette fonction est maximisée pour $\hat{\theta}_n = max_i (x_i) = X_n^*$.
+
+---
+Si $n = 1$ et que le tank a le numéro de série $x$ alors $x$ est l'estimation du maximum de vraisemblance du nombre total de tanks.
+
+On note ici que le support, représenté par les valeurs de $x$ donnant une fonction de masse positive, dépend de $\theta$. Pour le calcul de la borne de Cramér-Rao on suppose que le support n'en dépend pas.
+
+---
+
+$$
+\begin{aligned}
+    \Bbb{E}_{\theta}[\hat{\theta}_n] &= \sum_{k=1}^{\theta} k\bigg(\bigg(\frac{k}{\theta}\bigg)^n - \bigg(\frac{k - 1}{\theta}\bigg)^n\bigg) \\
+    &= \theta^{-n}.\bigg(\theta^{n+1} - \sum_{k=1}^{\theta - 1} k^n \bigg) \\
+    &= \theta - \sum_{k=1}^{\theta - 1} \bigg(\frac{k}{\theta}\bigg)^n \\
+\end{aligned}
+$$
+
+Sans prendre la peine de finir le calcul, on voit que l'on obtiendra pas $\theta$. En effet, prenons une seule observation, alors $n = 1$ et $\Bbb{E}_{\theta}[\hat{\theta}_n] = \frac{\theta + 1}{2}$ ce qui donne un **biais** de $\frac{1 - \theta}{2}$.
+Cet estimateur est difficile à débiaiser car la somme dépend de $\theta$.
+
+Cependant, l'estimateur est **consistant**. $\Bbb{P}(X_n^* = k) \rightarrow 0$ lorsque $n \rightarrow \infty$ pour $k < \theta$. Donc $\Bbb{P}(X_n^* = n) \rightarrow 1$.
+Cela n'a de sens ici que parce que l'on échantillonne avec remplacement. Avec un échantillonnement sans remplacement, nous manquerions de tanks.
+
+---
+
+On peut vérifier la consistance de cet estimateur par un calcul rapide
+En effet, soit $\epsilon > 0$
+
+$$
+\begin{aligned}
+    \Bbb{P}(|\hat{\theta}_n - \theta | \geq \epsilon) &= 1 - \Bbb{P}(\theta - \epsilon \leq \hat{\theta}_n \leq \theta + \epsilon) \\
+    &= 1 - (F_{\hat{\theta}_n}(\theta + \epsilon) - F_{\hat{\theta}_n}(\theta - \epsilon)) \\
+    &= \bigg(\frac{\theta - \epsilon}{\theta}\bigg)^n \\
+\end{aligned}
+$$
+Or $1 - \frac{\epsilon}{\theta} < 1$ donc la série de terme général $\Bbb{P}(|\hat{\theta}_n - \theta | \geq \epsilon)$ converge et on a $\hat{\theta}_n \rightarrow \theta$ presque sûrement.
+
+### 6. Expliquer comment construire le graphe de probabilités pour la loi uniforme discrète. En déduire un estimateur graphique $\theta_g$ de $\theta$.
+
+Si $\theta$ est connu il est facile de tracer le graphe (voir Q7.) car toutes les entrées ont la probabilité $\frac{1}{\theta}$. On trace dans notre exemple le nuage de points $(x_i^*, \frac{i}{n}\theta)$ pour $i \in \{1, \ldots, n\}$. Si ces points sont approximativement alignés sur une droite de pente positive passant par l’origine, on pourra considérer que la loi uniforme discrète est un modèle probabiliste vraisemblable pour ces observations. L'inverse de la pente de la droite fournit alors une **estimation graphique $\theta_g$ de $\theta$**. Inversement, si ce n’est pas le cas, il est probable que les observations ne soient pas issues d’une loi uniforme discrète.
+
+> Notons ici que l'on construit plutôt l'**ECDF** (Empirical Cumulative Density Function) de la loi uniforme. En effet, il est nécessaire de tracer non pas le graphe des probabilité mais le graphe des probabilités cumulées pour pouvoir en déduire notre estimateur. C'est sous ce nom que j'y ferais référence par la suite.
+
+---
+
+On peut en fait montrer que l'estimateur sans biais et de variance minimale de $\theta$ est :
+$$\check{\theta}_n = \frac{{X_n^*}^{n+1} - (X_n^*-1)^{n+1}}{{X_n^*}^{n} - (X_n^*-1)^{n}}.$$
+
+Dans la suite de cette première partie, on va comparer numériquement les 5 estimateurs $\tilde{\theta}_n, \tilde{\theta}'_n, \hat{\theta}_n$, $\theta_g$ et $\check{\theta}_n$ à l'aide de simulations en ${\tt R}$.
+
+En ${\tt R}$, la simulation de la loi uniforme discrète se fait avec la commande ${\tt sample}$. ${\tt sample(1:20,10,replace=T)}$ tire 10 nombres au hasard entre 1 et 20 avec remise, tandis que ${\tt sample(1:20,10)}$ tire 10 nombres au hasard entre 1 et 20 sans remise.
+
+### 7. Simuler un échantillon de taille $n=20$ d'une loi ${U}_{\{1,\ldots,\theta\}}$, avec $\theta=1000$. Tracer un histogramme et le graphe de probabilités pour la loi uniforme discrète. Calculez les 5 estimations de $\theta$. Commentez les résultats.
+
+Commençons par quelques fonctions permettant de tracer les histogrammes et le graphe des probabilités cumulées :
+
+```{r}
+histogram <- function(observations) {
+    # Histogramme des observations
+    par(mfcol = c(1, 2))
+    
+    # classes de même largeur
+    # calcul du nombre de classes
+    k <- ceiling(log(length(observations)) / log(2)) + 1
+    a0 <-
+        min(observations) - 0.025 * (max(observations) - min(observations))
+    ak <-
+        max(observations) + 0.025 * (max(observations) - min(observations))
+    h <- (ak - a0) / k
+    breaks = seq(a0, ak, h)
+    
+    histogram.largeur <- hist(
+        observations,
+        breaks = breaks,
+        prob = T,
+        main = "Histogramme même largeur",
+        ylab = "Nombre d'observations",
+        xlab = "Valeurs observées"
+    )
+    
+    # classes de même effectif
+    nombre_elements <- length(observations) / k
+    observations.sorted <- sort(observations)
+    b <- nombre_elements * 1:k - 1
+    breaks <-
+        c(a0, (observations.sorted[b] + observations.sorted[b + 1]) / 2, ak)
+    
+    histogram.effectif <- hist(
+        observations,
+        breaks = breaks,
+        prob = T,
+        main = "Histogramme même effectif",
+        ylab = "Nombre d'observations",
+        xlab = "Valeurs observées"
+    )
+    
+    par(mfcol = c(1, 1))
+}
+```
+```{r}
+probability_graph <-
+    function(nombre_observations, theta) {
+        observations <- sample(1:theta, nombre_observations, replace = T)
+        # nombre_lancers premières composantes du vecteur d'observations triées
+        observations.clip = sort(observations)[1:nombre_observations]
+        probabilites_cumulee = seq(1:nombre_observations) / theta
+        plot(
+            observations.clip,
+            probabilites_cumulee,
+            main = "Graphe de probabilités",
+            ylim = c(0, max(probabilites_cumulee)),
+            # doit rester inférieur à 1
+            xlim = c(1, theta),
+            col = "blue",
+            ylab = "Probabilités cumulées",
+            xlab = "Valeurs observées"
+        )
+        
+        # Régression linéaire
+        observations.lm <-
+            lm(probabilites_cumulee ~ observations.clip)
+        print(coef(observations.lm))
+        print(summary(observations.lm)$r.squared)
+        
+        # Tracé de la droite
+        clip(1, theta, 0, 1)
+        abline(observations.lm,
+               ylim = c(0, max(probabilites_cumulee)),
+               # doit rester inférieur à 1
+               xlim = c(1, theta))
+        
+        # on récupère l'inverse de la pente de la droite de régression
+        theta_graph <- 1 / coef(observations.lm)[2]
+        
+        return(theta_graph)
+    }
+```
+On fait attention ici à ce que le nombre d'observations soit toujours inférieur à theta. En effet, on ne peut pas observer plus de tanks que le nombre de tanks produits.
+```{r}
+theta <- 1000
+n <- 20
+probability_graph(nombre_observations = n, theta = theta)
+# ou plus simplement
+plot(ecdf(sample(1:theta, n, replace = T)))
+```
+On remarque ici la valeur aberrante de notre estimateur graphique. Essayons avec 1000 observations.
+```{r}
+theta <- 1000
+n <- 1000
+probability_graph(nombre_observations = n, theta = theta)
+```
+On tombe plutôt bien. On voit ici que l'estimateur graphique n'est utilisable seulement lorsque l'on a effectué au moins autant d'observations que $\theta$. Il n'est donc pas très utile dans notre problème et nous le laisserons de côté par la suite.
+
+---
+
+Traçons les histogrammes de classes de même largeur et de même effectif.
+```{r}
+theta <- 1000
+n <- 1000
+histogram(sample(1:theta, n, replace = T))
+n <- 20
+histogram(sample(1:theta, n, replace = T))
+```
+Il n'y a pas de réelle mise en valeur de l'uniformité des valeurs pour $n$ élevé. Le tracé de l'histogramme de base donne un résultat que je trouve plus parlant.
+```{r}
+theta <- 1000
+n <- 1000
+hist(sample(1:theta, n, replace = T))
+```
+
+---
+
+Passons maintenant aux estimations. Avec les paramètres $n = 20$ et $\theta = 1000$ il est peut probable d'obtenir des résultats satisfaisant.
+
+Définissons nos estimateurs :
+
+```{r estimateurs_avec_remise}
+estimateur.graph <- function(theta, nombre_observations) {
+    observations = sample(1:theta, nombre_observations, replace = T)
+    observations.clip = sort(observations)[1:nombre_observations]
+    probabilites_cumulee = seq(1:nombre_observations) / theta
+    observations.lm <-
+        lm(probabilites_cumulee ~ observations.clip)
+    return(1 / coef(observations.lm)[2])
+}
+
+estimateur.moments <-
+    function(theta, nombre_observations, replace) {
+        observations = sample(1:theta, nombre_observations, replace = replace)
+        return(2 * mean(observations) - 1)
+    }
+
+estimateur.mediane <-
+    function(theta, nombre_observations, replace) {
+        observations = sample(1:theta, nombre_observations, replace = replace)
+        return(2 * median(observations) - 1)
+    }
+
+estimateur.max <- function(theta, nombre_observations, replace) {
+    observations = sample(1:theta, nombre_observations, replace = replace)
+    return(max(observations))
+}
+
+estimateur.variance_min <-
+    function(theta, nombre_observations, replace) {
+        observations = sample(1:theta, nombre_observations, replace = replace)
+        n = length(observations)
+        m = max(observations)
+        return((m ^ (n + 1) - (m - 1) ^ (n + 1)) / (m ^ n - (m - 1) ^ n))
+    }
+
+estimate_avec_remise <- function(nombre_observations, theta, m = 5000) {
+    # Estimateur des moments
+    theta_moments <-
+        replicate(m,
+                  estimateur.moments(theta, nombre_observations, replace = T))
+    # Estimateur de la médiane empirique
+    theta_mediane <-
+        replicate(m,
+                  estimateur.mediane(theta, nombre_observations, replace = T))
+    # Estimateur du maximum de vraisemblance
+    theta_max <-
+        replicate(m, estimateur.max(theta, nombre_observations, replace = T))
+    # Estimateur graphique
+    theta_graph <-
+        replicate(m, estimateur.graph(theta, nombre_observations))
+    # Estimateur de variance minimale
+    theta_min <-
+        replicate(m,
+                  estimateur.variance_min(theta, nombre_observations, replace = T))
+    
+    return_list <-
+        list(
+            "moments" = theta_moments,
+            "mediane" = theta_mediane,
+            "max" = theta_max,
+            "graph" = theta_graph,
+            "variance_min" = theta_min
+        )
+    return(return_list)
+}
+```
+```{r}
+bias <- function(observations, theta) {
+    return(mean(observations) - theta)
+}
+
+mse <- function(observations, theta) {
+    return(var(observations) + bias(observations, theta) ^ 2)
+}
+
+estimators.summary <- function(estimations, theta) {
+    # Si un estimateur est non biaisé, sa variance est égale à sa MSE
+    # La variance mesure la précision de l'estimateur.
+    # Le biais mesure son exactitude.
+    # Un estimateur avec une bonne MSE à une petite variance et un petit biais.
+    estimations.mean <- sapply(estimations, mean)
+    estimations.median <- sapply(estimations, median)
+    estimations.sd <- sapply(estimations, sd)
+    estimations.var <- sapply(estimations, var)
+    estimations.bias <- sapply(estimations, bias, theta = theta)
+    estimations.mse <- sapply(estimations, mse, theta = theta)
+    estimations.summary <- data.frame(
+        estimations.mean = estimations.mean,
+        estimations.median = estimations.median,
+        estimations.sd = estimations.sd,
+        estimations.var = estimations.var,
+        estimations.bias = estimations.bias,
+        estimations.mse = estimations.mse
+    )
+    data.frame(t(round(estimations.summary, 2)))
+}
+```
+$m$ est le nombre de répétitions (ou d'échantillons) qui pourra varier dans la question suivante.
+```{r}
+estimations <-
+    estimate_avec_remise(nombre_observations = 20, theta = 1000, m = 1)
+estimators.summary(estimations, theta = 1000)
+```
+L'estimateur de variance minimale donne les résultats les plus proche de $\theta$ sur un échantillon. Il est suivi de près par l'estimateur des moments. Le maximum ne donne pas de résultats probant sur seulement $20$ observations.
+
+### 8. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$, avec $\theta=1000$. Pour chaque échantillon, calculer les valeurs des 5 estimations de $\theta$. On obtient ainsi des échantillons de $m$ valeurs de chacun des 5 estimateurs. Evaluer le biais et l'erreur quadratique moyenne de ces estimateurs. Faites varier $m$ et $n$. Qu'en concluez-vous ?
+
+Commençons par augmenter le nombre d'échantillons simulés.
+```{r}
+estimations <-
+    estimate_avec_remise(nombre_observations = 20, theta = 1000, m = 5000)
+estimators.summary(estimations, theta = 1000)
+```
+L'estimateur de variance minimale se démarque (petite variance et petit biais). On observe de meilleurs résultats pour l'estimateur de la médiane. L'estimateur du maximum est toujours fortement biaisé.
+```{r}
+estimations <-
+    estimate_avec_remise(nombre_observations = 500, theta = 1000, m = 5000)
+estimators.summary(estimations, theta = 1000)
+```
+Augmenter le nombre d'observations provoque un overflow lors du calcul de l'estimateur de variance minimale (plusieurs puissances $500$ se baladent...). Il faudrait réécrire sa formule pour passer outre. Comme prévu, on a de meilleurs résultats sur tous les autres estimateurs.
+```{r}
+estimations <-
+    estimate_avec_remise(nombre_observations = 1000, theta = 1000, m = 5000)
+estimators.summary(estimations, theta = 1000)
+```
+Plus $n$ augmente plus on estime correctement $\theta$. Maintenant il est intéressant de trouver à partir de quel valeur de $n$ un estimateur donnné donne une valeur correcte de $\theta$.
+
+---
+
+Effectuons quelques tracés.
+```{r}
+library(ggplot2)
+```
+
+```{r}
+# Affichages graphiques
+plot_estimations <- function(estimations, theta, m) {
+    for (name in names(estimations)) {
+        print(
+            qplot(
+                estimations[[name]],
+                main = paste("Distribution de l'estimateur", name),
+                ylab = "Nombre d'observations",
+                xlab = "Valeurs de theta estimées",
+                fill = ..count..
+            ) + theme_minimal() + geom_vline(aes(xintercept = theta), lty = 3) + scale_fill_gradient(low = "blue", high = "red") + annotate(
+                "text",
+                x = (min(estimations[[name]]) + theta) / 2,
+                y = m / 6,
+                label = paste("sd<theta> :", round(sd(
+                    estimations[[name]]
+                ), digits = 2)),
+                fontface = 2
+            ) + annotate(
+                "text",
+                x = (min(estimations[[name]]) + theta) / 2,
+                y = m / 6  - 60,
+                label = paste("<theta> :", round(mean(
+                    estimations[[name]]
+                ), digits = 2)),
+                fontface = 2
+            )
+        )
+        moyenne_glissante <- vector()
+        for (i in 1:m) {
+            moyenne_glissante[i] <- mean(estimations[[name]][1:i])
+        }
+        print(
+            qplot(
+                1:m,
+                moyenne_glissante,
+                xlab = "Numéro de l'observation",
+                ylab = "Moyenne glissante"
+            ) + geom_line() + geom_hline(yintercept = theta, color = "red")
+        )
+    }
+}
+```
+La fonction précédente est adaptée aux paramètres $\theta = 1000$ et $m = 5000$ (pour les annotations).
+Pour chaque estimateur, on trace la distribution et la droite verticale correpsondant à la valeur réelle de $\theta$.
+Le second graphe permet d'observer la convergence des valeurs de $\theta$ observées (et donc le biais).
+Je ne garanti pas l'exactitude des résultats observés pour l'estimateur de variance minimale en raison de l'overflow évoqué plus haut.
+```{r}
+estimations <-
+    estimate_avec_remise(nombre_observations = 20, theta = 1000, m = 5000)
+# on n'affiche pas l'estimateur graphique
+plot_estimations(estimations[-4], theta = 1000, m = 5000)
+```
+
+### 9. Déterminer un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$, c'est-à-dire un intervalle aléatoire $I_n$ tel que $\lim_{n \rightarrow \infty} P(\theta \in I_n)=1-\alpha.$
+
+Posons $P = \frac{X_n^*}{\theta}$ notre fonction pivot. En effet, on a bien $\Bbb{P}(P \leq k) = k^n$ (indépendant de $\theta$) par indépendance des tirages de même probabilité.
+
+On remarque que $\Bbb{P}(P \leq \alpha^{\frac{1}{n}}) = \alpha$ et que $\Bbb{P}(P \leq 1) = 1$.
+Ainsi,
+
+$$ 1 - \alpha = \Bbb{P}(\alpha^{\frac{1}{n}} \leq P \leq 1) = \Bbb{P}(\alpha^{\frac{1}{n}} \leq \frac{X_n^*}{\theta} \leq 1) = \Bbb{P}(X_n^* \leq \theta \leq \frac{X_n^*}{\alpha^{\frac{1}{n}}})$$
+
+Donc $I_n = \bigg[X_n^*, \frac{X_n^*}{\alpha^{\frac{1}{n}}}\bigg]$ est un intervalle de confiance asymptotique de seuil $\alpha$ pour $\theta$.
+
+---
+
+Pour trouver l'intervalle de confiance pour $\theta$ basé sur $n$ observations de valeur maximum $k$, on peut aussi résoudre les deux équations suivantes :
+
+$$ \Bbb{P}(X_n^* \leq k) = \bigg(\frac{k}{\theta}\bigg)^n = \frac{\alpha}{2}$$
+$$ \Bbb{P}(X_n^* \geq k) = 1 - \Bbb{P}(X_n^* \leq k - 1)  = 1 - \bigg(\frac{k - 1}{\theta}\bigg)^n = \frac{\alpha}{2}$$
+
+On obtient donc $\theta_{+} = \frac{k}{(\frac{\alpha}{2})^\frac{1}{n}}$ et $\theta_{-} = \frac{k}{(1 - \frac{\alpha}{2})^\frac{1}{n}}$.
+
+Puisque la distribution de l'échantillon est asymétrique, on préfère se ramener à l'intervalle précédemment calculé.
+
+---
+
+On obtient ainsi :
+
+|  $n$  | Intervalle de confiance |
+| :---: | :---------------------: |
+|   1   |       $[k, 20k]$        |
+|   2   |       $[k, 4.5k]$       |
+|   5   |      $[k, 1.82k]$       |
+|  10   |      $[k, 1.35k]$       |
+|  20   |      $[k, 1.16k]$       |
+
+
+### 10. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$. Calculer le pourcentage de fois où l'intervalle de confiance de seuil $\alpha$ pour $\theta$ contient la vraie valeur du paramètre $\theta$. Faire varier $n$, $m$ et $\alpha$, et conclure. 
+
+```{r}
+intervalle <- function(observations, alpha) {
+    maximum <- max(observations)
+    n <- length(observations)
+    return(c(maximum, maximum / (alpha ^ (1 / n))))
+}
+
+frequency <- function(theta, n, alpha = 0.05) {
+    observations <- sample(1:theta, n, replace = T)
+    inter <- intervalle(observations, alpha)
+    return((theta >= inter[1] & theta <= inter[2]))
+}
+
+simul.confiance <- function(theta) {
+    nombre <- 10
+    echantillon.number <- round(seq(100, 5000, length.out = nombre))
+    echantillon.length <- round(seq(1, theta, length.out = nombre))
+    new_list <-
+        mapply(function(n, m) {
+            replicate(m, frequency(theta, n))
+        }, echantillon.length, echantillon.number)
+    percent <-
+        sapply(new_list, function(logi) {
+            sum(logi) / length(logi)
+        })
+    attr(percent, "echantillon.length") <- echantillon.length
+    attr(percent, "echantillon.number") <- echantillon.number
+    return(percent)
+}
+```
+On observe ici le pourcentage de fois où l'intervalle de confiance de seuil $\alpha = 0.05$ pour $\theta$ contient la vraie valeur du paramètre $\theta$ (ici $100$) en faisant varier les paramètres $n$ et $m$.
+```{r}
+simul.confiance(100)
+```
+Comme prévu, lorsque $n$ augmente on tend vers $1 - \alpha$ .
+
+## Partie 2
+
+### 1. Déterminer la loi de $X_1$, puis celle de $X_2$ sachant $[X_1 = x_1]$, puis celle de $X_3$ sachant $[X_1 = x_1, X_2=x_2]$, etc... Etant donné que la fonction de vraisemblance peut s'écrire \begin{eqnarray*}
+{\cal L}(\theta ; x_1, \ldots, x_n) &=& P(X_1 = x_1, \ldots X_n=x_n ; \theta) \\
+&=& P(X_1 = x_1 ; \theta) \prod_{i=2}^n P(X_i = x_i | X_1 = x_1, \ldots X_{i-1}=x_{i-1} ; \theta),
+\end{eqnarray*} montrer que l'estimateur de maximum de vraisemblance de $\theta$ est toujours $\hat{\theta}_n=X_n^*$.
+
+La loi de $X_1$ n'a pas changé.
+$$\Bbb{P}(X_1=x_1) = \frac{1}{\theta} \, \mathbb{1}_{\{1, \ldots, \theta\}}(x_1).$$
+
+Prenons la première probabilité conditionnelle,
+$$\Bbb{P}(X_2 = x_2 | X_1=x_1) = \frac{\Bbb{P}(X_2 = x_2, X_1 = x_1)}{\Bbb{P}(X_2 = x_2)}$$
+
+Or le couple $(X_1, X_2)$ suit une loi uniforme sur $\{(x_1, x_2), x_1 \in \{1, \ldots, \theta\}, x_2 \in \{1, \ldots, \theta\}, x_1 \neq x_2 \}$ donc
+$$\Bbb{P}(X_2 = x_2, X_1=x_1) = \frac{1}{\theta(\theta - 1)}, x_1 \in \{1, \ldots, \theta\}, x_2 \in \{1, \ldots, \theta\}, x_1 \neq x_2$$
+
+Généralisons,
+$$
+\begin{aligned}
+    \Bbb{P}(X_k = x_k | X_1=x_1, \ldots, X_{k-1} = x_{k-1}) &= \frac{\Bbb{P}(\bigcap_{j=1}^{k} (X_j = x_j))}{\Bbb{P}(\bigcap_{j=1}^{k - 1} (X_j = x_j)} \\
+    &= \frac{\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_k=x_k | \bigcap_{j=1}^{k-1} (X_j = x_j))}{\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_{k-1}=x_{k-1} | \bigcap_{j=1}^{k-2} (X_j = x_j))} \\
+    &= \frac{\theta}{\theta}\frac{(\theta - 1)}{(\theta - 1)}.\frac{(\theta - 2)}{(\theta - 2)} \ldots \frac{(\theta - k + 2)}{(\theta - k + 2)}\frac{1}{(\theta - k + 1)} \\
+    &= \frac{1}{(\theta - k + 1)}
+\end{aligned}
+$$
+Plus simplement la probabilité de tirer $x_k$ sachant que l'on a déjà fait $k - 1$ tirages sans remise dans un ensemble de $\theta$ éléments est $\frac{1}{(\theta - k + 1)}$ (avec bien sûr $x_k \leq \theta$). Mais quelques révisions calculatoires ne peuvent pas faire de mal...
+
+$$
+L(\theta, x_1, \ldots, x_n) = \left\{
+    \begin{array}{ll}
+        \frac{1}{\theta}.\frac{1}{(\theta - 1)} \ldots \frac{1}{(\theta - n + 1)} & \text{si } max_i (x_i) \leq \theta \\
+        0 & \text{sinon.}
+    \end{array}
+\right.
+$$
+
+Cette fonction est aussi maximisée pour $\hat{\theta}_n = max_i (x_i) = X_n^*$.
+
+---
+
+Calculons la variance de notre estimateur des moments.
+$$\Bbb{Var}(\tilde{\theta}_n) = 4\Bbb{Var}(\overline{X}_n) = 4\sum_{i=1}^n \frac{1}{n^2}\Bbb{Var}(X_i) = \frac{4}{n}\frac{(\theta - n)(\theta - 1)}{12} = \frac{(\theta - n)(\theta - 1)}{3n}$$
+
+
+### 2. Montrer que $\forall k \in \{n,\ldots,\theta\}$, $P(X_n^*=k) = \frac{\left(_{n-1}^{k-1} \right)}{\left(_{n}^{\theta} \right)}$. Calculer $E[X_n^*]$ et en déduire que $\hat{\theta}_n^{(1)}=\frac{n+1}{n}X_n^*-1$ est un estimateur sans biais de $\theta$.
+
+Reformulons l'évènement recherché. On recherche en fait une probabilité conditionnelle.
+La probabilité que le numéro de série maximum observé soit égal à $k$ quand le nombre de tanks est connu égal à $\theta$ et que le nombre de tanks observés est égal à $n$.
+On cherche donc à répondre à la question : quelle est la probabilité qu'un nombre de série $k$ soit le maximum observé dans un échantillon de $n$ tanks lorsqu'il y en a $\theta$ au total ?
+
+La probabilité d'obtenir un échantillon de maximum $k$ est le nombre de façons de choisir un échantillon ayant un maximum $k$ divisé par le nombre d'échantillons.
+On a $k - 1$ parmi $n - 1$ ensembles distincts de $n$ numéros de série où le numéro de série maximal est $k$. 
+
+Ainsi, pour choisir un échantillon de maximum $k$, il faut choisir l'observation correspondant à $k$ ainsi que $n - 1$ autres observations de l'ensemble $\{1, \ldots k - 1\}$ de $k - 1$ parmi $n - 1$ façons. Donc
+
+$$\Bbb{P}(X_n^* = k) = \frac{\left(_{n-1}^{k-1} \right)}{\left(_{n}^{\theta} \right)}$$
+
+Notez qu'il faut $k$ telle que $n \leq k \leq \theta$ puisque le numéro de série maximum ne peut pas être supérieur au nombre total de tanks ou inférieur au nombre de tanks capturés.
+
+On peut maintenant calculer la fonction de répartition de $X_n^*$ et tracer la distribution.
+En effet, c'est l'intégrale de $\Bbb{P}(X_n^* = k)$ par rapport à la variable $k$. Ainsi,
+
+$$\Bbb{P}(X_n^* \leq k) = \frac{\left(_{n}^{k} \right)}{\left(_{n}^{\theta} \right)}$$
+
+---
+
+Effectuons maintenant quelques tracés
+
+```{r}
+# P(max <= k)
+# k(k - 1)...(k - n + 1) / theta(theta - 1)...(theta - n + 1)
+dunif.max <-
+    function(x, k, n) {
+        ifelse(x == k, 1, prod(k:(k - n + 1)) / prod(x:(x - n + 1)))
+    }
+
+values_n5 <- vector(length = 299)
+for (i in 100:400) {
+    values_n5[i - 99] <- dunif.max(x = i, k = 100, n = 5)
+}
+
+values_n10 <- vector(length = 299)
+for (i in 100:400) {
+    values_n10[i - 99] <- dunif.max(x = i, k = 100, n = 10)
+}
+```
+Ci-dessous l'affichage de la fonction de répartition comme fonction de $\theta$ pour $n$ et $k$ fixés:
+```{r}
+ggplot(data.frame(y = values_n5, x = 100:400), aes(x, y)) + geom_point() +
+    theme_minimal() + ylab("Fonction de répartition du maximum des observations") + xlab("theta") + geom_hline(aes(yintercept = .05), lty = 3)
+```
+$95%$ du temps, le nombre total de tanks sera inférieur à environ $180$ pour un maximum des observations $k = 100$ et $n = 5$ tanks.
+```{r}
+ggplot(data.frame(y = values_n5, y1 = values_n10, x = 100:400), aes(x, y)) +
+    geom_point() + geom_point(aes(x, y1), color = "gray") + theme_minimal() +
+    ylab("Fonction de répartition du maximum des observations") + xlab("theta") + geom_hline(aes(yintercept = .05), lty = 3)
+```
+Avec $5$ tanks supplémentaires capturés, on s'attend à ce que le nombre de tanks soit inférieur à environ $135$ $95%$ du temps.
+Augmenter la taille de l'échantillon donne une estimation plus précise de $\theta$.
+On peut estimer $\theta$ en prenant la médiane de cette distribution. Ce n'est néanmoins pas la meilleur estimation.
+```{r}
+# P(max = k)
+unif.max <- function(x, k, n) {
+    choose(k - 1, n - 1) / choose(x, n)
+}
+
+values <- vector(length = 299)
+for (i in 100:400) {
+    values[i - 99] <- unif.max(i, k = 100, n = 5)
+}
+```
+La valeur de $\theta$ qui maximise la probabilité est le maximum $k$ de l'échantillon. $100$ est certainement une valeur sous-estimée de theta. En effet, cet estimateur est biaisé.
+```{r}
+qplot(y = values, x = 100:400) + geom_line() + theme_minimal() + ylab("Probabilité que le maximum soit égal à k") + xlab("theta")
+```
+
+---
+
+$$
+\begin{aligned}
+    \Bbb{E}[X_n^*] &= \sum_{k=n}^{\theta}{k \frac{{k-1}\choose{n-1}}{{\theta}\choose{n}}} \\  
+    &= \frac{1}{(n-1)!{\theta \choose n}} \sum_{k=n}^{\theta}{\frac{k!}{(k-n)!}} \\ 
+    &= \frac{n!}{(n-1)!{\theta \choose n}} \sum_{k=n}^{\theta}{k \choose n} \\ 
+    &= n \frac{{\theta+1}\choose{n+1}}{\theta \choose n} \\ 
+    &= \frac{n}{n+1}(\theta+1) 
+\end{aligned}
+$$
+
+La valeur obtenue n'est égale à $\theta$ seulement quand $n = \theta$. $X_n^*$ est donc un estimateur biaisé de $\theta$.
+
+On en déduit que $\hat{\theta}_n^{(1)}=\frac{n+1}{n}X_n^*-1$ est un estimateur sans biais de $\theta$.
+
+---
+
+La variance de l'estimateur $\hat{\theta}_n^{(1)}$ est $\frac{1}{n}\frac{(\theta - n)(\theta  - 1)}{n + 2}$ après calculs.
+
+> On a $\Bbb{Var}(\hat{\theta}_n^{(1)}) = \frac{(n + 1)^2}{n^2}\Bbb{Var}(X_n^*)$. Le calcul de $\Bbb{E}[(X_n^*)^2]$ est ce qui pose problème.
+
+---
+
+On aurait pu construire cet estimateur à partir de celui proposé à la question suivante.
+On remplace l'écart $(x_1^* - 1)$ par la moyenne des écarts de notre échantillon. On obtient ainsi un écart moyen
+
+$$
+\begin{aligned}
+    E_{moy} &= \frac{1}{n}((x_1^* - 1) + (x_2^* - x_1^* - 1) + (x_3^* - x_2^* - 1) + \ldots + (x_n^* - x_{n - 1}^* - 1)) \\
+    &= \frac{1}{n}(x_n^* - n) \\
+    &= \frac{x_n^*}{n} - 1
+\end{aligned}
+$$
+
+On retrouve bien l'estimateur $\hat{\theta}_n^{(1)} = X_n^* + E_{moy} = X_n^* + \frac{X_n^*}{n} - 1$.
+
+---
+
+Une façon intuitive de construire un autre estimateur est la suivante. Pour des raisons de symétrie, il est logique de s'attendre à ce que le nombre de numéros inférieurs au minimum des numéros tirés soit proche du nombre de numéros supérieurs au maximum des numéros tirés. Autrement dit, $x_1^* -1 \approx \theta - x_n^*$. Cela amène à proposer un nouvel estimateur, $\hat{\theta}_n^{(2)}=X_n^*+X_1^*-1$.
+
+---
+
+La variance de l'estimateur $\hat{\theta}_n^{(2)} = X_n^* + X_1^* - 1$ est $\frac{2}{n + 1}\frac{(\theta - n)(\theta  - 1)}{n + 2}$ après calculs.
+
+### 3. A l'aide de ${\tt R}$, faites des expérimentations numériques ayant pour objectif de comparer les estimateurs $\hat{\theta}_n$, $\hat{\theta}_n^{(1)}$ et $\hat{\theta}_n^{(2)}$, ainsi que l'estimateur $\tilde{\theta}_n$ calculé dans la question 1.2.
+
+Passons sur le tracé des histogrammes et définissons directement nos estimateurs :
+
+```{r estimateurs_sans_remise}
+estimateur.max_unbiaised <-
+    function(theta, nombre_observations, replace) {
+        observations = sample(1:theta, nombre_observations, replace = replace)
+        return((1 + 1 / length(observations)) * max(observations) - 1)
+    }
+
+estimateur.max_min <-
+    function(theta, nombre_observations, replace) {
+        observations = sample(1:theta, nombre_observations, replace = replace)
+        return(max(observations) + min(observations) - 1)
+    }
+```
+```{r}
+estimate_sans_remise <- function(nombre_observations, theta, m = 5000) {
+    # Estimateur des moments
+    theta_moments <-
+        replicate(m,
+                  estimateur.moments(theta, nombre_observations, replace = F))
+    # Estimateur du maximum de vraisemblance
+    theta_max <-
+        replicate(m, estimateur.max(theta, nombre_observations, replace = F))
+    # Estimateur sans biais
+    theta_ss_biais <-
+        replicate(m,
+                  estimateur.max_unbiaised(theta, nombre_observations, replace = F))
+    # Estimateur proposé
+    theta_prop <-
+        replicate(m,
+                  estimateur.max_min(theta, nombre_observations, replace = F))
+    
+    return_list <-
+        list(
+            "moments" = theta_moments,
+            "max" = theta_max,
+            "max_unbiaised" = theta_ss_biais,
+            "max_min" = theta_prop
+        )
+    return(return_list)
+}
+```
+```{r}
+estimations <-
+    estimate_sans_remise(nombre_observations = 20, theta = 1000, m = 5000)
+estimators.summary(estimations, theta = 1000)
+plot_estimations(estimations, theta = 1000, m = 5000)
+```
+L'estimateur des moments donne de très bons résultats. Cependant en pratique, on peut n'avoir qu'un seul échantillon. On préfère alors l'estimateur de variance minimale, ici le maximum non-biaisé. On peut aisément voir la différence de variance entre ces deux estimateurs sur les histogrammes.
+
+Les histogrammes des estimateurs maximum non-biaisé et max-min sont intéressant à comparer. On tombe plus souvent sur la véritable valeur de $\theta$ avec max-min tandis que l'estimateur maximum non-biaisé préfère surestimer $\theta$ ce qui fait que cet estimateur a une plus faible variance (elle est en effet **divisée par 2**). 
+
+---
+
+Effectuons des comparaisons de variances entre les estimateurs sans remise non biaisés.
+
+```{r}
+var.moments <- function(theta, n) {
+    return((theta - n) * (theta - 1) / (3 * n))
+}
+var.max_unbiaised <- function(theta, n) {
+    return(1 / n * (theta - n) * (theta - 1) / (n + 2))
+}
+var.max_min <- function(theta, n) {
+    return(2 / (n + 1) * (theta - n) * (theta - 1) / (n + 2))
+}
+
+theta <- 1000
+taille_echantillon <- 100
+values_moments <- vector(length = taille_echantillon)
+values_max_unbiaised <- vector(length = taille_echantillon)
+values_max_min <- vector(length = taille_echantillon)
+for (n in 1:taille_echantillon) {
+    values_moments[n] <- sqrt(var.moments(theta, n = n))
+    values_max_unbiaised[n] <- sqrt(var.max_unbiaised(theta, n))
+    values_max_min[n] <- sqrt(var.max_min(theta, n))
+}
+```
+```{r}
+ggplot(
+    data.frame(
+        y = values_moments,
+        y1 = values_max_unbiaised,
+        y2 = values_max_min,
+        x = 1:taille_echantillon
+    ),
+    aes(x, y)
+) + geom_point(aes(x, y), color = "red") + geom_point(aes(x, y1), color = "green") + geom_point(aes(x, y2), color = "blue") + theme_minimal() +
+    ylab(paste("Ecart type des estimateurs pour theta =", theta)) + xlab("Taille n de l'échantillon")
+```
+On voit que l'estimateur maximum non biaisé (en vert) a la plus faible variance des 3 estimateurs toute taille d'échantillons confondue. C'est en fait le **MVUE**.
+
+---
+
+Reprenons l'étude des histogrammes précédemment tracés.
+
+Pour vérifier si l'estimateur est biaisé ou non on a fait $5000$ simulations avec $\theta$ et $n$ fixés. On a ensuite appliqué les estimateurs à chaque échantillon et observé la distribution obtenue.
+Un estimateur non biaisée aura, sur de nombreuses simulations, une valeur moyenne égale au nombre réel de tanks (ie. theta). L'efficacité de l'estimateur est observé en regardant la valeur de la variance.
+
+Un estimateur non-biaisé efficace aura la plus petite variance parmi les autres estimateurs non biaisés.
+
+On peut aussi observer la **consistance** de l'estimateur. On devrait observer que la distribution se concentre autour de la valeur réelle de $\theta$ lorsque le nombre d'observations augmente.
+Plus l'on capture de tanks, plus notre estimation de $\theta$ aura de chance d'être correcte.
+```{r}
+superposed_histplot <- function(estimations) {
+    # estimations est ici une matrice
+    df <- stack(as.data.frame(cbind.data.frame(estimations)))
+    colnames(df)[2] <- "n_values"
+    ggplot(df, aes(x = values, fill = n_values)) + geom_histogram(alpha =
+                                                                      0.2, position = "identity") + geom_vline(xintercept = 1000, color = "red") + ylab("Nombre d'observations") + xlab("Valeurs de theta estimées")
+}
+
+consistance <- function(theta, estimateur) {
+    m <- 5000
+    echantillon.number <- c(m, m, m)
+    echantillon.length <- seq(20, theta, length.out = 3)
+    new_list <-
+        mapply(function(n, m) {
+            replicate(m, estimateur.moments(theta, n, replace = F))
+        }, echantillon.length, echantillon.number)
+    colnames(new_list) <- echantillon.length
+    return(new_list)
+}
+```
+```{r}
+superposed_histplot(consistance(1000, estimateur.moments))
+superposed_histplot(consistance(1000, estimateur.max_min))
+superposed_histplot(consistance(1000, estimateur.max_unbiaised))
+```
+
+---
+
+Que peut-on dire des **intervalles de confiance** ?
+
+On réalise ici une estimation de l'intervalle auquel appartient le nombre de tanks. Disons que l'on observe un numéro de série maximum de $200$ pour des échantillons de $20$ tanks, et supposons que $\theta$ soit égal à $2000$.
+Cela pourrait être vrai que l'on n'ait capturé des tanks présents dans les $200$ premiers sortis de l'usine. Cependant c'est peu probable ie. on a plus de chances d'observer un numéro de série supérieur à $200$ s'il y a réellement $2000$ tanks. Ainsi on est confiant que les allemands ont moins de $2000$ tanks.
+
+On visualise la distribution de chaque estimateur sur $5000$ simulations en faisant varier $\theta$.
+```{r}
+confidence <- function(nombre_observations, estimateur) {
+    m <- 5000
+    observations <- round(seq(100, 160, length.out = 7))
+    new_list <-
+        lapply(observations, function(theta) {
+            replicate(m, estimateur(theta, nombre_observations, replace = F))
+        })
+    names(new_list) <- observations
+    return(new_list)
+}
+
+superposed_boxplot <- function(estimations) {
+    # estimations est ici une liste
+    # Pour tracer la ligne
+    observations = sample(1:120, 20, replace = F)
+    # Pour tracer tout le reste
+    df <- stack(as.data.frame(do.call(cbind, estimations)))
+    colnames(df)[2] <- "theta_values"
+    ggplot() + geom_boxplot(
+        data = df,
+        aes(x = theta_values, y = values, fill = theta_values),
+        outlier.shape = NA
+    ) + ylab("Estimations de theta") + xlab("Valeurs réelles de theta") + geom_point(data = data.frame(x = seq(1, 7), y = round(seq(
+        100, 160, length.out = 7
+    ))),
+    aes(x = x, y = y),
+    color = "pink") + geom_line(data = data.frame(x = seq(1, 7), y = round(seq(
+        100, 160, length.out = 7
+    ))),
+    aes(x = x, y = y),
+    linetype = "dashed") + geom_hline(yintercept = max(observations), color = "blue")
+}
+```
+```{r}
+superposed_boxplot(confidence(20, estimateur.moments))
+superposed_boxplot(confidence(20, estimateur.max_min))
+superposed_boxplot(confidence(20, estimateur.max_unbiaised))
+```
+On cherche ici une borne supérieure sur $\theta$.
+On trace la droite donnant l'estimation de $\theta$ pour la valeur maximale observée sur la première boite avec $n = 20$.
+L'estimation de $\theta$ est en dessous de ce qu'on observe avec une probabilité de $25%$ pour la valeur de $\theta$ à l'intersection entre la ligne et l'extrémité de la moustache basse d'une boxplot. Notons cette valeur $\theta_{est}$. Ainsi, basé sur notre ligne d'observation, on rejetterai l'hypothèse nulle que $\theta$ vaut $\theta_{est}$ avec une certitude de $75%$, parce qu'il est peu probable que le nombre maximal de tanks soit aussi bas s'il y avait vraiment $\theta_{est}$ tanks.
+
+Finalement, pour $n = 20$ et pour le maximum de la première boîte, on peut dire que le nombre de tanks produit par les allemands est inférieur à $\theta_{est}$ avec une confiance de $75%$.
+
+---
+
+On pourrait essayer de forcer les tracés à tomber sur une intersection exacte nous donnant la valeur de $\theta_{est}$ pour chaque droite tracée, ou le pourcentage exacte correspondant à chaque valeur de $\theta_{est}$. Ce serait néanmoins fastidieux et je n'ai pas le temps de le faire ici.
+
+### 4. Pour estimer $\theta$, peut-on se contenter de considérer que le tirage est avec remise ?
+
+Non. Enfin tout dépend de l'exactitude de la valeur souhaité. L'estimateur des moments donne des résultats trop variables et celui de variance minimale nécessite peu d'observations pour effectuer le calcul, ce qui modifie la précision du résultat final.
+Je ne vois pas l'intérêt de faire cette considération.
+
+## Partie 3.
+
+### 1. Reconstituer les numéros de série NS de tous ces mobiles.
+
+```{r}
+iphones <- read.table("iPhones.csv", sep = ";", header = T)
+```
+L'utilisation de attach est inutile et non recommandée.
+```{r}
+# Traitement des X par une substitution regex
+# A modifier si l'on ne veut pas supprimer des X représentatifs de l'usine
+iphones.no.X <-
+    data.frame(sapply(iphones, function(char) {
+        gsub("X", "0", char)
+    }))
+
+# TAC lookup table
+lookupTAC <- seq(1:15)
+names(lookupTAC) <- c(
+    "161200",
+    "161300",
+    "161400",
+    "171200",
+    "171300",
+    "171400",
+    "174200",
+    "174300",
+    "174400",
+    "177100",
+    "177300",
+    "177400",
+    "177500",
+    "177600",
+    "180900"
+)
+```
+Test de notre fonction NS sur l'exemple proposé.
+```{r}
+NS <- function(char) {
+    return((as.numeric(unname(lookupTAC[substr(char, 3, 8)])) - 1) * 1e6  + as.numeric(substr(char, 9, 14)))
+}
+NS("011613006769038")
+```
+On applique notre fonction à notre dataframe.
+```{r}
+iphones.no.X <- cbind(iphones.no.X, NS = NS(iphones.no.X$IMEI))
+```
+
+Regardons maintenant quelques caractéristiques de notre distribution
+
+```{r}
+iphones.summary <- function(iphones) {
+    sum <- data.frame(
+        iphones.mean = mean(iphones$NS),
+        iphones.median = median(iphones$NS),
+        iphones.sd = sd(iphones$NS),
+        iphones.var = var(iphones$NS)
+    )
+    print(sum)
+}
+
+iphones.summary(iphones.no.X)
+```
+
+### 2. Estimer le nombre total d'iPhones produits durant la période concernée. 
+
+On choisit de garder les deux estimateurs non-biaisés de plus petite variance.
+```{r}
+estimate <- function(iphones) {
+    n = length(iphones$NS)
+    m = max(iphones$NS)
+    return(data.frame((1 + 1 / n) * m - 1, m + min(iphones$NS) - 1))
+}
+estimate(iphones.no.X)
+```
+
+---
+
+On veut suivre plus finement la progression de la production d'iPhones tout au long de cette période. Pour cela, on regroupe les données par paquets de 4 semaines : le premier groupe comporte tous les appareils produits entre les 25ème et 28ème semaine de 2008, etc... et le dernier tous les appareils produits entre les 1ère et 4ème semaine de 2009. 
+
+### 3. Estimer le nombre d'iPhones produits sur chacune de ces sous-périodes.
+
+On groupe maintenant les semaines 4 par 4.
+```{r}
+# on effectue une petite translation de notre table pour l'affichage graphique
+# 25 : 6 --> 25 : 0 pour 13 valeurs différentes
+lookupWeek <- (rep(1:round(52 / 4), each = 4) + 6) %% 13
+names(lookupWeek) <- sprintf("%02d", 1:52)
+
+# récupération de la semaine
+weekgroup <- function(NS) {
+    return(unname(lookupWeek[substr(NS, 4, 5)]))
+}
+
+iphones.no.X <-
+    cbind(iphones.no.X, weekgroup = weekgroup(iphones.no.X$PC))
+```
+On récupère les données groupés par 4 semaines.
+```{r}
+grouped <- split(iphones.no.X, f = iphones.no.X$weekgroup)
+grouped.estimations <- lapply(grouped, estimate)
+```
+
+### 4. Ces estimations reposent sur l'hypothèse d'uniformité des numéros de série. Que pensez-vous de la validité de cette hypothèse, sur l'ensemble de la période et sur chacune des sous-périodes définies dans la question précédente ?
+
+```{r}
+ggplot(iphones.no.X) + geom_point(aes(x = weekgroup, y = NS))
+```
+
+Réalisons des tests pour vérifier l'**uniformité** de nos observations.
+
+On choisit $\alpha = 0.01$.
+On rappelle que p-value < $\alpha$ --> on rejette H0.
+
+H0 est que les observations suivent une distribution uniforme de leur valeur minimale à leur valeur maximale.
+```{r}
+# test de Kolmogorov-Smirnov
+ks <- function(iphones) {
+    return(ks.test(iphones$NS, "punif", min(iphones$NS), max(iphones$NS)))
+}
+
+# chi-squared test
+chisq <- function(iphones) {
+    return(chisq.test(iphones$NS))
+}
+
+ks(iphones.no.X)
+chisq(iphones.no.X)
+```
+La loi de nos observations n'est pas uniforme.
+Vérifions cela graphiquement :
+
+```{r}
+plot(ecdf(iphones.no.X$NS))
+curve(punif(x, min(iphones.no.X$NS), max(iphones.no.X$NS)), add = T, col = "red")
+```
+
+```{r}
+grouped.summary <- lapply(grouped, iphones.summary)
+group.ks.test <- lapply(grouped, ks)
+# group.chisq.test <- lapply(grouped, chisq)
+```
+Toutes les périodes suivent une loi uniforme sauf la seconde (p-value = $0.02365$).
+
+```{r}
+grouped.mean <- colMeans(Reduce(function(x, y) merge(x, y, all = T), lapply(grouped, estimate)))
+print(grouped.mean)
+mean(grouped.mean)
+```
+On effectue la moyenne des estimations calculées pour chaque groupement.
+Pour un échantillon suivant une loi uniforme discrète, je me demande s'il y a équivalence entre appliquer notre estimateur à l'échantillon tout entier ou l'appliquer sur des partitions de l'échantillon puis faire la moyenne des estimations.
+Je ne pense pas qu'il y ait équivalence. Utiliser la moyenne des estimations obtenues sur les sous-échantillons me semble être une démarche fausse. Je ne saurais pas expliquer pourquoi...
+
+On est plutôt uniforme sur la fin de la distribution
+```{r}
+plot(ecdf(iphones.no.X[60:139, ]$NS))
+curve(punif(x, min(iphones.no.X[60:139, ]$NS), max(iphones.no.X[60:139, ]$NS)), add = T, col = "red")
+ks(iphones.no.X[60:139, ])
+estimate(iphones.no.X[60:139, ])
+```
+On est toujours bon d'après la p-value. La valeur prédite est semblable à celle obtenue sur toute la période. 
+Elle est néanmoins un petit peu plus élevée. C'est celle que je garderais pour estimation.
+
+```{r}
+ks(iphones.no.X[52:139, ])
+```
+Là c'est limite pour la p-value.
+
+### 5. Quelles conclusions tirez-vous de cette étude ?
+
+Production initiale (mise sur le marché) très forte en juin 2008. Cette production a progressivement diminuée (baisse de la demande).
+Cela explique la non uniformité des numéros de série sur toute la période.
+On estime que $14966096$ Iphones ont été produits.
+

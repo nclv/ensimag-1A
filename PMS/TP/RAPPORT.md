@@ -137,6 +137,21 @@ $$ \Bbb{P}(X_n^* \geq k) = 1 - \Bbb{P}(X_n^* \leq k - 1)  = 1 - \bigg(\frac{k - 
 
 On obtient donc $\theta_{+} = \frac{k}{(\frac{\alpha}{2})^\frac{1}{n}}$ et $\theta_{-} = \frac{k}{(1 - \frac{\alpha}{2})^\frac{1}{n}}$.
 
+Puisque la distribution de l'échantillon est asymétrique, on préfère se ramener à l'intervalle précédemment calculé.
+
+---
+
+On obtient ainsi :
+
+|  $n$  | Intervalle de confiance |
+| :---: | :---------------------: |
+|   1   |       $[k, 20k]$        |
+|   2   |       $[k, 4.5k]$       |
+|   5   |      $[k, 1.82k]$       |
+|  10   |      $[k, 1.35k]$       |
+|  20   |      $[k, 1.16k]$       |
+
+
 ## 10. Simuler $m$ échantillons de taille $n$ d'une loi ${U}_{\{1,\ldots,\theta\}}$. Calculer le pourcentage de fois où l'intervalle de confiance de seuil $\alpha$ pour $\theta$ contient la vraie valeur du paramètre $\theta$. Faire varier $n$, $m$ et $\alpha$, et conclure. 
 
 # Partie 2
@@ -155,9 +170,9 @@ $$\Bbb{P}(X_2 = x_2, X_1=x_1) = \frac{1}{\theta(\theta - 1)}, x_1 \in \{1, \ldot
 Généralisons,
 $$
 \begin{aligned}
-    \Bbb{P}(X_k = x_k | X_1=x_1, \ldots, X_{k-1} = x_{k-1}) &= \frac{\Bbb{P}(\bigcap_{j=1}^{k} (X_j = x_j))}{\Bbb{P}(X_k = x_k)} \\
-    &= \theta.\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_k=x_k | \bigcap_{j=1}^{k-1} (X_j = x_j)) \\
-    &= \theta.\frac{1}{\theta}.\frac{1}{(\theta - 1)}.\frac{(\theta - 1)}{(\theta - 2)} \ldots \frac{(\theta - k)}{(\theta - k + 1)} \\
+    \Bbb{P}(X_k = x_k | X_1=x_1, \ldots, X_{k-1} = x_{k-1}) &= \frac{\Bbb{P}(\bigcap_{j=1}^{k} (X_j = x_j))}{\Bbb{P}(\bigcap_{j=1}^{k - 1} (X_j = x_j)} \\
+    &= \frac{\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_k=x_k | \bigcap_{j=1}^{k-1} (X_j = x_j))}{\Bbb{P}(X_1=x_1).\Bbb{P}(X_2=x_2 | X_1=x_1).\Bbb{P}(X_3=x_3 | X_2=x_2, X_1=x_1) \ldots \Bbb{P}(X_{k-1}=x_{k-1} | \bigcap_{j=1}^{k-2} (X_j = x_j))} \\
+    &= \frac{\theta}{\theta}\frac{(\theta - 1)}{(\theta - 1)}.\frac{(\theta - 2)}{(\theta - 2)} \ldots \frac{(\theta - k + 2)}{(\theta - k + 2)}\frac{1}{(\theta - k + 1)} \\
     &= \frac{1}{(\theta - k + 1)}
 \end{aligned}
 $$
