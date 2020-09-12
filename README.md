@@ -1,1 +1,71 @@
-# Ensimag
+# Ensimag-1A
+
+ - Recherche opérationnelle et optimisation combinatoire
+   > Approche scientifique dont les résultats doivent être opérationnels dans la pratiques malgré une complexité élevée et une très grande taille.
+   - Théorie des graphes
+   - Programmation linéaire
+   - Théorie des jeux
+ - Algorithmique et structures de données
+   - Complexité
+   - Diviser pour régner
+   - Tables de hachages
+   - Arbres binaires de recherche
+   - Files de priorités et tas
+   - Parcours de graphe
+ - Unix : introduction et programmation shell
+   - Machines virtuelles et installation de distribution
+   - Git, regex, Makefiles
+ - Bases de la programmation impérative (Python)
+   - Projet _pyhack_
+ - Projet logiciel en C
+   - Projet _Table de hachage_
+   - Projet _Encodeur JPEG_
+ - Architecture : circuits numériques et éléments d'architecture
+   - Circuits séquentiels
+   - Machines à états
+   - Conception d'un processeur: PC/PO
+   - Cache
+ - Conception et exploitation des processeurs
+   - Conception d'un petit processeur RISC-V réaliste suivant la méthode PC/PO (langage VHDL)
+   - Exploitation des processeurs (langage d'assemblage)
+ - Analyse pour l'ingénieur
+   - Espaces métriques et E.V.N.
+   - Différentiabilité dans les espaces de Banach
+   - Intégrale de Lebesgue
+   - Transformée de Fourier
+ - Méthodes numériques de base
+   - Equations différentielles Ordinaires (EDO)
+   - Equations non linéaires
+   - Optimisation
+ - Théorie des langages
+   - Automates d'états finis
+   - Expressions régulières
+   - Grammaires et Hiérarchie de Chomsky
+   - Construction d'analyseurs syntaxiques
+   - Calculabilité et machines de Turing
+ - Probabilités appliquées (voir [ici](https://francoio.github.io/about/))
+   - Simulation de variables aléatoires discrètes et continues
+   - Méthode de Monte-Carlo
+ - Principes et Méthodes Statistiques
+   - Stastistique descriptive
+   - Estimation ponctuelle (EMM/EMV/ESBMV)
+   - Intervalles de confiance
+   - Test d'hypothèses
+   - Régression linéaire
+ - Théorie de l'information
+   >  Notions fondamentales pour la mesure quantitative de l'information, sa représentation, son stockage, sa transmission, sa protection et sa dissimulation. 
+   - Compression sans perte
+   - Codage correcteur
+   - Applications à la cryptographie et à la stéganographie
+ - Réseaux de Communication
+   - Architecture et protocoles
+   - Techniques de communication numériques
+   - Réseaux d'accès
+ - Sécurité
+   - Protocoles de sécurité
+   - Chiffrement et authentification
+   - Analyse et vérification de protocoles cryptographiques
+ - Economie générale et politiques économiques
+   - Croissance
+   - Politiques budgétaires et monétaires
+   - L'économie de l'UE
